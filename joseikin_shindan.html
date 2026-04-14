@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>助成金簡易診断 | ネクストシーズン</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:#F5F4F0;color:#1a1a1a;line-height:1.6}
+.app{max-width:640px;margin:0 auto;padding:2rem 1rem}
+.header{text-align:center;margin-bottom:2rem}
+.header h1{font-size:22px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
+.header p{font-size:14px;color:#666}
+.progress-bar{height:4px;background:#e0ddd6;border-radius:2px;margin-bottom:2rem}
+.progress-fill{height:4px;background:#534AB7;border-radius:2px;transition:width 0.4s}
+.step-label{font-size:13px;color:#666;margin-bottom:0.5rem}
+.question-card{background:#fff;border:0.5px solid #ddd;border-radius:12px;padding:1.5rem;margin-bottom:1rem}
+.question-text{font-size:16px;font-weight:500;color:#1a1a1a;margin-bottom:1.25rem;line-height:1.6}
+.question-note{font-size:12px;color:#666;margin-bottom:1rem;line-height:1.5;background:#f5f4f0;padding:8px 10px;border-radius:8px}
+.options{display:flex;flex-direction:column;gap:8px}
+.option-btn{background:#fff;border:0.5px solid #ccc;border-radius:8px;padding:12px 16px;text-align:left;font-size:14px;color:#1a1a1a;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:10px;font-family:inherit}
+.option-btn:hover{background:#f5f4f0;border-color:#aaa}
+.option-btn.selected{background:#EEEDFE;border-color:#7F77DD;color:#3C3489}
+.option-btn.selected .chk{background:#534AB7;border-color:#534AB7}
+.option-btn.selected .chk::after{display:block}
+.chk{width:16px;height:16px;border:1.5px solid #ccc;border-radius:3px;flex-shrink:0;position:relative}
+.chk::after{content:'';display:none;width:4px;height:8px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);position:absolute;top:1px;left:4px}
+.multi-note{font-size:12px;color:#666;margin-bottom:8px}
+.nav{display:flex;justify-content:space-between;margin-top:1.25rem;gap:12px}
+.btn{padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer;border:0.5px solid #ccc;background:#fff;color:#1a1a1a;font-family:inherit}
+.btn:hover{background:#f5f4f0}
+.btn.primary{background:#534AB7;border-color:#534AB7;color:#fff}
+.btn.primary:hover{background:#3C3489}
+.btn:disabled{opacity:0.4;cursor:not-allowed}
+.result-header{text-align:center;padding:1.5rem 0 1rem}
+.result-title{font-size:20px;font-weight:500;color:#1a1a1a;margin-bottom:0.5rem}
+.result-sub{font-size:14px;color:#666}
+.grant-card{background:#fff;border:0.5px solid #ddd;border-radius:12px;padding:1.25rem;margin-bottom:10px}
+.grant-card.rank-high{border-left:3px solid #534AB7;border-radius:0 12px 12px 0}
+.grant-card.rank-mid{border-left:3px solid #1D9E75;border-radius:0 12px 12px 0}
+.grant-card.rank-ref{border-left:3px solid #BA7517;border-radius:0 12px 12px 0}
+.grant-name{font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:4px}
+.grant-amount{font-size:13px;font-weight:500;color:#534AB7;margin-bottom:4px}
+.grant-desc{font-size:13px;color:#555;line-height:1.6}
+.grant-note{font-size:12px;color:#666;margin-top:6px;padding:6px 8px;background:#f5f4f0;border-radius:6px;line-height:1.5}
+.badge{display:inline-block;font-size:11px;padding:3px 8px;border-radius:6px;margin-bottom:8px}
+.badge.p-high{background:#EEEDFE;color:#3C3489}
+.badge.p-mid{background:#E1F5EE;color:#085041}
+.badge.p-ref{background:#FAEEDA;color:#633806}
+.section-title{font-size:14px;font-weight:500;color:#666;margin:1.5rem 0 0.75rem}
+.info-form{background:#fff;border:0.5px solid #ddd;border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:13px;color:#666;margin-bottom:4px}
+.field input{width:100%;padding:9px 12px;border:0.5px solid #ccc;border-radius:8px;font-size:14px;color:#1a1a1a;background:#fff;font-family:inherit}
+.field input:focus{outline:none;border-color:#7F77DD;box-shadow:0 0 0 2px rgba(83,74,183,0.1)}
+.send-btn{width:100%;padding:14px;background:#534AB7;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;margin-top:0.5rem;font-family:inherit}
+.send-btn:hover{background:#3C3489}
+.send-btn:disabled{background:#AFA9EC;cursor:not-allowed}
+.success-msg{text-align:center;padding:2.5rem 1.5rem;background:#E1F5EE;border-radius:12px;border:0.5px solid #5DCAA5}
+.status-msg{font-size:13px;color:#666;text-align:center;margin-top:8px;min-height:20px}
+.restart-btn{margin-top:1rem;width:100%;padding:12px;background:#fff;color:#1a1a1a;border:0.5px solid #ccc;border-radius:8px;font-size:14px;cursor:pointer;font-family:inherit}
+.restart-btn:hover{background:#f5f4f0}
+.past-box{background:#f5f4f0;border-radius:8px;padding:12px 16px;margin-bottom:1rem}
+.result-preview{background:#f5f4f0;border-radius:8px;padding:12px 14px;font-size:13px;color:#555;line-height:1.8;white-space:pre-wrap;word-break:break-all}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <h1>助成金 簡易診断</h1>
+    <p>9つの質問に答えて、貴社に適した助成金を診断します</p>
+  </div>
+  <div id="main"></div>
+</div>
+
+<script>
+const FORM_ID = '1jSK1mXDNsrfCWI9ojb89OKIbe2vc8433cxTnMmpbiIE';
+const ENTRIES = {
+  company: 'entry.390339182',
+  person:  'entry.1536140159',
+  address: 'entry.1474998369',
+  phone:   'entry.1191765169',
+  email:   'entry.1738854470',
+  result:  'entry.547101371'
+};
+
+const questions = [
+  {id:'industry', text:'貴社の業種を教えてください。', type:'single', label:'業種',
+    options:['製造業','小売・サービス業','医療・福祉','建設業','IT・情報通信','その他']},
+  {id:'employees', text:'従業員数を教えてください。', type:'single', label:'従業員数',
+    options:['5人以下','6〜20人','21〜100人','101〜300人','301人以上']},
+  {id:'parttime', text:'非正規雇用（パート・アルバイト・契約社員）を正社員に転換する予定がありますか？', type:'single', label:'非正規→正社員転換',
+    options:['はい、予定している','検討中','いいえ']},
+  {id:'training', text:'1ヶ月以上先に、雇用保険に加入している従業員への職業訓練・研修の実施を予定または検討していますか？', type:'single', label:'職業訓練・研修',
+    note:'※ 雇用保険の被保険者が対象となります。',
+    options:['はい、実施予定がある','検討している','予定なし']},
+  {id:'minwage', text:'現在の従業員の賃金は、地域別最低賃金＋50円以内に該当する方はいますか？また、賃金引き上げを予定していますか？', type:'single', label:'最低賃金引き上げ',
+    note:'※ 地域別最低賃金＋50円以内の従業員への賃上げが要件です。対象従業員数により助成上限額が変わります。',
+    options:['はい、対象者がいて30円以上引き上げ予定','対象者がいて、いずれ引き上げたい','対象者がいない／予定なし']},
+  {id:'worklife', text:'育児・介護と仕事の両立支援に取り組んでいますか？', type:'single', label:'両立支援への取り組み',
+    options:['これから取り組みたい','はい、すでに取り組んでいる','特に予定なし']},
+  {id:'senior', text:'現在、60歳以上の従業員は在籍していますか？', type:'single', label:'60歳以上の従業員',
+    note:'※ 65歳超雇用推進助成金の対象要件に関わります。',
+    options:['はい、在籍している','今後採用・継続雇用を予定している','在籍していない・予定もない']},
+  {id:'past', text:'過去に申請・受給したことがある助成金を選んでください。', type:'multi', label:'過去の申請歴',
+    note:'※ 複数選択可。該当なしの場合は「なし」を選択してください。',
+    options:['キャリアアップ助成金','人材開発支援助成金','業務改善助成金','両立支援等助成金','65歳超雇用推進助成金','なし（申請・受給歴なし）']},
+  {id:'caution', text:'以下に該当する項目はありますか？', type:'multi', label:'要確認事項',
+    note:'※ 該当する場合、助成金の申請に影響する可能性があります。複数選択可。',
+    options:['過去1年以内に会社都合による解雇・雇い止めがある','労働保険（雇用保険・労災）に未加入','賃金の未払いがある','過去に助成金の不正受給がある','該当なし']}
+];
+
+function isSmall(a){ return a.employees !== '301人以上'; }
+
+const grants = [
+  {
+    id:'career', name:'キャリアアップ助成金',
+    desc:'非正規雇用労働者の正社員転換・処遇改善を支援する助成金です。',
+    getResult: a => {
+      const hasPast=(a.past||[]).includes('キャリアアップ助成金');
+      const amount=hasPast?'最大100万円（申請歴あり）':'最大120万円';
+      const note=hasPast?'過去に申請歴があるため加算額が変わります。詳細はご相談ください。':null;
+      if(a.parttime==='はい、予定している') return {rank:'high',amount,note};
+      if(a.parttime==='検討中') return {rank:'mid',amount,note};
+      return {rank:'ref',amount:'—',note};
+    }
+  },
+  {
+    id:'jinzai', name:'人材開発支援助成金',
+    desc:'雇用保険加入従業員への職業訓練・研修費用を補助する助成金です。',
+    getResult: a => {
+      const hasPast=(a.past||[]).includes('人材開発支援助成金');
+      const rate=isSmall(a)?'最大75%補助（中小企業）':'最大60%補助（大企業）';
+      const note=hasPast?'同年度内の支給申請が3回の場合、影響する可能性があります。詳細はご相談ください。':null;
+      if(a.training==='はい、実施予定がある') return {rank:'high',amount:rate,note};
+      if(a.training==='検討している') return {rank:'mid',amount:rate,note};
+      return {rank:'ref',amount:'—',note};
+    }
+  },
+  {
+    id:'gyomu', name:'業務改善助成金',
+    desc:'設備投資等により最低賃金を引き上げる中小企業を支援する助成金です。',
+    getResult: a => {
+      const hasPast=(a.past||[]).includes('業務改善助成金');
+      if(hasPast) return {rank:'ref',amount:'—',note:'同年度内の申請歴があるため、申請できない可能性があります。詳細はご相談ください。'};
+      if(a.minwage==='はい、対象者がいて30円以上引き上げ予定') return {rank:'high',amount:'最大600万円',note:'対象従業員数により助成上限額が変わります。詳細はご相談ください。'};
+      if(a.minwage==='対象者がいて、いずれ引き上げたい') return {rank:'mid',amount:'最大600万円',note:'対象従業員数により助成上限額が変わります。詳細はご相談ください。'};
+      return {rank:'ref',amount:'—',note:null};
+    }
+  },
+  {
+    id:'ryoritsu', name:'両立支援等助成金',
+    desc:'育児・介護と仕事の両立支援制度の導入・運用を支援する助成金です。',
+    getResult: a => {
+      const isLarge=a.employees==='301人以上';
+      const hasPast=(a.past||[]).includes('両立支援等助成金');
+      const n1=isLarge?'従業員301人以上の場合、一部コースの受給額・対象が異なる場合があります。詳細はご相談ください。':null;
+      const n2=hasPast?'年度内5人までの支給上限があります。詳細はご相談ください。':null;
+      const note=[n1,n2].filter(Boolean).join(' / ')||null;
+      const amount=isLarge?'要相談':'最大110万円';
+      if(a.worklife==='これから取り組みたい') return {rank:'high',amount,note};
+      if(a.worklife==='はい、すでに取り組んでいる') return {rank:'mid',amount,note};
+      return {rank:'ref',amount:'—',note};
+    }
+  },
+  {
+    id:'senior65', name:'65歳超雇用推進助成金',
+    desc:'定年延長・高齢者雇用推進計画の策定・実施を支援する助成金です。',
+    getResult: a => {
+      const isLarge=a.employees==='301人以上';
+      const hasPast=(a.past||[]).includes('65歳超雇用推進助成金');
+      const n1=isLarge?'大企業の場合、助成率が中小企業より低くなる場合があります。詳細はご相談ください。':null;
+      const n2=hasPast?'無期雇用転換コースは年度内10人が上限です。詳細はご相談ください。':null;
+      const note=[n1,n2].filter(Boolean).join(' / ')||null;
+      const amount=isLarge?'助成率45%（大企業）':'最大160万円（中小企業）';
+      if(a.senior==='はい、在籍している') return {rank:'high',amount,note};
+      if(a.senior==='今後採用・継続雇用を予定している') return {rank:'mid',amount,note};
+      return {rank:'ref',amount:'—',note};
+    }
+  }
+];
+
+const rankLabel={high:'優先度 高',mid:'優先度 中',ref:'優先度 参考'};
+const rankClass={high:'rank-high',mid:'rank-mid',ref:'rank-ref'};
+const badgeClass={high:'p-high',mid:'p-mid',ref:'p-ref'};
+
+let step=0,answers={},phase='quiz';
+
+function isAnswered(id,type){
+  if(type==='multi') return answers[id]&&answers[id].length>0;
+  return !!answers[id];
+}
+
+function render(){
+  const main=document.getElementById('main');
+  if(phase==='quiz') renderQuiz(main);
+  else if(phase==='result') renderResult(main);
+  else if(phase==='form') renderForm(main);
+  else if(phase==='done') renderDone(main);
+}
+
+function renderQuiz(main){
+  const q=questions[step];
+  const pct=Math.round((step/questions.length)*100);
+  main.innerHTML=`
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="step-label">質問 ${step+1} / ${questions.length}</div>
+    <div class="question-card">
+      <div class="question-text">${q.text}</div>
+      ${q.note?`<div class="question-note">${q.note}</div>`:''}
+      ${q.type==='multi'?'<div class="multi-note">複数選択できます</div>':''}
+      <div class="options" id="opts"></div>
+    </div>
+    <div class="nav">
+      <button class="btn" onclick="goBack()" ${step===0?'disabled':''}>← 戻る</button>
+      <button class="btn primary" id="nextBtn" onclick="goNext()" ${isAnswered(q.id,q.type)?'':'disabled'}>
+        ${step===questions.length-1?'診断する':'次へ →'}
+      </button>
+    </div>`;
+  const opts=document.getElementById('opts');
+  if(q.type==='multi'){
+    if(!answers[q.id]) answers[q.id]=[];
+    const noneOpt=q.id==='caution'?'該当なし':'なし（申請・受給歴なし）';
+    q.options.forEach(opt=>{
+      const isNone=opt===noneOpt;
+      const sel=answers[q.id].includes(opt);
+      const btn=document.createElement('button');
+      btn.className='option-btn'+(sel?' selected':'');
+      btn.innerHTML=`<span class="chk"></span>${opt}`;
+      btn.onclick=()=>{
+        if(isNone){answers[q.id]=sel?[]:[opt];}
+        else{
+          answers[q.id]=answers[q.id].filter(x=>x!==noneOpt);
+          if(answers[q.id].includes(opt)) answers[q.id]=answers[q.id].filter(x=>x!==opt);
+          else answers[q.id].push(opt);
+        }
+        renderQuiz(main);
+      };
+      opts.appendChild(btn);
+    });
+  } else {
+    q.options.forEach(opt=>{
+      const btn=document.createElement('button');
+      btn.className='option-btn'+(answers[q.id]===opt?' selected':'');
+      btn.textContent=opt;
+      btn.onclick=()=>{
+        answers[q.id]=opt;
+        document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));
+        btn.classList.add('selected');
+        document.getElementById('nextBtn').disabled=false;
+      };
+      opts.appendChild(btn);
+    });
+  }
+}
+
+function goNext(){
+  if(!isAnswered(questions[step].id,questions[step].type)) return;
+  if(step<questions.length-1){step++;render();}
+  else{phase='result';render();}
+}
+function goBack(){if(step>0){step--;render();}}
+
+function getResults(){
+  return grants.map(g=>({...g,result:g.getResult(answers)}));
+}
+
+function getCautionItems(){
+  return (answers.caution||[]).filter(x=>x!=='該当なし');
+}
+
+function buildResultText(){
+  const results=getResults();
+  const cautions=getCautionItems();
+  const sorted=[...results].sort((a,b)=>({high:0,mid:1,ref:2}[a.result.rank]-{high:0,mid:1,ref:2}[b.result.rank]));
+
+  let t='【回答内容】\n';
+  questions.forEach(q=>{
+    if(q.type==='multi'){
+      const val=(answers[q.id]||[]);
+      t+=`・${q.label}：${val.length>0?val.join('、'):'未回答'}\n`;
+    } else {
+      t+=`・${q.label}：${answers[q.id]||'未回答'}\n`;
+    }
+  });
+
+  t+='\n【診断結果】\n';
+  sorted.forEach(g=>{
+    t+=`\n${rankLabel[g.result.rank]}：${g.name}`;
+    if(g.result.amount&&g.result.amount!=='—') t+=`（${g.result.amount}）`;
+    if(g.result.note) t+=`\n　※${g.result.note}`;
+  });
+
+  const past=answers.past||[];
+  t+=`\n\n【過去の申請歴】${past.length>0?past.join('、'):'なし'}`;
+  if(cautions.length>0) t+=`\n\n【要確認事項】\n${cautions.map(c=>`・${c}`).join('\n')}`;
+  return t;
+}
+
+function renderResult(main){
+  const results=getResults();
+  const past=answers.past||[];
+  const sorted=[...results].sort((a,b)=>({high:0,mid:1,ref:2}[a.result.rank]-{high:0,mid:1,ref:2}[b.result.rank]));
+  const cardsHTML=sorted.map(g=>`
+    <div class="grant-card ${rankClass[g.result.rank]}">
+      <span class="badge ${badgeClass[g.result.rank]}">${rankLabel[g.result.rank]}</span>
+      <div class="grant-name">${g.name}</div>
+      ${g.result.amount&&g.result.amount!=='—'?`<div class="grant-amount">${g.result.amount}</div>`:''}
+      <div class="grant-desc">${g.desc}</div>
+      ${g.result.note?`<div class="grant-note">※ ${g.result.note}</div>`:''}
+    </div>`).join('');
+  main.innerHTML=`
+    <div class="result-header">
+      <div class="result-title">診断結果</div>
+      <div class="result-sub">回答内容をもとに適した助成金を表示しています</div>
+    </div>
+    ${cardsHTML}
+    <div class="past-box">
+      <p style="font-size:12px;color:#666;margin-bottom:4px">過去の申請歴</p>
+      <p style="font-size:14px">${past.length>0?past.join('、'):'なし'}</p>
+    </div>
+    <div class="section-title">詳しい情報をネクストシーズンに送信する</div>
+    <button class="send-btn" onclick="phase='form';render()">企業情報を入力して送信する →</button>
+    <button class="restart-btn" onclick="restart()">最初からやり直す</button>`;
+}
+
+function renderForm(main){
+  main.innerHTML=`
+    <div class="step-label" style="margin-bottom:1rem">企業情報の入力</div>
+    <div class="info-form">
+      <div class="field"><label>会社名（法人の場合、法人格も記載） *</label><input id="f_company" type="text" placeholder="株式会社〇〇"></div>
+      <div class="field"><label>担当者名 *</label><input id="f_person" type="text" placeholder="山田 太郎"></div>
+      <div class="field"><label>登記住所</label><input id="f_address" type="text" placeholder="大阪府大阪市〇〇区..."></div>
+      <div class="field"><label>電話番号 *</label><input id="f_phone" type="tel" placeholder="06-1234-5678"></div>
+      <div class="field"><label>メールアドレス *</label><input id="f_email" type="email" placeholder="info@example.com"></div>
+    </div>
+    <div class="section-title" style="margin-top:0">送信される内容</div>
+    <div class="result-preview">${buildResultText()}</div>
+    <button class="send-btn" id="submitBtn" onclick="submitForm()" style="margin-top:1rem">ネクストシーズンに送信する</button>
+    <div class="status-msg" id="statusMsg"></div>
+    <button class="restart-btn" onclick="phase='result';render()">← 診断結果に戻る</button>`;
+}
+
+function submitForm(){
+  const company=document.getElementById('f_company').value.trim();
+  const person=document.getElementById('f_person').value.trim();
+  const address=document.getElementById('f_address').value.trim();
+  const phone=document.getElementById('f_phone').value.trim();
+  const email=document.getElementById('f_email').value.trim();
+  if(!company||!person||!phone||!email){
+    document.getElementById('statusMsg').textContent='※ 必須項目（会社名・担当者名・電話番号・メールアドレス）を入力してください';
+    return;
+  }
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.textContent='送信中...';
+  document.getElementById('statusMsg').textContent='';
+  const params=new URLSearchParams();
+  params.append(ENTRIES.company,company);
+  params.append(ENTRIES.person,person);
+  params.append(ENTRIES.address,address);
+  params.append(ENTRIES.phone,phone);
+  params.append(ENTRIES.email,email);
+  params.append(ENTRIES.result,buildResultText());
+  fetch(`https://docs.google.com/forms/d/${FORM_ID}/formResponse`,{
+    method:'POST',mode:'no-cors',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:params.toString()
+  }).then(()=>{phase='done';render();})
+  .catch(()=>{
+    btn.disabled=false;btn.textContent='ネクストシーズンに送信する';
+    document.getElementById('statusMsg').textContent='送信に失敗しました。通信環境を確認してください。';
+  });
+}
+
+function renderDone(main){
+  main.innerHTML=`
+    <div class="success-msg">
+      <p style="font-size:22px;margin-bottom:0.75rem">✓</p>
+      <p style="font-size:18px;font-weight:500;margin-bottom:0.75rem;color:#085041">送信が完了しました</p>
+      <p style="color:#085041;font-size:14px;line-height:1.8">診断結果と企業情報をネクストシーズンに送信しました。<br>担当者より改めてご連絡いたします。</p>
+    </div>
+    <button class="restart-btn" onclick="restart()">最初からやり直す</button>`;
+}
+
+function restart(){step=0;answers={};phase='quiz';render();}
+render();
+</script>
+</body>
+</html>
