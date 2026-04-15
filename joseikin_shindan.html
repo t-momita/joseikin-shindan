@@ -89,19 +89,19 @@ const questions = [
     options:['製造業','小売・サービス業','医療・福祉','建設業','IT・情報通信','その他']},
   {id:'employees', text:'従業員数を教えてください。', type:'single', label:'従業員数',
     options:['5人以下','6〜20人','21〜100人','101〜300人','301人以上']},
-  {id:'parttime', text:'非正規雇用（パート・アルバイト・契約社員）を正社員に転換する予定がありますか？', type:'single', label:'非正規→正社員転換',
-    options:['はい、予定している','検討中','いいえ']},
+  {id:'parttime', text:'今後、社員（契約期間有り）を採用する予定はありますか？または、現在パート・アルバイト・契約社員として働いている方を正社員にする予定はありますか？', type:'single', label:'正社員採用・登用予定',
+    options:['予定している','検討中','いいえ']},
   {id:'training', text:'1ヶ月以上先に、雇用保険に加入している従業員への職業訓練・研修の実施を予定または検討していますか？', type:'single', label:'職業訓練・研修',
     note:'※ 雇用保険の被保険者が対象となります。',
-    options:['はい、実施予定がある','検討している','予定なし']},
+    options:['実施予定がある','検討している','予定なし']},
   {id:'minwage', text:'現在の従業員の賃金は、地域別最低賃金＋50円以内に該当する方はいますか？また、賃金引き上げを予定していますか？', type:'single', label:'最低賃金引き上げ',
     note:'※ 地域別最低賃金＋50円以内の従業員への賃上げが要件です。対象従業員数により助成上限額が変わります。',
-    options:['はい、対象者がいて30円以上引き上げ予定','対象者がいて、いずれ引き上げたい','対象者がいない／予定なし']},
-  {id:'worklife', text:'育児・介護と仕事の両立支援に取り組んでいますか？', type:'single', label:'両立支援への取り組み',
-    options:['これから取り組みたい','はい、すでに取り組んでいる','特に予定なし']},
+    options:['対象者がいて賃金引き上げを予定している','対象者がいて、いずれ引き上げたい','対象者がいない／予定なし']},
+  {id:'worklife', text:'雇用保険加入の従業員（男女問わず）で出産予定のある、またはご家族の介護（要介護2以上）で介護休暇を取得している従業員はいますか？もしくは今後そのような従業員が出る見込みはありますか？', type:'single', label:'両立支援への取り組み',
+    options:['該当する従業員がいる・見込みがある','すでに育児・介護休暇を取得している従業員がいる','現時点では該当する従業員はいない']},
   {id:'senior', text:'現在、60歳以上の従業員は在籍していますか？', type:'single', label:'60歳以上の従業員',
     note:'※ 65歳超雇用推進助成金の対象要件に関わります。',
-    options:['はい、在籍している','今後採用・継続雇用を予定している','在籍していない・予定もない']},
+    options:['在籍している','今後採用・継続雇用を予定している','在籍していない・予定もない']},
   {id:'past', text:'過去に申請・受給したことがある助成金を選んでください。', type:'multi', label:'過去の申請歴',
     note:'※ 複数選択可。該当なしの場合は「なし」を選択してください。',
     options:['キャリアアップ助成金','人材開発支援助成金','業務改善助成金','両立支援等助成金','65歳超雇用推進助成金','なし（申請・受給歴なし）']},
@@ -120,7 +120,7 @@ const grants = [
       const hasPast=(a.past||[]).includes('キャリアアップ助成金');
       const amount=hasPast?'最大100万円（申請歴あり）':'最大120万円';
       const note=hasPast?'過去に申請歴があるため加算額が変わります。詳細はご相談ください。':null;
-      if(a.parttime==='はい、予定している') return {rank:'high',amount,note};
+      if(a.parttime==='予定している') return {rank:'high',amount,note};
       if(a.parttime==='検討中') return {rank:'mid',amount,note};
       return {rank:'ref',amount:'—',note};
     }
@@ -132,7 +132,7 @@ const grants = [
       const hasPast=(a.past||[]).includes('人材開発支援助成金');
       const rate=isSmall(a)?'最大75%補助（中小企業）':'最大60%補助（大企業）';
       const note=hasPast?'同年度内の支給申請が3回の場合、影響する可能性があります。詳細はご相談ください。':null;
-      if(a.training==='はい、実施予定がある') return {rank:'high',amount:rate,note};
+      if(a.training==='実施予定がある') return {rank:'high',amount:rate,note};
       if(a.training==='検討している') return {rank:'mid',amount:rate,note};
       return {rank:'ref',amount:'—',note};
     }
@@ -143,8 +143,9 @@ const grants = [
     getResult: a => {
       const hasPast=(a.past||[]).includes('業務改善助成金');
       if(hasPast) return {rank:'ref',amount:'—',note:'同年度内の申請歴があるため、申請できない可能性があります。詳細はご相談ください。'};
-      if(a.minwage==='はい、対象者がいて30円以上引き上げ予定') return {rank:'high',amount:'最大600万円',note:'対象従業員数により助成上限額が変わります。詳細はご相談ください。'};
-      if(a.minwage==='対象者がいて、いずれ引き上げたい') return {rank:'mid',amount:'最大600万円',note:'対象従業員数により助成上限額が変わります。詳細はご相談ください。'};
+      const amount=a.employees==='5人以下'?'最大270万円':'最大600万円';
+      if(a.minwage==='対象者がいて賃金引き上げを予定している') return {rank:'high',amount,note:null};
+      if(a.minwage==='対象者がいて、いずれ引き上げたい') return {rank:'mid',amount,note:null};
       return {rank:'ref',amount:'—',note:null};
     }
   },
@@ -158,8 +159,8 @@ const grants = [
       const n2=hasPast?'年度内5人までの支給上限があります。詳細はご相談ください。':null;
       const note=[n1,n2].filter(Boolean).join(' / ')||null;
       const amount=isLarge?'要相談':'最大110万円';
-      if(a.worklife==='これから取り組みたい') return {rank:'high',amount,note};
-      if(a.worklife==='はい、すでに取り組んでいる') return {rank:'mid',amount,note};
+      if(a.worklife==='該当する従業員がいる・見込みがある') return {rank:'high',amount,note};
+      if(a.worklife==='すでに育児・介護休暇を取得している従業員がいる') return {rank:'mid',amount,note};
       return {rank:'ref',amount:'—',note};
     }
   },
@@ -173,7 +174,7 @@ const grants = [
       const n2=hasPast?'無期雇用転換コースは年度内10人が上限です。詳細はご相談ください。':null;
       const note=[n1,n2].filter(Boolean).join(' / ')||null;
       const amount=isLarge?'助成率45%（大企業）':'最大160万円（中小企業）';
-      if(a.senior==='はい、在籍している') return {rank:'high',amount,note};
+      if(a.senior==='在籍している') return {rank:'high',amount,note};
       if(a.senior==='今後採用・継続雇用を予定している') return {rank:'mid',amount,note};
       return {rank:'ref',amount:'—',note};
     }
@@ -297,10 +298,36 @@ function buildResultText(){
   return t;
 }
 
+// 助成金IDごとの最大金額（万円）※人材開発支援は%表示のため除外
+const grantMaxAmount={
+  career: a => (a.past||[]).includes('キャリアアップ助成金') ? 100 : 120,
+  gyomu:  a => a.employees==='5人以下' ? 270 : 600,
+  ryoritsu: a => a.employees==='301人以上' ? 0 : 110,
+  senior65: a => a.employees==='301人以上' ? 0 : 160,
+  jinzai: a => 0  // %表示のため合計から除外
+};
+
+function calcTotal(results){
+  const highMid=results.filter(g=>g.result.rank==='high'||g.result.rank==='mid');
+  let total=0;
+  let hasJinzai=false;
+  let hasLargeCompany=false;
+  highMid.forEach(g=>{
+    if(g.id==='jinzai'){hasJinzai=true;return;}
+    if(g.id==='ryoritsu'&&answers.employees==='301人以上'){hasLargeCompany=true;return;}
+    if(g.id==='senior65'&&answers.employees==='301人以上'){hasLargeCompany=true;return;}
+    const fn=grantMaxAmount[g.id];
+    if(fn) total+=fn(answers);
+  });
+  return {total, hasJinzai, hasLargeCompany};
+}
+
 function renderResult(main){
   const results=getResults();
   const past=answers.past||[];
   const sorted=[...results].sort((a,b)=>({high:0,mid:1,ref:2}[a.result.rank]-{high:0,mid:1,ref:2}[b.result.rank]));
+  const {total, hasJinzai, hasLargeCompany}=calcTotal(results);
+
   const cardsHTML=sorted.map(g=>`
     <div class="grant-card ${rankClass[g.result.rank]}">
       <span class="badge ${badgeClass[g.result.rank]}">${rankLabel[g.result.rank]}</span>
@@ -309,11 +336,28 @@ function renderResult(main){
       <div class="grant-desc">${g.desc}</div>
       ${g.result.note?`<div class="grant-note">※ ${g.result.note}</div>`:''}
     </div>`).join('');
+
+  // 合計金額ボックス
+  const highMidCount=results.filter(g=>g.result.rank==='high'||g.result.rank==='mid').length;
+  let totalHTML='';
+  if(highMidCount>0){
+    const notes=[];
+    if(hasJinzai) notes.push('※ 人材開発支援助成金は研修費用の補助率による（別途）');
+    if(hasLargeCompany) notes.push('※ 大企業対象の助成金は助成率による（別途）');
+    totalHTML=`
+      <div style="background:#EEEDFE;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem;text-align:center">
+        <p style="font-size:12px;color:#534AB7;margin-bottom:6px">最大受給可能額（優先度 高・中の合計）</p>
+        <p style="font-size:28px;font-weight:500;color:#3C3489">約 ${total.toLocaleString()} 万円</p>
+        ${notes.map(n=>`<p style="font-size:11px;color:#7F77DD;margin-top:4px">${n}</p>`).join('')}
+      </div>`;
+  }
+
   main.innerHTML=`
     <div class="result-header">
       <div class="result-title">診断結果</div>
       <div class="result-sub">回答内容をもとに適した助成金を表示しています</div>
     </div>
+    ${totalHTML}
     ${cardsHTML}
     <div class="past-box">
       <p style="font-size:12px;color:#666;margin-bottom:4px">過去の申請歴</p>
