@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>助成金かんたん診断</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+    background: #f5f4f0;
+    color: #1a1a1a;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 520px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .logo { font-size: 12px; color: #888; letter-spacing: 0.05em; margin-bottom: 1.5rem; }
+  h1 { font-size: 20px; font-weight: 600; margin-bottom: 0.4rem; }
+  .subtitle { font-size: 14px; color: #666; margin-bottom: 2rem; }
+  .question { font-size: 15px; font-weight: 500; margin-bottom: 1rem; }
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem; }
+  .option {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px; border: 1.5px solid #ddd; border-radius: 10px;
+    cursor: pointer; font-size: 14px; background: #fff;
+    transition: all 0.15s; text-align: left; font-family: inherit; width: 100%; color: #1a1a1a;
+  }
+  .option:hover { border-color: #7F77DD; background: #faf9ff; }
+  .option.selected { border-color: #534AB7; background: #EEEDFE; color: #3C3489; }
+  .option-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: #eee; font-size: 12px; font-weight: 600; flex-shrink: 0;
+  }
+  .option.selected .option-num { background: #534AB7; color: #fff; }
+  .result { display: none; margin-top: 1.5rem; border-top: 1px solid #eee; padding-top: 1.5rem; }
+  .result.show { display: block; }
+  .result-title { font-size: 13px; font-weight: 500; color: #666; margin-bottom: 1rem; }
+  .grant-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; border-radius: 10px; margin-bottom: 10px; border: 1px solid transparent;
+  }
+  .grant-name { font-size: 14px; font-weight: 500; }
+  .badge { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; flex-shrink: 0; }
+  .match { background: #E8F5E9; border-color: #A5D6A7; }
+  .match .badge { background: #2E7D32; color: #fff; }
+  .check { background: #FFF8E1; border-color: #FFE082; }
+  .check .badge { background: #F57F17; color: #fff; }
+  .note { font-size: 12px; color: #888; margin-top: 1rem; line-height: 1.7; padding: 10px 12px; background: #f5f4f0; border-radius: 8px; }
+  .reset-btn {
+    margin-top: 1.25rem; width: 100%; padding: 11px;
+    border: 1.5px solid #ddd; border-radius: 10px; background: #fff;
+    font-size: 14px; color: #555; cursor: pointer; font-family: inherit;
+  }
+  .reset-btn:hover { background: #f5f4f0; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">助成金かんたん診断</div>
+  <h1>貴社に使える助成金を<br>チェックしましょう</h1>
+  <p class="subtitle">1問に答えるだけで、該当する助成金がわかります。</p>
+  <p class="question">Q. 従業員数を教えてください</p>
+  <div class="options">
+    <button class="option" data-value="small" onclick="select(this)">
+      <span class="option-num">①</span>1〜20人
+    </button>
+    <button class="option" data-value="medium" onclick="select(this)">
+      <span class="option-num">②</span>21〜100人
+    </button>
+    <button class="option" data-value="large" onclick="select(this)">
+      <span class="option-num">③</span>101人以上
+    </button>
+  </div>
+  <div class="result" id="result">
+    <p class="result-title">診断結果</p>
+    <div class="grant-row" id="career-row">
+      <span class="grant-name">キャリアアップ助成金</span>
+      <span class="badge" id="career-badge"></span>
+    </div>
+    <div class="grant-row" id="jinzai-row">
+      <span class="grant-name">人材開発支援助成金</span>
+      <span class="badge" id="jinzai-badge"></span>
+    </div>
+    <p class="note" id="result-note"></p>
+    <button class="reset-btn" onclick="reset()">やり直す</button>
+  </div>
+</div>
+<script>
+  const RESULTS = {
+    small:  { career:'match', jinzai:'match', note:'1〜20人の中小企業は、両助成金の対象となる可能性が高いです。\n詳細な要件は各助成金の公式ページをご確認ください。' },
+    medium: { career:'match', jinzai:'match', note:'21〜100人の中小企業は、両助成金の対象となる可能性が高いです。\n詳細な要件は各助成金の公式ページをご確認ください。' },
+    large:  { career:'check', jinzai:'check', note:'101人以上の企業は、中小企業向けの優遇措置が一部適用されない場合があります。\n要件や助成率を専門家にご確認されることをおすすめします。' }
+  };
+  const LABELS = { match:'該当', check:'要確認' };
+  function select(btn) {
+    document.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    const r = RESULTS[btn.dataset.value];
+    const cr = document.getElementById('career-row');
+    cr.className = 'grant-row ' + r.career;
+    document.getElementById('career-badge').textContent = LABELS[r.career];
+    const jr = document.getElementById('jinzai-row');
+    jr.className = 'grant-row ' + r.jinzai;
+    document.getElementById('jinzai-badge').textContent = LABELS[r.jinzai];
+    document.getElementById('result-note').textContent = r.note;
+    document.getElementById('result').classList.add('show');
+  }
+  function reset() {
+    document.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
+    document.getElementById('result').classList.remove('show');
+  }
+</script>
+</body>
+</html>
