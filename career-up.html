@@ -98,16 +98,47 @@
       </div>
 
       <div class="sub-section" style="margin-top:1rem">
-        <div class="sub-section-title">就業規則・賃金規定の有無</div>
+        <div class="sub-section-title">企業必要書類について</div>
 
-        <div class="field">
+        <!-- 1. 履歴事項全部証明書 -->
+        <div class="file-item" style="margin-bottom:0.75rem">
+          <label>履歴事項全部証明書<span class="req">*必須</span></label>
+          <div class="file-area" onclick="triggerFile('f-registry-company')">
+            <input type="file" id="f-registry-company" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-registry-company')">
+            <span class="icon">📄</span>
+            <div class="file-meta">
+              <div class="placeholder">クリックしてファイルを選択</div>
+              <div class="fname"></div><div class="fsize"></div>
+            </div>
+            <button class="sel-btn" type="button">選択</button>
+          </div>
+          <div class="hint">法務局で取得した会社の登記簿謄本（現在の登記内容が反映されているものでしたら取得時期は問いません。）</div>
+        </div>
+
+        <!-- 2. 雇用保険適用事業所設置届 -->
+        <div class="file-item" style="margin-bottom:0.75rem">
+          <label>雇用保険適用事業所設置届<span class="req">*必須</span></label>
+          <div class="file-area" onclick="triggerFile('f-emp-office-company')">
+            <input type="file" id="f-emp-office-company" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-emp-office-company')">
+            <span class="icon">📄</span>
+            <div class="file-meta">
+              <div class="placeholder">クリックしてファイルを選択</div>
+              <div class="fname"></div><div class="fsize"></div>
+            </div>
+            <button class="sel-btn" type="button">選択</button>
+          </div>
+          <div class="hint">ハローワークから交付された届出の控え</div>
+        </div>
+
+        <!-- 3. 就業規則 -->
+        <div class="field" style="margin-bottom:0.75rem">
           <label>就業規則<span class="req">*必須</span></label>
           <div style="display:flex;gap:16px;margin-top:4px">
             <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
               <input type="radio" name="has-rules" value="あり" onchange="toggleDocUpload('rules','あり')"> あり
             </label>
             <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
-              <input type="radio" name="has-rules" value="なし" onchange="toggleDocUpload('rules','なし')"> なし（作成予定）
+              <input type="radio" name="has-rules" value="なし" onchange="toggleDocUpload('rules','なし')"> なし
             </label>
           </div>
           <div id="rules-upload-area" style="display:none;margin-top:10px">
@@ -123,14 +154,15 @@
           </div>
         </div>
 
-        <div class="field" style="margin-top:0.75rem;margin-bottom:0">
+        <!-- 4. 賃金規定 -->
+        <div class="field" style="margin-bottom:0.75rem">
           <label>賃金規定<span class="req">*必須</span></label>
           <div style="display:flex;gap:16px;margin-top:4px">
             <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
               <input type="radio" name="has-wage-rules" value="あり" onchange="toggleDocUpload('wage-rules','あり')"> あり
             </label>
             <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
-              <input type="radio" name="has-wage-rules" value="なし" onchange="toggleDocUpload('wage-rules','なし')"> なし（作成予定）
+              <input type="radio" name="has-wage-rules" value="なし" onchange="toggleDocUpload('wage-rules','なし')"> なし
             </label>
           </div>
           <div id="wage-rules-upload-area" style="display:none;margin-top:10px">
@@ -145,6 +177,31 @@
             </div>
           </div>
         </div>
+
+        <!-- 5. キャリアアップ計画書 -->
+        <div class="field" style="margin-bottom:0">
+          <label>キャリアアップ計画書<span class="req">*必須</span></label>
+          <div style="display:flex;gap:16px;margin-top:4px">
+            <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
+              <input type="radio" name="has-career-plan" value="あり" onchange="toggleDocUpload('career-plan','あり')"> あり（PDF添付）
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
+              <input type="radio" name="has-career-plan" value="なし" onchange="toggleDocUpload('career-plan','なし')"> なし
+            </label>
+          </div>
+          <div id="career-plan-upload-area" style="display:none;margin-top:10px">
+            <div class="file-area" onclick="triggerFile('f-career-plan-doc')">
+              <input type="file" id="f-career-plan-doc" accept=".pdf,.PDF" onchange="handleFile(this,'fi-career-plan-doc')">
+              <span class="icon">📄</span>
+              <div class="file-meta">
+                <div class="placeholder">クリックしてPDFを選択</div>
+                <div class="fname"></div><div class="fsize"></div>
+              </div>
+              <button class="sel-btn" type="button">選択</button>
+            </div>
+            <div class="hint">様式1号（ハローワーク受付印のあるもの）</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -153,11 +210,11 @@
       <div class="section-title">01 担当者情報</div>
 
       <div class="sub-section">
-        <div class="sub-section-title">職業能力開発推進者</div>
+        <div class="sub-section-title">職業能力開発推進者（役員・管理監督者除く）</div>
         <div class="row">
           <div class="field" id="f-dev-position">
             <label>役職<span class="req">*必須</span></label>
-            <input type="text" id="dev-position" placeholder="例：人事部長">
+            <input type="text" id="dev-position" placeholder="例：総務課長">
             <div class="error-msg">役職を入力してください</div>
           </div>
           <div class="field" id="f-dev-name">
@@ -174,7 +231,6 @@
           <label>氏名<span class="req">*必須</span></label>
           <input type="text" id="worker-rep" placeholder="例：田中 一郎">
           <div class="error-msg">氏名を入力してください</div>
-          <div class="hint">就業規則や計画書に署名する労働者代表のお名前</div>
         </div>
       </div>
 
@@ -209,121 +265,24 @@
 
     <!-- 従業員 -->
     <div class="section">
-      <div class="section-title">02 正社員に転換した従業員</div>
-      <div class="emp-list" id="emp-list"></div>
-      <button class="add-emp-btn" type="button" onclick="addEmployee()">＋ 従業員を追加する</button>
-    </div>
+      <div class="section-title">02 対象従業員</div>
 
-    <!-- 添付書類 -->
-    <div class="section">
-      <div class="section-title">03 添付書類（PDF）</div>
-      <div class="file-list">
-
-        <div style="font-size:12px;font-weight:600;color:#534AB7;margin-bottom:4px;">必須書類</div>
-
-        <div class="file-item" id="fi-registry">
-          <label>履歴事項全部証明書<span class="req">*必須</span></label>
-          <div class="file-area" onclick="triggerFile('f-registry')">
-            <input type="file" id="f-registry" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-registry')">
-            <span class="icon">📄</span>
-            <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
-            <button class="sel-btn" type="button">選択</button>
-          </div>
-          <div class="hint">法務局で取得した会社の登記簿謄本（発行から3ヶ月以内）</div>
+      <div class="field" style="margin-bottom:1.25rem">
+        <label>申請する従業員は何人ですか？<span class="req">*必須</span></label>
+        <div style="display:flex;align-items:center;gap:12px">
+          <input type="number" id="emp-count-input" min="1" max="20" placeholder="例：2"
+            style="width:120px"
+            onchange="generateEmployees(this.value)"
+            oninput="generateEmployees(this.value)">
+          <span style="font-size:13px;color:#888">人</span>
         </div>
-
-        <div class="file-item" id="fi-emp-office">
-          <label>雇用保険適用事業所設置届<span class="req">*必須</span></label>
-          <div class="file-area" onclick="triggerFile('f-emp-office')">
-            <input type="file" id="f-emp-office" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-emp-office')">
-            <span class="icon">📄</span>
-            <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
-            <button class="sel-btn" type="button">選択</button>
-          </div>
-          <div class="hint">ハローワークから交付された届出の控え</div>
-        </div>
-
-        <div class="file-item" id="fi-emp-loss">
-          <label>雇用保険被保険者資格喪失届<span class="req">*必須</span></label>
-          <div class="file-area" onclick="triggerFile('f-emp-loss')">
-            <input type="file" id="f-emp-loss" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-emp-loss')">
-            <span class="icon">📄</span>
-            <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
-            <button class="sel-btn" type="button">選択</button>
-          </div>
-          <div class="hint">転換前の雇用形態が確認できる書類</div>
-        </div>
-
-        <div class="file-item" id="fi-contract-before">
-          <label>転換前の雇用契約書（労働条件通知書）<span class="req">*必須</span></label>
-          <div class="file-area" onclick="triggerFile('f-contract-before')">
-            <input type="file" id="f-contract-before" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-contract-before')">
-            <span class="icon">📄</span>
-            <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
-            <button class="sel-btn" type="button">選択</button>
-          </div>
-          <div class="hint">パート・契約社員として採用された時の契約書</div>
-        </div>
-
-        <div style="font-size:12px;font-weight:600;color:#888;margin:8px 0 4px;">任意書類（あればご提出ください）</div>
-
-        <div class="file-item" id="fi-wage">
-          <label>賃金台帳<span class="opt">任意</span></label>
-          <div class="file-area" onclick="triggerFile('f-wage')">
-            <input type="file" id="f-wage" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-wage')">
-            <span class="icon">📄</span>
-            <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
-            <button class="sel-btn" type="button">選択</button>
-          </div>
-          <div class="hint">転換前後の直近6ヶ月分</div>
-        </div>
-
-        <div class="file-item" id="fi-timesheet">
-          <label>出勤簿・タイムカード<span class="opt">任意</span></label>
-          <div class="file-area" onclick="triggerFile('f-timesheet')">
-            <input type="file" id="f-timesheet" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-timesheet')">
-            <span class="icon">📄</span>
-            <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
-            <button class="sel-btn" type="button">選択</button>
-          </div>
-          <div class="hint">転換前後の直近6ヶ月分</div>
-        </div>
-
-        <div class="file-item" id="fi-rules">
-          <label>就業規則<span class="opt">任意</span></label>
-          <div class="file-area" onclick="triggerFile('f-rules')">
-            <input type="file" id="f-rules" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-rules')">
-            <span class="icon">📄</span>
-            <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
-            <button class="sel-btn" type="button">選択</button>
-          </div>
-          <div class="hint">正社員への転換規定が含まれるもの（受付印あり）</div>
-        </div>
-
-        <div class="file-item" id="fi-plan">
-          <label>キャリアアップ計画書<span class="opt">任意</span></label>
-          <div class="file-area" onclick="triggerFile('f-plan')">
-            <input type="file" id="f-plan" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-plan')">
-            <span class="icon">📄</span>
-            <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
-            <button class="sel-btn" type="button">選択</button>
-          </div>
-          <div class="hint">様式1号（ハローワーク受付印のあるもの）</div>
-        </div>
-
-        <div class="file-item" id="fi-contract-after">
-          <label>転換後の雇用契約書<span class="opt">任意</span></label>
-          <div class="file-area" onclick="triggerFile('f-contract-after')">
-            <input type="file" id="f-contract-after" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-contract-after')">
-            <span class="icon">📄</span>
-            <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
-            <button class="sel-btn" type="button">選択</button>
-          </div>
-          <div class="hint">正社員になった後の契約書または辞令</div>
-        </div>
-
+        <div class="hint">人数を入力すると従業員カードと書類添付欄が自動で表示されます</div>
       </div>
+
+      <div class="emp-list" id="emp-list"></div>
     </div>
+
+
 
     <div class="submit-area">
       <button class="submit-btn" id="submit-btn" onclick="submitForm()">送信する</button>
@@ -346,7 +305,6 @@
   const GAS_URL = 'https://script.google.com/macros/s/AKfycbz1xL3gfrpF0wBdn3u6gV24SpLufhiKeNG_l2ADafDlryJ7mQ2bk86s6Jq3pIfqcEtHZw/exec';
 
   let empCount = 0;
-  const EMP_TYPES = ['有期契約社員（期間の定めあり）','パート・アルバイト（期間の定めあり）','派遣社員','その他有期雇用'];
   const fileStore = {};
 
   function addEmployee() {
@@ -366,7 +324,7 @@
           <input type="text" id="emp-name-${n}" placeholder="例：山田 次郎">
         </div>
         <div class="field">
-          <label>転換前の働き方<span class="req">*必須</span></label>
+          <label>現在の雇用形態<span class="req">*必須</span></label>
           <select id="emp-type-${n}">
             <option value="">選択してください</option>
             ${EMP_TYPES.map(t => `<option value="${t}">${t}</option>`).join('')}
@@ -400,6 +358,118 @@
     document.getElementById('emp-list').appendChild(card);
   }
 
+  const EMP_TYPES = ['有期契約社員（期間の定めあり）','パート・アルバイト（期間の定めあり）','派遣社員','その他有期雇用'];
+
+  function generateEmployees(val) {
+    const count = parseInt(val);
+    const list = document.getElementById('emp-list');
+    list.innerHTML = '';
+    if (!count || count < 1) return;
+    for (let n = 1; n <= count; n++) {
+      const card = document.createElement('div');
+      card.className = 'emp-card';
+      card.id = 'emp-' + n;
+      card.innerHTML = `
+        <div class="emp-card-header">
+          <span class="emp-num">従業員 ${n}人目</span>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>氏名<span class="req">*必須</span></label>
+            <input type="text" id="emp-name-${n}" placeholder="例：山田 次郎">
+          </div>
+          <div class="field">
+            <label>現在の雇用形態<span class="req">*必須</span></label>
+            <select id="emp-type-${n}">
+              <option value="">選択してください</option>
+              ${EMP_TYPES.map(t => '<option value="' + t + '">' + t + '</option>').join('')}
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>その働き方で働き始めた日<span class="req">*必須</span></label>
+            <input type="date" id="emp-hire-${n}">
+            <div class="hint">有期雇用・パートとして採用された日</div>
+          </div>
+          <div class="field" id="f-emp-conv-${n}">
+            <label>正社員転換予定日<span class="opt">任意</span></label>
+            <input type="date" id="emp-conv-${n}">
+            <label class="na-check">
+              <input type="checkbox" id="emp-conv-na-${n}" onchange="toggleNA(this,'emp-conv-${n}','f-emp-conv-${n}')">
+              該当なし
+            </label>
+          </div>
+        </div>
+        <div class="field" id="f-emp-wage-${n}">
+          <label>正社員後の月給<span class="opt">任意</span></label>
+          <input type="text" id="emp-wage-${n}" placeholder="例：220,000円">
+          <label class="na-check">
+            <input type="checkbox" id="emp-wage-na-${n}" onchange="toggleNA(this,'emp-wage-${n}','f-emp-wage-${n}')">
+            該当なし
+          </label>
+        </div>
+        <div style="border-top:1px solid #e8e6e0;margin-top:1rem;padding-top:1rem">
+          <div style="font-size:12px;font-weight:600;color:#534AB7;margin-bottom:0.75rem">📎 ${n}人目の必須書類</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+
+
+            <div class="file-item">
+              <label style="font-size:12px;display:block;margin-bottom:4px">雇用保険被保険者資格喪失届<span class="req">*必須</span></label>
+              <div class="file-area" onclick="triggerFile('f-emp-loss-${n}')">
+                <input type="file" id="f-emp-loss-${n}" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-emp-loss-${n}')">
+                <span class="icon">📄</span>
+                <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
+                <button class="sel-btn" type="button">選択</button>
+              </div>
+            </div>
+            <div class="file-item">
+              <label style="font-size:12px;display:block;margin-bottom:4px">転換前の雇用契約書<span class="req">*必須</span></label>
+              <div class="file-area" onclick="triggerFile('f-contract-before-${n}')">
+                <input type="file" id="f-contract-before-${n}" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-contract-before-${n}')">
+                <span class="icon">📄</span>
+                <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
+                <button class="sel-btn" type="button">選択</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="file-item">
+              <label style="font-size:12px;display:block;margin-bottom:4px">賃金台帳<span class="req">*必須</span></label>
+              <div class="file-area" onclick="triggerFile('f-wage-${n}')">
+                <input type="file" id="f-wage-${n}" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-wage-${n}')">
+                <span class="icon">📄</span>
+                <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
+                <button class="sel-btn" type="button">選択</button>
+              </div>
+              <div style="font-size:11px;color:#888;margin-top:3px">直近〜6ヶ月分（雇用6ヶ月未満の場合は提出できる期間のみで可）</div>
+            </div>
+            <div class="file-item">
+              <label style="font-size:12px;display:block;margin-bottom:4px">出勤簿・タイムカード<span class="req">*必須</span></label>
+              <div class="file-area" onclick="triggerFile('f-timesheet-${n}')">
+                <input type="file" id="f-timesheet-${n}" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-timesheet-${n}')">
+                <span class="icon">📄</span>
+                <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
+                <button class="sel-btn" type="button">選択</button>
+              </div>
+              <div style="font-size:11px;color:#888;margin-top:3px">直近〜6ヶ月分（雇用6ヶ月未満の場合は提出できる期間のみで可）</div>
+            </div><span class="opt">任意</span></label>
+              <div class="file-area" onclick="triggerFile('f-contract-after-${n}')">
+                <input type="file" id="f-contract-after-${n}" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-contract-after-${n}')">
+                <span class="icon">📄</span>
+                <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
+                <button class="sel-btn" type="button">選択</button>
+              </div>
+              <div style="font-size:11px;color:#888;margin-top:3px">正社員になった後の契約書または辞令</div>
+            </div>
+          </div>
+        </div>
+      `;
+      list.appendChild(card);
+    }
+  }
+
   function toggleDocUpload(type, val) {
     const area = document.getElementById(type + '-upload-area');
     if (area) area.style.display = val === 'あり' ? 'block' : 'none';
@@ -416,11 +486,6 @@
       input.disabled = false;
       input.style.opacity = '1';
     }
-  }
-
-  function removeEmployee(n) {
-    const card = document.getElementById('emp-' + n);
-    if (card) card.remove();
   }
 
   function triggerFile(inputId) { document.getElementById(inputId).click(); }
@@ -477,10 +542,14 @@
       if (el && !el.value.trim()) { f.classList.add('has-error'); ok = false; }
       else if (f) f.classList.remove('has-error');
     });
+    const empCountInput = document.getElementById('emp-count-input');
     const cards = document.querySelectorAll('.emp-card');
-    if (cards.length === 0) {
-      document.getElementById('status-msg').textContent = '※ 従業員を1人以上追加してください';
+    if (!empCountInput.value || cards.length === 0) {
+      document.getElementById('status-msg').textContent = '※ 申請する従業員の人数を入力してください';
+      empCountInput.style.borderColor = '#e53e3e';
       ok = false;
+    } else {
+      empCountInput.style.borderColor = '';
     }
     cards.forEach(card => {
       const id = card.id.replace('emp-', '');
@@ -507,7 +576,8 @@
     const payload = {
       company:      getVal('company'),
       hasRules:     (document.querySelector('input[name="has-rules"]:checked') || {}).value || '未選択',
-      hasWageRules: (document.querySelector('input[name="has-wage-rules"]:checked') || {}).value || '未選択',
+      hasWageRules:   (document.querySelector('input[name="has-wage-rules"]:checked') || {}).value || '未選択',
+      hasCareerPlan:  (document.querySelector('input[name="has-career-plan"]:checked') || {}).value || '未選択',
       companyPhone: getVal('company-phone'),
       devPosition:  getVal('dev-position'),
       devName:      getVal('dev-name'),
@@ -533,27 +603,44 @@
       });
     });
 
-    const fileMap = {
-      'fi-rules-doc':      '就業規則',
-      'fi-wage-rules-doc': '賃金規定',
-      'fi-registry':       '履歴事項全部証明書',
-      'fi-emp-office':     '雇用保険適用事業所設置届',
-      'fi-emp-loss':       '雇用保険被保険者資格喪失届',
-      'fi-contract-before':'転換前雇用契約書',
-      'fi-wage':           '賃金台帳',
-      'fi-timesheet':      '出勤簿',
-      'fi-rules':          '就業規則',
-      'fi-plan':           'キャリアアップ計画書',
-      'fi-contract-after': '転換後雇用契約書',
+    // 会社共通書類
+    const commonFileMap = {
+      'fi-registry-company':  '履歴事項全部証明書',
+      'fi-rules-doc':         '就業規則',
+      'fi-wage-rules-doc':    '賃金規定',
+      'fi-career-plan-doc':   'キャリアアップ計画書',
+      'fi-emp-office-company': '雇用保険適用事業所設置届',
     };
-
-    const keys = Object.keys(fileMap);
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
+    const commonKeys = Object.keys(commonFileMap);
+    for (let i = 0; i < commonKeys.length; i++) {
+      const key = commonKeys[i];
       if (fileStore[key]) {
-        setProgress(5 + Math.round((i / keys.length) * 65), `変換中: ${fileMap[key]}`);
+        setProgress(5 + Math.round((i / commonKeys.length) * 30), `変換中: ${commonFileMap[key]}`);
         const b64 = await toBase64(fileStore[key]);
-        payload.files[fileMap[key]] = { name: fileStore[key].name, mimeType: fileStore[key].type || 'application/pdf', content: b64 };
+        payload.files[commonFileMap[key]] = { name: fileStore[key].name, mimeType: fileStore[key].type || 'application/pdf', content: b64 };
+      }
+    }
+
+    // 従業員ごとの書類
+    const empCards = document.querySelectorAll('.emp-card');
+    const empFileTypes = [
+      ['fi-emp-office',      '雇用保険適用事業所設置届'],
+      ['fi-emp-loss',        '雇用保険被保険者資格喪失届'],
+      ['fi-contract-before', '転換前雇用契約書'],
+      ['fi-wage',            '賃金台帳'],
+      ['fi-timesheet',       '出勤簿'],
+    ];
+    for (let ei = 0; ei < empCards.length; ei++) {
+      const empId = empCards[ei].id.replace('emp-', '');
+      const empName = (document.getElementById(`emp-name-${empId}`) || {}).value || `${ei+1}人目`;
+      for (let fi = 0; fi < empFileTypes.length; fi++) {
+        const [fileKey, fileName] = empFileTypes[fi];
+        const storeKey = `${fileKey}-${empId}`;
+        if (fileStore[storeKey]) {
+          setProgress(35 + Math.round(((ei * empFileTypes.length + fi) / (empCards.length * empFileTypes.length)) * 40), `変換中: ${empName}の${fileName}`);
+          const b64 = await toBase64(fileStore[storeKey]);
+          payload.files[`${empName}_${fileName}`] = { name: fileStore[storeKey].name, mimeType: fileStore[storeKey].type || 'application/pdf', content: b64 };
+        }
       }
     }
 
@@ -589,7 +676,6 @@
     if (f) { f.classList.remove('has-error'); e.target.style.borderColor = ''; }
   });
 
-  addEmployee();
 </script>
 </body>
 </html>
