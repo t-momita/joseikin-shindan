@@ -551,20 +551,22 @@
         [`fi-timesheet-${id}`, '出勤簿・タイムカード'],
       ];
       requiredFiles.forEach(([fileId, name]) => {
-        const fileInput = document.getElementById(fileId.replace('fi-','f-'));
-        if (!fileStore[fileId] && (!fileInput || !fileInput.files || fileInput.files.length === 0)) {
+        const inputId = fileId.replace('fi-','f-');
+        const fileInput = document.getElementById(inputId);
+        if (!fileStore[fileId]) {
           const area = fileInput ? fileInput.closest('.file-area') : null;
-          if (area) area.style.borderColor = '#e53e3e';
+          if (area) { area.style.borderColor = '#e53e3e'; area.style.borderStyle = 'dashed'; }
           ok = false;
+          document.getElementById('status-msg').textContent = '※ 必須書類をすべて添付してください';
         }
       });
     });
     // 企業必須添付ファイルチェック
     ['fi-registry-company','fi-emp-office-company'].forEach(fileId => {
       const fileInput = document.getElementById(fileId.replace('fi-','f-'));
-      if (!fileStore[fileId] && (!fileInput || !fileInput.files || fileInput.files.length === 0)) {
+      if (!fileStore[fileId]) {
         const area = fileInput ? fileInput.closest('.file-area') : null;
-        if (area) area.style.borderColor = '#e53e3e';
+        if (area) { area.style.borderColor = '#e53e3e'; area.style.borderStyle = 'dashed'; }
         ok = false;
         document.getElementById('status-msg').textContent = '※ 必須書類をすべて添付してください';
       }
