@@ -349,10 +349,6 @@
       <div class="field" id="f-emp-wage-${n}">
         <label>正社員後の月給<span class="opt">任意</span></label>
         <input type="text" id="emp-wage-${n}" placeholder="例：220,000円">
-        <label class="na-check">
-          <input type="checkbox" id="emp-wage-na-${n}" onchange="toggleNA(this,'emp-wage-${n}','f-emp-wage-${n}')">
-          該当なし
-        </label>
       </div>
     `;
     document.getElementById('emp-list').appendChild(card);
@@ -404,10 +400,6 @@
         <div class="field" id="f-emp-wage-${n}">
           <label>正社員後の月給<span class="opt">任意</span></label>
           <input type="text" id="emp-wage-${n}" placeholder="例：220,000円">
-          <label class="na-check">
-            <input type="checkbox" id="emp-wage-na-${n}" onchange="toggleNA(this,'emp-wage-${n}','f-emp-wage-${n}')">
-            該当なし
-          </label>
         </div>
         <div style="border-top:1px solid #e8e6e0;margin-top:1rem;padding-top:1rem">
           <div style="font-size:12px;font-weight:600;color:#534AB7;margin-bottom:0.75rem">📎 ${n}人目の必須書類</div>
@@ -454,14 +446,6 @@
                 <button class="sel-btn" type="button">選択</button>
               </div>
               <div style="font-size:11px;color:#888;margin-top:3px">直近〜6ヶ月分（雇用6ヶ月未満の場合は提出できる期間のみで可）</div>
-            </div><span class="opt">任意</span></label>
-              <div class="file-area" onclick="triggerFile('f-contract-after-${n}')">
-                <input type="file" id="f-contract-after-${n}" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-contract-after-${n}')">
-                <span class="icon">📄</span>
-                <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
-                <button class="sel-btn" type="button">選択</button>
-              </div>
-              <div style="font-size:11px;color:#888;margin-top:3px">正社員になった後の契約書または辞令</div>
             </div>
           </div>
         </div>
@@ -496,6 +480,7 @@
     fileStore[itemId] = file;
     const area = input.closest('.file-area');
     area.classList.add('selected');
+    area.style.borderColor = '';
     area.querySelector('.placeholder').style.display = 'none';
     const fn = area.querySelector('.fname');
     fn.textContent = file.name;
@@ -558,6 +543,31 @@
         if (el && !el.value.trim()) { el.style.borderColor='#e53e3e'; ok = false; }
         else if (el) el.style.borderColor='';
       });
+      // 必須書類チェック
+      const requiredFiles = [
+        [`fi-emp-loss-${id}`, '雇用保険被保険者資格喪失届'],
+        [`fi-contract-before-${id}`, '転換前の雇用契約書'],
+        [`fi-wage-${id}`, '賃金台帳'],
+        [`fi-timesheet-${id}`, '出勤簿・タイムカード'],
+      ];
+      requiredFiles.forEach(([fileId, name]) => {
+        const fileInput = document.getElementById(fileId.replace('fi-','f-'));
+        if (!fileStore[fileId] && (!fileInput || !fileInput.files || fileInput.files.length === 0)) {
+          const area = fileInput ? fileInput.closest('.file-area') : null;
+          if (area) area.style.borderColor = '#e53e3e';
+          ok = false;
+        }
+      });
+    });
+    // 企業必須添付ファイルチェック
+    ['fi-registry-company','fi-emp-office-company'].forEach(fileId => {
+      const fileInput = document.getElementById(fileId.replace('fi-','f-'));
+      if (!fileStore[fileId] && (!fileInput || !fileInput.files || fileInput.files.length === 0)) {
+        const area = fileInput ? fileInput.closest('.file-area') : null;
+        if (area) area.style.borderColor = '#e53e3e';
+        ok = false;
+        document.getElementById('status-msg').textContent = '※ 必須書類をすべて添付してください';
+      }
     });
     return ok;
   }
@@ -593,13 +603,12 @@
     document.querySelectorAll('.emp-card').forEach(card => {
       const id = card.id.replace('emp-', '');
       const convNa = document.getElementById(`emp-conv-na-${id}`);
-      const wageNa = document.getElementById(`emp-wage-na-${id}`);
       payload.employees.push({
         name:     getVal(`emp-name-${id}`),
         empType:  getVal(`emp-type-${id}`),
         hireDate: getVal(`emp-hire-${id}`),
         convDate: (convNa && convNa.checked) ? '該当なし' : getVal(`emp-conv-${id}`),
-        wageAfter:(wageNa && wageNa.checked) ? '該当なし' : getVal(`emp-wage-${id}`),
+        wageAfter: getVal(`emp-wage-${id}`),
       });
     });
 
