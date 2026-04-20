@@ -657,17 +657,12 @@
 
     setProgress(75, 'サーバーに送信中...');
     try {
-      const res = await fetch(GAS_URL, {
+      await fetch(GAS_URL, {
         method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(payload)
       });
-      const text = await res.text();
-      let result;
-      try { result = JSON.parse(text); } catch(e) { result = { success: true }; }
-      if (result.success === false) {
-        throw new Error(result.error || '不明なエラーが発生しました');
-      }
       setProgress(100, '完了しました');
       setTimeout(() => {
         document.getElementById('form-area').style.display = 'none';
@@ -676,7 +671,7 @@
       }, 500);
     } catch (err) {
       setProgress(0, '');
-      document.getElementById('status-msg').textContent = '送信に失敗しました：' + err.message;
+      document.getElementById('status-msg').textContent = '送信に失敗しました。通信環境を確認してください。';
       btn.disabled = false;
     }
   }
