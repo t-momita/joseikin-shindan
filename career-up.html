@@ -575,106 +575,136 @@
   }
 
   async function submitForm() {
-    if (!validate()) {
-      if (!document.getElementById('status-msg').textContent)
-        document.getElementById('status-msg').textContent = '※ 必須項目を入力してください';
-      return;
-    }
-    const btn = document.getElementById('submit-btn');
-    btn.disabled = true;
-    document.getElementById('progress-wrap').style.display = 'block';
-    setProgress(5, '準備中...');
+  if (!validate()) {
+    if (!document.getElementById('status-msg').textContent)
+      document.getElementById('status-msg').textContent = '※ 必須項目を入力してください';
+    return;
+  }
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  document.getElementById('progress-wrap').style.display = 'block';
+  setProgress(5, '準備中...');
 
-    const payload = {
-      company:      getVal('company'),
-      hasRules:     (document.querySelector('input[name="has-rules"]:checked') || {}).value || '未選択',
-      hasWageRules:   (document.querySelector('input[name="has-wage-rules"]:checked') || {}).value || '未選択',
-      hasCareerPlan:  (document.querySelector('input[name="has-career-plan"]:checked') || {}).value || '未選択',
-      companyPhone: getVal('company-phone'),
-      devPosition:  getVal('dev-position'),
-      devName:      getVal('dev-name'),
-      workerRep:    getVal('worker-rep'),
-      hwName:       getVal('hw-name'),
-      hwDept:       getVal('hw-dept'),
-      hwPhone:      getVal('hw-phone'),
-      hwEmail:      getVal('hw-email'),
-      employees: [],
-      files: {}
-    };
+  // セッションID（会社名＋日時）
+  const company = getVal('company');
+  const date = new Date().toISOString().replace(/[:.]/g,'').slice(0,15);
+  const sessionId = (company || '未入力') + '_' + date;
 
-    document.querySelectorAll('.emp-card').forEach(card => {
-      const id = card.id.replace('emp-', '');
-      const convNa = document.getElementById(`emp-conv-na-${id}`);
-      payload.employees.push({
-        name:     getVal(`emp-name-${id}`),
-        empType:  getVal(`emp-type-${id}`),
-        hireDate: getVal(`emp-hire-${id}`),
-        convDate: (convNa && convNa.checked) ? '該当なし' : getVal(`emp-conv-${id}`),
-        wageAfter: getVal(`emp-wage-${id}`),
-      });
+  const fileUrls = {};
+
+  // ファイル一覧（ラベル→fileStoreキー）
+  const commonFiles = [
+    ['履歴事項全部証明書',       'fi-registry-company'],
+    ['雇用保険適用事業所設置届', 'fi-emp-office-company'],
+    ['就業規則',                 'fi-rules-doc'],
+    ['賃金規定',                 'fi-wage-rules-doc'],
+    ['キャリアアップ計画書',     'fi-career-plan-doc'],
+  ];
+  const empCards = document.querySelectorAll('.emp-card');
+  const empFileTypes = [
+    ['雇用保険被保険者資格喪失届', 'fi-emp-loss'],
+    ['転換前雇用契約書',           'fi-contract-before'],
+    ['賃金台帳',                   'fi-wage'],
+    ['出勤簿',                     'fi-timesheet'],
+  ];
+
+  // アップロードするファイルをリストアップ
+  const uploadQueue = [];
+  commonFiles.forEach(([label, key]) => {
+    if (fileStore[key]) uploadQueue.push({ label, key, file: fileStore[key] });
+  });
+  empCards.forEach(card => {
+    const empId = card.id.replace('emp-', '');
+    const empName = (document.getElementById(`emp-name-${empId}`) || {}).value || empId + '人目';
+    empFileTypes.forEach(([fileName, fileKey]) => {
+      const storeKey = `${fileKey}-${empId}`;
+      if (fileStore[storeKey]) {
+        uploadQueue.push({ label: empName + '_' + fileName, key: storeKey, file: fileStore[storeKey] });
+      }
     });
+  });
 
-    // 会社共通書類
-    const commonFileMap = {
-      'fi-registry-company':  '履歴事項全部証明書',
-      'fi-rules-doc':         '就業規則',
-      'fi-wage-rules-doc':    '賃金規定',
-      'fi-career-plan-doc':   'キャリアアップ計画書',
-      'fi-emp-office-company': '雇用保険適用事業所設置届',
-    };
-    const commonKeys = Object.keys(commonFileMap);
-    for (let i = 0; i < commonKeys.length; i++) {
-      const key = commonKeys[i];
-      if (fileStore[key]) {
-        setProgress(5 + Math.round((i / commonKeys.length) * 30), `変換中: ${commonFileMap[key]}`);
-        const b64 = await toBase64(fileStore[key]);
-        payload.files[commonFileMap[key]] = { name: fileStore[key].name, mimeType: fileStore[key].type || 'application/pdf', content: b64 };
-      }
-    }
-
-    // 従業員ごとの書類
-    const empCards = document.querySelectorAll('.emp-card');
-    const empFileTypes = [
-      ['fi-emp-loss',        '雇用保険被保険者資格喪失届'],
-      ['fi-contract-before', '転換前雇用契約書'],
-      ['fi-wage',            '賃金台帳'],
-      ['fi-timesheet',       '出勤簿'],
-    ];
-    for (let ei = 0; ei < empCards.length; ei++) {
-      const empId = empCards[ei].id.replace('emp-', '');
-      const empName = (document.getElementById(`emp-name-${empId}`) || {}).value || `${ei+1}人目`;
-      for (let fi = 0; fi < empFileTypes.length; fi++) {
-        const [fileKey, fileName] = empFileTypes[fi];
-        const storeKey = `${fileKey}-${empId}`;
-        if (fileStore[storeKey]) {
-          setProgress(35 + Math.round(((ei * empFileTypes.length + fi) / (empCards.length * empFileTypes.length)) * 40), `変換中: ${empName}の${fileName}`);
-          const b64 = await toBase64(fileStore[storeKey]);
-          payload.files[`${empName}_${fileName}`] = { name: fileStore[storeKey].name, mimeType: fileStore[storeKey].type || 'application/pdf', content: b64 };
-        }
-      }
-    }
-
-    setProgress(75, 'サーバーに送信中...');
+  // ファイルを1枚ずつ送信
+  for (let i = 0; i < uploadQueue.length; i++) {
+    const { label, file } = uploadQueue[i];
+    setProgress(10 + Math.round((i / (uploadQueue.length + 1)) * 60), `送信中 (${i+1}/${uploadQueue.length}): ${label}`);
+    const b64 = await toBase64(file);
     try {
-      await fetch(GAS_URL, {
+      const res = await fetch(GAS_URL, {
         method: 'POST',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+          type: 'file',
+          sessionId,
+          label,
+          fileName: file.name,
+          mimeType: file.type || 'application/pdf',
+          content: b64
+        })
       });
+      const json = await res.json();
+      if (json.url) fileUrls[label] = json.url;
+    } catch (err) {
+      console.warn('ファイル送信エラー:', label, err);
+    }
+  }
+
+  // テキストデータを送信
+  setProgress(80, 'データを送信中...');
+  const payload = {
+    type: 'submit',
+    sessionId,
+    company,
+    hasRules:      (document.querySelector('input[name="has-rules"]:checked') || {}).value || '未選択',
+    hasWageRules:  (document.querySelector('input[name="has-wage-rules"]:checked') || {}).value || '未選択',
+    hasCareerPlan: (document.querySelector('input[name="has-career-plan"]:checked') || {}).value || '未選択',
+    companyPhone:  getVal('company-phone'),
+    devPosition:   getVal('dev-position'),
+    devName:       getVal('dev-name'),
+    workerRep:     getVal('worker-rep'),
+    hwName:        getVal('hw-name'),
+    hwDept:        getVal('hw-dept'),
+    hwPhone:       getVal('hw-phone'),
+    hwEmail:       getVal('hw-email'),
+    employees: [],
+    fileUrls
+  };
+
+  empCards.forEach(card => {
+    const id = card.id.replace('emp-', '');
+    const convNa = document.getElementById(`emp-conv-na-${id}`);
+    payload.employees.push({
+      name:      getVal(`emp-name-${id}`),
+      empType:   getVal(`emp-type-${id}`),
+      hireDate:  getVal(`emp-hire-${id}`),
+      convDate:  (convNa && convNa.checked) ? '該当なし' : getVal(`emp-conv-${id}`),
+      wageAfter: getVal(`emp-wage-${id}`),
+    });
+  });
+
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    });
+    const json = await res.json();
+    if (json.success) {
       setProgress(100, '完了しました');
       setTimeout(() => {
         document.getElementById('form-area').style.display = 'none';
         document.getElementById('success-screen').style.display = 'block';
         window.scrollTo(0, 0);
       }, 500);
-    } catch (err) {
-      setProgress(0, '');
-      document.getElementById('status-msg').textContent = '送信に失敗しました。通信環境を確認してください。';
-      btn.disabled = false;
+    } else {
+      throw new Error(json.error || '不明なエラー');
     }
+  } catch (err) {
+    setProgress(0, '');
+    document.getElementById('status-msg').textContent = '送信に失敗しました: ' + err.message;
+    btn.disabled = false;
   }
-
+}
   function setProgress(pct, msg) {
     document.getElementById('progress-fill').style.width = pct + '%';
     document.getElementById('status-msg').textContent = msg;
