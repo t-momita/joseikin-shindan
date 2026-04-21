@@ -100,7 +100,6 @@
       <div class="sub-section" style="margin-top:1rem">
         <div class="sub-section-title">企業必要書類について</div>
 
-        <!-- 1. 履歴事項全部証明書 -->
         <div class="file-item" style="margin-bottom:0.75rem">
           <label>履歴事項全部証明書<span class="req">*必須</span></label>
           <div class="file-area" onclick="triggerFile('f-registry-company')">
@@ -115,7 +114,6 @@
           <div class="hint">法務局で取得した会社の登記簿謄本（現在の登記内容が反映されているものでしたら取得時期は問いません。）</div>
         </div>
 
-        <!-- 2. 雇用保険適用事業所設置届 -->
         <div class="file-item" style="margin-bottom:0.75rem">
           <label>雇用保険適用事業所設置届<span class="req">*必須</span></label>
           <div class="file-area" onclick="triggerFile('f-emp-office-company')">
@@ -130,7 +128,6 @@
           <div class="hint">ハローワークから交付された届出の控え</div>
         </div>
 
-        <!-- 3. 就業規則 -->
         <div class="field" style="margin-bottom:0.75rem">
           <label>就業規則<span class="req">*必須</span></label>
           <div style="display:flex;gap:16px;margin-top:4px">
@@ -154,7 +151,6 @@
           </div>
         </div>
 
-        <!-- 4. 賃金規定 -->
         <div class="field" style="margin-bottom:0.75rem">
           <label>賃金規定<span class="req">*必須</span></label>
           <div style="display:flex;gap:16px;margin-top:4px">
@@ -178,7 +174,6 @@
           </div>
         </div>
 
-        <!-- 5. キャリアアップ計画書 -->
         <div class="field" style="margin-bottom:0">
           <label>キャリアアップ計画書<span class="req">*必須</span></label>
           <div style="display:flex;gap:16px;margin-top:4px">
@@ -282,8 +277,6 @@
       <div class="emp-list" id="emp-list"></div>
     </div>
 
-
-
     <div class="submit-area">
       <button class="submit-btn" id="submit-btn" onclick="submitForm()">送信する</button>
       <div class="progress-wrap" id="progress-wrap"><div class="progress-fill" id="progress-fill"></div></div>
@@ -306,53 +299,6 @@
 
   let empCount = 0;
   const fileStore = {};
-
-  function addEmployee() {
-    empCount++;
-    const n = empCount;
-    const card = document.createElement('div');
-    card.className = 'emp-card';
-    card.id = 'emp-' + n;
-    card.innerHTML = `
-      <div class="emp-card-header">
-        <span class="emp-num">従業員 ${n}人目</span>
-        ${n > 1 ? `<button class="remove-btn" type="button" onclick="removeEmployee(${n})">削除</button>` : ''}
-      </div>
-      <div class="row">
-        <div class="field">
-          <label>氏名<span class="req">*必須</span></label>
-          <input type="text" id="emp-name-${n}" placeholder="例：山田 次郎">
-        </div>
-        <div class="field">
-          <label>現在の雇用形態<span class="req">*必須</span></label>
-          <select id="emp-type-${n}">
-            <option value="">選択してください</option>
-            ${EMP_TYPES.map(t => `<option value="${t}">${t}</option>`).join('')}
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="field">
-          <label>その働き方で働き始めた日<span class="req">*必須</span></label>
-          <input type="date" id="emp-hire-${n}">
-          <div class="hint">有期雇用・パートとして採用された日</div>
-        </div>
-        <div class="field" id="f-emp-conv-${n}">
-          <label>正社員転換予定日<span class="opt">任意</span></label>
-          <input type="date" id="emp-conv-${n}" class="opt-input-${n}">
-          <label class="na-check">
-            <input type="checkbox" id="emp-conv-na-${n}" onchange="toggleNA(this,'emp-conv-${n}','f-emp-conv-${n}')">
-            該当なし
-          </label>
-        </div>
-      </div>
-      <div class="field" id="f-emp-wage-${n}">
-        <label>正社員後の月給<span class="opt">任意</span></label>
-        <input type="text" id="emp-wage-${n}" placeholder="例：220,000円">
-      </div>
-    `;
-    document.getElementById('emp-list').appendChild(card);
-  }
 
   const EMP_TYPES = ['有期契約社員（期間の定めあり）','パート・アルバイト（期間の定めあり）','派遣社員','その他有期雇用'];
 
@@ -404,8 +350,6 @@
         <div style="border-top:1px solid #e8e6e0;margin-top:1rem;padding-top:1rem">
           <div style="font-size:12px;font-weight:600;color:#534AB7;margin-bottom:0.75rem">📎 ${n}人目の必須書類</div>
           <div style="display:flex;flex-direction:column;gap:10px">
-
-
             <div class="file-item">
               <label style="font-size:12px;display:block;margin-bottom:4px">雇用保険被保険者資格喪失届<span class="req">*必須</span></label>
               <div class="file-area" onclick="triggerFile('f-emp-loss-${n}')">
@@ -424,9 +368,6 @@
                 <button class="sel-btn" type="button">選択</button>
               </div>
             </div>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:10px">
             <div class="file-item">
               <label style="font-size:12px;display:block;margin-bottom:4px">賃金台帳<span class="req">*必須</span></label>
               <div class="file-area" onclick="triggerFile('f-wage-${n}')">
@@ -461,7 +402,6 @@
 
   function toggleNA(cb, inputId, fieldId) {
     const input = document.getElementById(inputId);
-    const field = document.getElementById(fieldId);
     if (cb.checked) {
       input.disabled = true;
       input.value = '';
@@ -543,16 +483,14 @@
         if (el && !el.value.trim()) { el.style.borderColor='#e53e3e'; ok = false; }
         else if (el) el.style.borderColor='';
       });
-      // 必須書類チェック
       const requiredFiles = [
-        [`fi-emp-loss-${id}`, '雇用保険被保険者資格喪失届'],
-        [`fi-contract-before-${id}`, '転換前の雇用契約書'],
-        [`fi-wage-${id}`, '賃金台帳'],
-        [`fi-timesheet-${id}`, '出勤簿・タイムカード'],
+        [`fi-emp-loss-${id}`],
+        [`fi-contract-before-${id}`],
+        [`fi-wage-${id}`],
+        [`fi-timesheet-${id}`],
       ];
-      requiredFiles.forEach(([fileId, name]) => {
-        const inputId = fileId.replace('fi-','f-');
-        const fileInput = document.getElementById(inputId);
+      requiredFiles.forEach(([fileId]) => {
+        const fileInput = document.getElementById(fileId.replace('fi-','f-'));
         if (!fileStore[fileId]) {
           const area = fileInput ? fileInput.closest('.file-area') : null;
           if (area) { area.style.borderColor = '#e53e3e'; area.style.borderStyle = 'dashed'; }
@@ -561,7 +499,6 @@
         }
       });
     });
-    // 企業必須添付ファイルチェック
     ['fi-registry-company','fi-emp-office-company'].forEach(fileId => {
       const fileInput = document.getElementById(fileId.replace('fi-','f-'));
       if (!fileStore[fileId]) {
@@ -575,136 +512,140 @@
   }
 
   async function submitForm() {
-  if (!validate()) {
-    if (!document.getElementById('status-msg').textContent)
-      document.getElementById('status-msg').textContent = '※ 必須項目を入力してください';
-    return;
-  }
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  document.getElementById('progress-wrap').style.display = 'block';
-  setProgress(5, '準備中...');
+    if (!validate()) {
+      if (!document.getElementById('status-msg').textContent)
+        document.getElementById('status-msg').textContent = '※ 必須項目を入力してください';
+      return;
+    }
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    document.getElementById('progress-wrap').style.display = 'block';
+    setProgress(5, '準備中...');
 
-  // セッションID（会社名＋日時）
-  const company = getVal('company');
-  const date = new Date().toISOString().replace(/[:.]/g,'').slice(0,15);
-  const sessionId = (company || '未入力') + '_' + date;
+    const company = getVal('company');
+    const date = new Date().toISOString().replace(/[:.]/g,'').slice(0,15);
+    const sessionId = (company || '未入力') + '_' + date;
 
-  const fileUrls = {};
+    const fileUrls = {};
 
-  // ファイル一覧（ラベル→fileStoreキー）
-  const commonFiles = [
-    ['履歴事項全部証明書',       'fi-registry-company'],
-    ['雇用保険適用事業所設置届', 'fi-emp-office-company'],
-    ['就業規則',                 'fi-rules-doc'],
-    ['賃金規定',                 'fi-wage-rules-doc'],
-    ['キャリアアップ計画書',     'fi-career-plan-doc'],
-  ];
-  const empCards = document.querySelectorAll('.emp-card');
-  const empFileTypes = [
-    ['雇用保険被保険者資格喪失届', 'fi-emp-loss'],
-    ['転換前雇用契約書',           'fi-contract-before'],
-    ['賃金台帳',                   'fi-wage'],
-    ['出勤簿',                     'fi-timesheet'],
-  ];
+    const commonFiles = [
+      ['履歴事項全部証明書',       'fi-registry-company'],
+      ['雇用保険適用事業所設置届', 'fi-emp-office-company'],
+      ['就業規則',                 'fi-rules-doc'],
+      ['賃金規定',                 'fi-wage-rules-doc'],
+      ['キャリアアップ計画書',     'fi-career-plan-doc'],
+    ];
+    const empCards = document.querySelectorAll('.emp-card');
+    const empFileTypes = [
+      ['雇用保険被保険者資格喪失届', 'fi-emp-loss'],
+      ['転換前雇用契約書',           'fi-contract-before'],
+      ['賃金台帳',                   'fi-wage'],
+      ['出勤簿',                     'fi-timesheet'],
+    ];
 
-  // アップロードするファイルをリストアップ
-  const uploadQueue = [];
-  commonFiles.forEach(([label, key]) => {
-    if (fileStore[key]) uploadQueue.push({ label, key, file: fileStore[key] });
-  });
-  empCards.forEach(card => {
-    const empId = card.id.replace('emp-', '');
-    const empName = (document.getElementById(`emp-name-${empId}`) || {}).value || empId + '人目';
-    empFileTypes.forEach(([fileName, fileKey]) => {
-      const storeKey = `${fileKey}-${empId}`;
-      if (fileStore[storeKey]) {
-        uploadQueue.push({ label: empName + '_' + fileName, key: storeKey, file: fileStore[storeKey] });
-      }
+    const uploadQueue = [];
+    commonFiles.forEach(([label, key]) => {
+      if (fileStore[key]) uploadQueue.push({ label, key, file: fileStore[key] });
     });
-  });
+    empCards.forEach(card => {
+      const empId = card.id.replace('emp-', '');
+      const empName = (document.getElementById(`emp-name-${empId}`) || {}).value || empId + '人目';
+      empFileTypes.forEach(([fileName, fileKey]) => {
+        const storeKey = `${fileKey}-${empId}`;
+        if (fileStore[storeKey]) {
+          uploadQueue.push({ label: empName + '_' + fileName, key: storeKey, file: fileStore[storeKey] });
+        }
+      });
+    });
 
-  // ファイルを1枚ずつ送信
-  for (let i = 0; i < uploadQueue.length; i++) {
-    const { label, file } = uploadQueue[i];
-    setProgress(10 + Math.round((i / (uploadQueue.length + 1)) * 60), `送信中 (${i+1}/${uploadQueue.length}): ${label}`);
-    const b64 = await toBase64(file);
+    // ファイルを1枚ずつ送信
+    for (let i = 0; i < uploadQueue.length; i++) {
+      const { label, file } = uploadQueue[i];
+      setProgress(10 + Math.round((i / (uploadQueue.length + 1)) * 60), `送信中 (${i+1}/${uploadQueue.length}): ${label}`);
+      const b64 = await toBase64(file);
+      try {
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          redirect: 'follow',
+          body: JSON.stringify({
+            type: 'file',
+            sessionId,
+            label,
+            fileName: file.name,
+            mimeType: file.type || 'application/pdf',
+            content: b64
+          })
+        });
+        const text = await res.text();
+        let json = {};
+        try { json = JSON.parse(text); } catch(e) {}
+        if (json.url) fileUrls[label] = json.url;
+      } catch (err) {
+        console.warn('ファイル送信エラー:', label, err);
+      }
+    }
+
+    // テキストデータを送信
+    setProgress(80, 'データを送信中...');
+    const payload = {
+      type: 'submit',
+      sessionId,
+      company,
+      hasRules:      (document.querySelector('input[name="has-rules"]:checked') || {}).value || '未選択',
+      hasWageRules:  (document.querySelector('input[name="has-wage-rules"]:checked') || {}).value || '未選択',
+      hasCareerPlan: (document.querySelector('input[name="has-career-plan"]:checked') || {}).value || '未選択',
+      companyPhone:  getVal('company-phone'),
+      devPosition:   getVal('dev-position'),
+      devName:       getVal('dev-name'),
+      workerRep:     getVal('worker-rep'),
+      hwName:        getVal('hw-name'),
+      hwDept:        getVal('hw-dept'),
+      hwPhone:       getVal('hw-phone'),
+      hwEmail:       getVal('hw-email'),
+      employees: [],
+      fileUrls
+    };
+
+    empCards.forEach(card => {
+      const id = card.id.replace('emp-', '');
+      const convNa = document.getElementById(`emp-conv-na-${id}`);
+      payload.employees.push({
+        name:      getVal(`emp-name-${id}`),
+        empType:   getVal(`emp-type-${id}`),
+        hireDate:  getVal(`emp-hire-${id}`),
+        convDate:  (convNa && convNa.checked) ? '該当なし' : getVal(`emp-conv-${id}`),
+        wageAfter: getVal(`emp-wage-${id}`),
+      });
+    });
+
     try {
       const res = await fetch(GAS_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({
-          type: 'file',
-          sessionId,
-          label,
-          fileName: file.name,
-          mimeType: file.type || 'application/pdf',
-          content: b64
-        })
+        redirect: 'follow',
+        body: JSON.stringify(payload)
       });
-      const json = await res.json();
-      if (json.url) fileUrls[label] = json.url;
+      const text = await res.text();
+      let json = {};
+      try { json = JSON.parse(text); } catch(e) {}
+      if (json.success) {
+        setProgress(100, '完了しました');
+        setTimeout(() => {
+          document.getElementById('form-area').style.display = 'none';
+          document.getElementById('success-screen').style.display = 'block';
+          window.scrollTo(0, 0);
+        }, 500);
+      } else {
+        throw new Error(json.error || '不明なエラー');
+      }
     } catch (err) {
-      console.warn('ファイル送信エラー:', label, err);
+      setProgress(0, '');
+      document.getElementById('status-msg').textContent = '送信に失敗しました: ' + err.message;
+      btn.disabled = false;
     }
   }
 
-  // テキストデータを送信
-  setProgress(80, 'データを送信中...');
-  const payload = {
-    type: 'submit',
-    sessionId,
-    company,
-    hasRules:      (document.querySelector('input[name="has-rules"]:checked') || {}).value || '未選択',
-    hasWageRules:  (document.querySelector('input[name="has-wage-rules"]:checked') || {}).value || '未選択',
-    hasCareerPlan: (document.querySelector('input[name="has-career-plan"]:checked') || {}).value || '未選択',
-    companyPhone:  getVal('company-phone'),
-    devPosition:   getVal('dev-position'),
-    devName:       getVal('dev-name'),
-    workerRep:     getVal('worker-rep'),
-    hwName:        getVal('hw-name'),
-    hwDept:        getVal('hw-dept'),
-    hwPhone:       getVal('hw-phone'),
-    hwEmail:       getVal('hw-email'),
-    employees: [],
-    fileUrls
-  };
-
-  empCards.forEach(card => {
-    const id = card.id.replace('emp-', '');
-    const convNa = document.getElementById(`emp-conv-na-${id}`);
-    payload.employees.push({
-      name:      getVal(`emp-name-${id}`),
-      empType:   getVal(`emp-type-${id}`),
-      hireDate:  getVal(`emp-hire-${id}`),
-      convDate:  (convNa && convNa.checked) ? '該当なし' : getVal(`emp-conv-${id}`),
-      wageAfter: getVal(`emp-wage-${id}`),
-    });
-  });
-
-  try {
-    const res = await fetch(GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload)
-    });
-    const json = await res.json();
-    if (json.success) {
-      setProgress(100, '完了しました');
-      setTimeout(() => {
-        document.getElementById('form-area').style.display = 'none';
-        document.getElementById('success-screen').style.display = 'block';
-        window.scrollTo(0, 0);
-      }, 500);
-    } else {
-      throw new Error(json.error || '不明なエラー');
-    }
-  } catch (err) {
-    setProgress(0, '');
-    document.getElementById('status-msg').textContent = '送信に失敗しました: ' + err.message;
-    btn.disabled = false;
-  }
-}
   function setProgress(pct, msg) {
     document.getElementById('progress-fill').style.width = pct + '%';
     document.getElementById('status-msg').textContent = msg;
@@ -716,7 +657,6 @@
     const f = e.target.closest('.field, .has-error');
     if (f) { f.classList.remove('has-error'); e.target.style.borderColor = ''; }
   });
-
 </script>
 </body>
 </html>
