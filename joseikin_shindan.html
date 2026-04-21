@@ -3,505 +3,657 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>助成金簡易診断 | ネクストシーズン</title>
+<title>キャリアアップ助成金 申請フォーム | ネクストシーズン</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:#F5F4F0;color:#1a1a1a;line-height:1.6}
-.app{max-width:640px;margin:0 auto;padding:2rem 1rem}
-.header{text-align:center;margin-bottom:2rem}
-.header h1{font-size:22px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
-.header p{font-size:14px;color:#666}
-.progress-bar{height:4px;background:#e0ddd6;border-radius:2px;margin-bottom:2rem}
-.progress-fill{height:4px;background:#534AB7;border-radius:2px;transition:width 0.4s}
-.step-label{font-size:13px;color:#666;margin-bottom:0.5rem}
-.question-card{background:#fff;border:0.5px solid #ddd;border-radius:12px;padding:1.5rem;margin-bottom:1rem}
-.question-text{font-size:16px;font-weight:500;color:#1a1a1a;margin-bottom:1.25rem;line-height:1.6}
-.question-note{font-size:12px;color:#666;margin-bottom:1rem;line-height:1.5;background:#f5f4f0;padding:8px 10px;border-radius:8px}
-.options{display:flex;flex-direction:column;gap:8px}
-.option-btn{background:#fff;border:0.5px solid #ccc;border-radius:8px;padding:12px 16px;text-align:left;font-size:14px;color:#1a1a1a;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:10px;font-family:inherit}
-.option-btn:hover{background:#f5f4f0;border-color:#aaa}
-.option-btn.selected{background:#EEEDFE;border-color:#7F77DD;color:#3C3489}
-.option-btn.selected .chk{background:#534AB7;border-color:#534AB7}
-.option-btn.selected .chk::after{display:block}
-.chk{width:16px;height:16px;border:1.5px solid #ccc;border-radius:3px;flex-shrink:0;position:relative}
-.chk::after{content:'';display:none;width:4px;height:8px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);position:absolute;top:1px;left:4px}
-.multi-note{font-size:12px;color:#666;margin-bottom:8px}
-.nav{display:flex;justify-content:space-between;margin-top:1.25rem;gap:12px}
-.btn{padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer;border:0.5px solid #ccc;background:#fff;color:#1a1a1a;font-family:inherit}
-.btn:hover{background:#f5f4f0}
-.btn.primary{background:#534AB7;border-color:#534AB7;color:#fff}
-.btn.primary:hover{background:#3C3489}
-.btn:disabled{opacity:0.4;cursor:not-allowed}
-.result-header{text-align:center;padding:1.5rem 0 1rem}
-.result-title{font-size:20px;font-weight:500;color:#1a1a1a;margin-bottom:0.5rem}
-.result-sub{font-size:14px;color:#666}
-.grant-card{background:#fff;border:0.5px solid #ddd;border-radius:12px;padding:1.25rem;margin-bottom:10px}
-.grant-card.rank-high{border-left:3px solid #534AB7;border-radius:0 12px 12px 0}
-.grant-card.rank-mid{border-left:3px solid #1D9E75;border-radius:0 12px 12px 0}
-.grant-card.rank-ref{border-left:3px solid #BA7517;border-radius:0 12px 12px 0}
-.grant-name{font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:4px}
-.grant-amount{font-size:13px;font-weight:500;color:#534AB7;margin-bottom:4px}
-.grant-desc{font-size:13px;color:#555;line-height:1.6}
-.grant-note{font-size:12px;color:#666;margin-top:6px;padding:6px 8px;background:#f5f4f0;border-radius:6px;line-height:1.5}
-.badge{display:inline-block;font-size:11px;padding:3px 8px;border-radius:6px;margin-bottom:8px}
-.badge.p-high{background:#EEEDFE;color:#3C3489}
-.badge.p-mid{background:#E1F5EE;color:#085041}
-.badge.p-ref{background:#FAEEDA;color:#633806}
-.section-title{font-size:14px;font-weight:500;color:#666;margin:1.5rem 0 0.75rem}
-.info-form{background:#fff;border:0.5px solid #ddd;border-radius:12px;padding:1.25rem;margin-bottom:1rem}
-.field{margin-bottom:12px}
-.field label{display:block;font-size:13px;color:#666;margin-bottom:4px}
-.field input{width:100%;padding:9px 12px;border:0.5px solid #ccc;border-radius:8px;font-size:14px;color:#1a1a1a;background:#fff;font-family:inherit}
-.field input:focus{outline:none;border-color:#7F77DD;box-shadow:0 0 0 2px rgba(83,74,183,0.1)}
-.send-btn{width:100%;padding:14px;background:#534AB7;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;margin-top:0.5rem;font-family:inherit}
-.send-btn:hover{background:#3C3489}
-.send-btn:disabled{background:#AFA9EC;cursor:not-allowed}
-.success-msg{text-align:center;padding:2.5rem 1.5rem;background:#E1F5EE;border-radius:12px;border:0.5px solid #5DCAA5}
-.status-msg{font-size:13px;color:#666;text-align:center;margin-top:8px;min-height:20px}
-.restart-btn{margin-top:1rem;width:100%;padding:12px;background:#fff;color:#1a1a1a;border:0.5px solid #ccc;border-radius:8px;font-size:14px;cursor:pointer;font-family:inherit}
-.restart-btn:hover{background:#f5f4f0}
-.past-box{background:#f5f4f0;border-radius:8px;padding:12px 16px;margin-bottom:1rem}
-.result-preview{background:#f5f4f0;border-radius:8px;padding:12px 14px;font-size:13px;color:#555;line-height:1.8;white-space:pre-wrap;word-break:break-all}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #f5f4f0; color: #1a1a1a; line-height: 1.6; padding: 2rem 1rem 5rem; }
+  .container { max-width: 680px; margin: 0 auto; }
+  .page-header { margin-bottom: 2rem; }
+  .page-header .label { font-size: 12px; color: #888; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .page-header h1 { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; color: #666; }
+  .section { background: #fff; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; border: 1px solid #e8e6e0; }
+  .section-title { font-size: 13px; font-weight: 600; color: #534AB7; letter-spacing: 0.04em; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid #EEEDFE; display: flex; align-items: center; gap: 8px; }
+  .field { margin-bottom: 1rem; }
+  .field:last-child { margin-bottom: 0; }
+  label { display: block; font-size: 13px; font-weight: 500; color: #444; margin-bottom: 5px; }
+  .req { color: #e53e3e; margin-left: 3px; font-size: 11px; }
+  .opt { color: #999; margin-left: 4px; font-size: 11px; font-weight: 400; }
+  .hint { font-size: 12px; color: #888; margin-top: 3px; line-height: 1.5; }
+  input[type="text"], input[type="tel"], input[type="email"], input[type="date"], select, textarea { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; color: #1a1a1a; background: #fff; font-family: inherit; transition: border-color 0.15s, box-shadow 0.15s; appearance: none; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: #7F77DD; box-shadow: 0 0 0 3px rgba(83,74,183,0.1); }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+  textarea { resize: vertical; min-height: 64px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .error-msg { font-size: 12px; color: #e53e3e; margin-top: 4px; display: none; }
+  .has-error input, .has-error select { border-color: #e53e3e; }
+  .has-error .error-msg { display: block; }
+  .na-check { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 12px; color: #888; cursor: pointer; }
+  .na-check input[type="checkbox"] { width: 14px; height: 14px; margin: 0; accent-color: #534AB7; }
+  .na-disabled { opacity: 0.4; pointer-events: none; }
+  .sub-section { background: #f9f8ff; border: 1px solid #EEEDFE; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+  .sub-section-title { font-size: 12px; font-weight: 600; color: #534AB7; margin-bottom: 0.75rem; }
+  .emp-list { display: flex; flex-direction: column; gap: 12px; }
+  .emp-card { border: 1px solid #e0ddd6; border-radius: 10px; padding: 1.25rem; background: #fafafa; position: relative; }
+  .emp-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .emp-num { font-size: 13px; font-weight: 600; color: #534AB7; }
+  .remove-btn { font-size: 12px; color: #999; background: none; border: 1px solid #ddd; border-radius: 6px; padding: 3px 10px; cursor: pointer; font-family: inherit; }
+  .remove-btn:hover { color: #e53e3e; border-color: #e53e3e; background: #fff5f5; }
+  .add-emp-btn { width: 100%; padding: 12px; border: 1.5px dashed #7F77DD; border-radius: 10px; background: #fff; color: #534AB7; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; transition: all 0.15s; margin-top: 4px; }
+  .add-emp-btn:hover { background: #EEEDFE; }
+  .file-list { display: flex; flex-direction: column; gap: 10px; }
+  .file-item label { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+  .file-area { border: 1.5px dashed #ccc; border-radius: 8px; padding: 12px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; background: #fafafa; transition: all 0.15s; }
+  .file-area:hover { border-color: #7F77DD; background: #faf9ff; }
+  .file-area.selected { border-color: #534AB7; background: #EEEDFE; }
+  .file-area input[type="file"] { display: none; }
+  .file-area .icon { font-size: 18px; flex-shrink: 0; }
+  .file-area .file-meta { flex: 1; min-width: 0; }
+  .file-area .placeholder { font-size: 13px; color: #888; }
+  .file-area .fname { font-size: 13px; color: #3C3489; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: none; }
+  .file-area .fsize { font-size: 11px; color: #888; }
+  .sel-btn { font-size: 12px; padding: 4px 12px; border: 1px solid #aaa; border-radius: 6px; color: #555; background: #fff; cursor: pointer; flex-shrink: 0; font-family: inherit; }
+  .submit-area { margin-top: 1.5rem; }
+  .submit-btn { width: 100%; padding: 15px; background: #534AB7; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background 0.15s; }
+  .submit-btn:hover { background: #3C3489; }
+  .submit-btn:disabled { background: #AFA9EC; cursor: not-allowed; }
+  .progress-wrap { display: none; margin-top: 1rem; background: #e8e6e0; border-radius: 4px; height: 6px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #534AB7; border-radius: 4px; transition: width 0.3s; width: 0%; }
+  .status-msg { text-align: center; font-size: 13px; color: #666; margin-top: 10px; min-height: 20px; }
+  .success-screen { display: none; background: #fff; border-radius: 12px; padding: 3rem 2rem; text-align: center; border: 1px solid #e8e6e0; }
+  .success-screen .icon { font-size: 48px; margin-bottom: 1rem; }
+  .success-screen h2 { font-size: 20px; font-weight: 600; color: #085041; margin-bottom: 0.5rem; }
+  .success-screen p { font-size: 14px; color: #555; line-height: 1.8; }
+  .back-btn { margin-top: 1.5rem; padding: 10px 24px; border: 1px solid #ccc; border-radius: 8px; background: #fff; font-size: 14px; cursor: pointer; font-family: inherit; color: #444; }
+  .back-btn:hover { background: #f5f4f0; }
+  @media (max-width: 500px) { .row, .row3 { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
-<div class="app">
-  <div class="header">
-    <h1>助成金 簡易診断</h1>
-    <p>9つの質問に答えて、貴社に適した助成金を診断します</p>
+<div class="container">
+
+  <div class="page-header">
+    <div class="label">ネクストシーズン｜助成金申請サポート</div>
+    <h1>キャリアアップ助成金<br>申請フォーム</h1>
+    <p>正社員化コース｜必要情報と書類をまとめてご提出ください</p>
   </div>
-  <div id="main"></div>
+
+  <div id="form-area">
+
+    <!-- 企業情報 -->
+    <div class="section">
+      <div class="section-title">00 企業情報</div>
+      <div class="row">
+        <div class="field" id="f-company">
+          <label>会社名<span class="req">*必須</span></label>
+          <input type="text" id="company" placeholder="例：株式会社〇〇">
+          <div class="error-msg">会社名を入力してください</div>
+        </div>
+        <div class="field" id="f-company-phone">
+          <label>代表電話番号<span class="req">*必須</span></label>
+          <input type="tel" id="company-phone" placeholder="例：06-1234-5678">
+          <div class="error-msg">代表電話番号を入力してください</div>
+        </div>
+      </div>
+
+      <div class="sub-section" style="margin-top:1rem">
+        <div class="sub-section-title">企業必要書類について</div>
+
+        <!-- 1. 履歴事項全部証明書 -->
+        <div class="file-item" style="margin-bottom:0.75rem">
+          <label>履歴事項全部証明書<span class="req">*必須</span></label>
+          <div class="file-area" onclick="triggerFile('f-registry-company')">
+            <input type="file" id="f-registry-company" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-registry-company')">
+            <span class="icon">📄</span>
+            <div class="file-meta">
+              <div class="placeholder">クリックしてファイルを選択</div>
+              <div class="fname"></div><div class="fsize"></div>
+            </div>
+            <button class="sel-btn" type="button">選択</button>
+          </div>
+          <div class="hint">法務局で取得した会社の登記簿謄本（現在の登記内容が反映されているものでしたら取得時期は問いません。）</div>
+        </div>
+
+        <!-- 2. 雇用保険適用事業所設置届 -->
+        <div class="file-item" style="margin-bottom:0.75rem">
+          <label>雇用保険適用事業所設置届<span class="req">*必須</span></label>
+          <div class="file-area" onclick="triggerFile('f-emp-office-company')">
+            <input type="file" id="f-emp-office-company" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-emp-office-company')">
+            <span class="icon">📄</span>
+            <div class="file-meta">
+              <div class="placeholder">クリックしてファイルを選択</div>
+              <div class="fname"></div><div class="fsize"></div>
+            </div>
+            <button class="sel-btn" type="button">選択</button>
+          </div>
+          <div class="hint">ハローワークから交付された届出の控え</div>
+        </div>
+
+        <!-- 3. 就業規則 -->
+        <div class="field" style="margin-bottom:0.75rem">
+          <label>就業規則<span class="req">*必須</span></label>
+          <div style="display:flex;gap:16px;margin-top:4px">
+            <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
+              <input type="radio" name="has-rules" value="あり" onchange="toggleDocUpload('rules','あり')"> あり
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
+              <input type="radio" name="has-rules" value="なし" onchange="toggleDocUpload('rules','なし')"> なし
+            </label>
+          </div>
+          <div id="rules-upload-area" style="display:none;margin-top:10px">
+            <div class="file-area" onclick="triggerFile('f-rules-doc')">
+              <input type="file" id="f-rules-doc" accept=".pdf,.PDF,.doc,.docx" onchange="handleFile(this,'fi-rules-doc')">
+              <span class="icon">📄</span>
+              <div class="file-meta">
+                <div class="placeholder">クリックしてファイルを選択（Word推奨・PDF可）</div>
+                <div class="fname"></div><div class="fsize"></div>
+              </div>
+              <button class="sel-btn" type="button">選択</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. 賃金規定 -->
+        <div class="field" style="margin-bottom:0.75rem">
+          <label>賃金規定<span class="req">*必須</span></label>
+          <div style="display:flex;gap:16px;margin-top:4px">
+            <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
+              <input type="radio" name="has-wage-rules" value="あり" onchange="toggleDocUpload('wage-rules','あり')"> あり
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
+              <input type="radio" name="has-wage-rules" value="なし" onchange="toggleDocUpload('wage-rules','なし')"> なし
+            </label>
+          </div>
+          <div id="wage-rules-upload-area" style="display:none;margin-top:10px">
+            <div class="file-area" onclick="triggerFile('f-wage-rules-doc')">
+              <input type="file" id="f-wage-rules-doc" accept=".pdf,.PDF,.doc,.docx" onchange="handleFile(this,'fi-wage-rules-doc')">
+              <span class="icon">📄</span>
+              <div class="file-meta">
+                <div class="placeholder">クリックしてファイルを選択（Word推奨・PDF可）</div>
+                <div class="fname"></div><div class="fsize"></div>
+              </div>
+              <button class="sel-btn" type="button">選択</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. キャリアアップ計画書 -->
+        <div class="field" style="margin-bottom:0">
+          <label>キャリアアップ計画書<span class="req">*必須</span></label>
+          <div style="display:flex;gap:16px;margin-top:4px">
+            <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
+              <input type="radio" name="has-career-plan" value="あり" onchange="toggleDocUpload('career-plan','あり')"> あり（PDF添付）
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
+              <input type="radio" name="has-career-plan" value="なし" onchange="toggleDocUpload('career-plan','なし')"> なし
+            </label>
+          </div>
+          <div id="career-plan-upload-area" style="display:none;margin-top:10px">
+            <div class="file-area" onclick="triggerFile('f-career-plan-doc')">
+              <input type="file" id="f-career-plan-doc" accept=".pdf,.PDF" onchange="handleFile(this,'fi-career-plan-doc')">
+              <span class="icon">📄</span>
+              <div class="file-meta">
+                <div class="placeholder">クリックしてPDFを選択</div>
+                <div class="fname"></div><div class="fsize"></div>
+              </div>
+              <button class="sel-btn" type="button">選択</button>
+            </div>
+            <div class="hint">様式1号（ハローワーク受付印のあるもの）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 担当者情報 -->
+    <div class="section">
+      <div class="section-title">01 担当者情報</div>
+
+      <div class="sub-section">
+        <div class="sub-section-title">職業能力開発推進者（役員・管理監督者除く）</div>
+        <div class="row">
+          <div class="field" id="f-dev-position">
+            <label>役職<span class="req">*必須</span></label>
+            <input type="text" id="dev-position" placeholder="例：総務課長">
+            <div class="error-msg">役職を入力してください</div>
+          </div>
+          <div class="field" id="f-dev-name">
+            <label>氏名<span class="req">*必須</span></label>
+            <input type="text" id="dev-name" placeholder="例：鈴木 花子">
+            <div class="error-msg">氏名を入力してください</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-section-title">事業内職業能力開発計画・職業訓練実施計画の周知確認をする労働者代表者</div>
+        <div class="field" id="f-worker-rep">
+          <label>氏名<span class="req">*必須</span></label>
+          <input type="text" id="worker-rep" placeholder="例：田中 一郎">
+          <div class="error-msg">氏名を入力してください</div>
+        </div>
+      </div>
+
+      <div class="sub-section" style="margin-bottom:0">
+        <div class="sub-section-title">ハローワークからの問合せ対応窓口者</div>
+        <div class="row">
+          <div class="field" id="f-hw-name">
+            <label>氏名<span class="req">*必須</span></label>
+            <input type="text" id="hw-name" placeholder="例：山田 次郎">
+            <div class="error-msg">氏名を入力してください</div>
+          </div>
+          <div class="field" id="f-hw-dept">
+            <label>所属<span class="req">*必須</span></label>
+            <input type="text" id="hw-dept" placeholder="例：総務部">
+            <div class="error-msg">所属を入力してください</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field" id="f-hw-phone">
+            <label>連絡先電話番号<span class="req">*必須</span></label>
+            <input type="tel" id="hw-phone" placeholder="例：06-1234-5678">
+            <div class="error-msg">電話番号を入力してください</div>
+          </div>
+          <div class="field" id="f-hw-email">
+            <label>メールアドレス<span class="req">*必須</span></label>
+            <input type="email" id="hw-email" placeholder="例：info@example.com">
+            <div class="error-msg">メールアドレスを入力してください</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 従業員 -->
+    <div class="section">
+      <div class="section-title">02 対象従業員</div>
+
+      <div class="field" style="margin-bottom:1.25rem">
+        <label>申請する従業員は何人ですか？<span class="req">*必須</span></label>
+        <div style="display:flex;align-items:center;gap:12px">
+          <input type="number" id="emp-count-input" min="1" max="20" placeholder="例：2"
+            style="width:120px"
+            onchange="generateEmployees(this.value)"
+            oninput="generateEmployees(this.value)">
+          <span style="font-size:13px;color:#888">人</span>
+        </div>
+        <div class="hint">人数を入力すると従業員カードと書類添付欄が自動で表示されます</div>
+      </div>
+
+      <div class="emp-list" id="emp-list"></div>
+    </div>
+
+    <div class="submit-area">
+      <button class="submit-btn" id="submit-btn" onclick="submitForm()">送信する</button>
+      <div class="progress-wrap" id="progress-wrap"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="status-msg" id="status-msg"></div>
+    </div>
+
+  </div>
+
+  <div class="success-screen" id="success-screen">
+    <div class="icon">✅</div>
+    <h2>送信が完了しました</h2>
+    <p>入力内容と添付書類をお預かりしました。<br>スプレッドシートとGoogle Driveに保存されました。<br>担当者より改めてご連絡いたします。</p>
+    <button class="back-btn" onclick="resetForm()">もう一件入力する</button>
+  </div>
+
 </div>
 
 <script>
-const FORM_ID = '1jSK1mXDNsrfCWI9ojb89OKIbe2vc8433cxTnMmpbiIE';
-const ENTRIES = {
-  company: 'entry.390339182',
-  person:  'entry.1536140159',
-  address: 'entry.1474998369',
-  phone:   'entry.1191765169',
-  email:   'entry.1738854470',
-  result:  'entry.547101371'
-};
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycbxNcOJZ2EewIBenRFD3EQr2Xet3wxYawpqw-NkEwk8m0kTa60fYd-blc0ImLBkiBiEZGg/exec';
 
-const questions = [
-  {id:'industry', text:'貴社の業種を教えてください。', type:'single', label:'業種',
-    options:['製造業','小売・サービス業','医療・福祉','建設業','IT・情報通信','その他']},
-  {id:'employees', text:'従業員数を教えてください。', type:'single', label:'従業員数',
-    options:['5人以下','6〜20人','21〜100人','101〜300人','301人以上']},
-  {id:'parttime', text:'今後、社員（契約期間有り）を採用する予定はありますか？または、現在パート・アルバイト・契約社員として働いている方を正社員にする予定はありますか？', type:'single', label:'正社員採用・登用予定',
-    options:['予定している','検討中','いいえ']},
-  {id:'training', text:'1ヶ月以上先に、雇用保険に加入している従業員への職業訓練・研修の実施を予定または検討していますか？', type:'single', label:'職業訓練・研修',
-    note:'※ 雇用保険の被保険者が対象となります。',
-    options:['実施予定がある','検討している','予定なし']},
-  {id:'minwage', text:'現在の従業員の賃金は、地域別最低賃金＋50円以内に該当する方はいますか？また、賃金引き上げを予定していますか？', type:'single', label:'最低賃金引き上げ',
-    note:'※ 都道府県を選択すると地域の最低賃金が確認できます。対象従業員数により助成上限額が変わります。',
-    hasMinWageCalc: true,
-    options:['対象者がいて賃金引き上げを予定している','対象者がいて、いずれ引き上げたい','対象者がいない／予定なし']},
-  {id:'worklife', text:'雇用保険加入の従業員（男女問わず）で出産予定のある、またはご家族の介護（要介護2以上）で介護休暇を取得している従業員はいますか？もしくは今後そのような従業員が出る見込みはありますか？', type:'single', label:'両立支援への取り組み',
-    options:['該当する従業員がいる・見込みがある','すでに育児・介護休暇を取得している従業員がいる','現時点では該当する従業員はいない']},
-  {id:'senior', text:'現在、60歳以上の従業員は在籍していますか？', type:'single', label:'60歳以上の従業員',
-    note:'※ 65歳超雇用推進助成金の対象要件に関わります。',
-    options:['在籍している','今後採用・継続雇用を予定している','在籍していない・予定もない']},
-  {id:'past', text:'過去に申請・受給したことがある助成金を選んでください。', type:'multi', label:'過去の申請歴',
-    note:'※ 複数選択可。該当なしの場合は「なし」を選択してください。',
-    options:['キャリアアップ助成金','人材開発支援助成金','業務改善助成金','両立支援等助成金','65歳超雇用推進助成金','なし（申請・受給歴なし）']},
-  {id:'caution', text:'以下に該当する項目はありますか？', type:'multi', label:'要確認事項',
-    note:'※ 該当する場合、助成金の申請に影響する可能性があります。複数選択可。',
-    options:['過去1年以内に会社都合による解雇・雇い止めがある','労働保険（雇用保険・労災）に未加入','賃金の未払いがある','過去に助成金の不正受給がある','該当なし']}
-];
+  let empCount = 0;
+  const fileStore = {};
 
-function isSmall(a){ return a.employees !== '301人以上'; }
+  const EMP_TYPES = ['有期契約社員（期間の定めあり）','パート・アルバイト（期間の定めあり）','派遣社員','その他有期雇用'];
 
-
-const MIN_WAGE = {
-  '北海道':1075,'青森県':1029,'岩手県':1031,'宮城県':1038,'秋田県':1031,
-  '山形県':1032,'福島県':1033,'茨城県':1074,'栃木県':1068,'群馬県':1063,
-  '埼玉県':1141,'千葉県':1140,'東京都':1226,'神奈川県':1225,'新潟県':1050,
-  '富山県':1062,'石川県':1054,'福井県':1053,'山梨県':1052,'長野県':1061,
-  '岐阜県':1065,'静岡県':1097,'愛知県':1140,'三重県':1087,'滋賀県':1080,
-  '京都府':1122,'大阪府':1177,'兵庫県':1116,'奈良県':1051,'和歌山県':1045,
-  '鳥取県':1030,'島根県':1033,'岡山県':1047,'広島県':1085,'山口県':1043,
-  '徳島県':1046,'香川県':1036,'愛媛県':1033,'高知県':1023,'福岡県':1057,
-  '佐賀県':1030,'長崎県':1031,'熊本県':1034,'大分県':1035,'宮崎県':1023,
-  '鹿児島県':1026,'沖縄県':1023
-};
-
-const PREFECTURES = [
-  '北海道','青森県','岩手県','宮城県','秋田県','山形県','福島県',
-  '茨城県','栃木県','群馬県','埼玉県','千葉県','東京都','神奈川県',
-  '新潟県','富山県','石川県','福井県','山梨県','長野県','岐阜県',
-  '静岡県','愛知県','三重県','滋賀県','京都府','大阪府','兵庫県',
-  '奈良県','和歌山県','鳥取県','島根県','岡山県','広島県','山口県',
-  '徳島県','香川県','愛媛県','高知県','福岡県','佐賀県','長崎県',
-  '熊本県','大分県','宮崎県','鹿児島県','沖縄県'
-];
-
-const grants = [
-  {
-    id:'career', name:'キャリアアップ助成金',
-    desc:'非正規雇用労働者の正社員転換・処遇改善を支援する助成金です。',
-    getResult: a => {
-      const hasPast=(a.past||[]).includes('キャリアアップ助成金');
-      const amount=hasPast?'最大100万円（申請歴あり）':'最大120万円';
-      const note=hasPast?'過去に申請歴があるため加算額が変わります。詳細はご相談ください。':null;
-      if(a.parttime==='予定している') return {rank:'high',amount,note};
-      if(a.parttime==='検討中') return {rank:'mid',amount,note};
-      return {rank:'ref',amount:'—',note};
-    }
-  },
-  {
-    id:'jinzai', name:'人材開発支援助成金',
-    desc:'雇用保険加入従業員への職業訓練・研修費用を補助する助成金です。',
-    getResult: a => {
-      const hasPast=(a.past||[]).includes('人材開発支援助成金');
-      const rate=isSmall(a)?'最大75%補助（中小企業）':'最大60%補助（大企業）';
-      const note=hasPast?'同年度内の支給申請が3回の場合、影響する可能性があります。詳細はご相談ください。':null;
-      if(a.training==='実施予定がある') return {rank:'high',amount:rate,note};
-      if(a.training==='検討している') return {rank:'mid',amount:rate,note};
-      return {rank:'ref',amount:'—',note};
-    }
-  },
-  {
-    id:'gyomu', name:'業務改善助成金',
-    desc:'設備投資等により最低賃金を引き上げる中小企業を支援する助成金です。',
-    getResult: a => {
-      const hasPast=(a.past||[]).includes('業務改善助成金');
-      if(hasPast) return {rank:'ref',amount:'—',note:'同年度内の申請歴があるため、申請できない可能性があります。詳細はご相談ください。'};
-      const amount=a.employees==='5人以下'?'最大270万円':'最大600万円';
-      if(a.minwage==='対象者がいて賃金引き上げを予定している') return {rank:'high',amount,note:null};
-      if(a.minwage==='対象者がいて、いずれ引き上げたい') return {rank:'mid',amount,note:null};
-      return {rank:'ref',amount:'—',note:null};
-    }
-  },
-  {
-    id:'ryoritsu', name:'両立支援等助成金',
-    desc:'育児・介護と仕事の両立支援制度の導入・運用を支援する助成金です。',
-    getResult: a => {
-      const isLarge=a.employees==='301人以上';
-      const hasPast=(a.past||[]).includes('両立支援等助成金');
-      const n1=isLarge?'従業員301人以上の場合、一部コースの受給額・対象が異なる場合があります。詳細はご相談ください。':null;
-      const n2=hasPast?'年度内5人までの支給上限があります。詳細はご相談ください。':null;
-      const note=[n1,n2].filter(Boolean).join(' / ')||null;
-      const amount=isLarge?'要相談':'最大110万円';
-      if(a.worklife==='該当する従業員がいる・見込みがある') return {rank:'high',amount,note};
-      if(a.worklife==='すでに育児・介護休暇を取得している従業員がいる') return {rank:'mid',amount,note};
-      return {rank:'ref',amount:'—',note};
-    }
-  },
-  {
-    id:'senior65', name:'65歳超雇用推進助成金',
-    desc:'定年延長・高齢者雇用推進計画の策定・実施を支援する助成金です。',
-    getResult: a => {
-      const isLarge=a.employees==='301人以上';
-      const hasPast=(a.past||[]).includes('65歳超雇用推進助成金');
-      const n1=isLarge?'大企業の場合、助成率が中小企業より低くなる場合があります。詳細はご相談ください。':null;
-      const n2=hasPast?'無期雇用転換コースは年度内10人が上限です。詳細はご相談ください。':null;
-      const note=[n1,n2].filter(Boolean).join(' / ')||null;
-      const amount=isLarge?'助成率45%（大企業）':'最大160万円（中小企業）';
-      if(a.senior==='在籍している') return {rank:'high',amount,note};
-      if(a.senior==='今後採用・継続雇用を予定している') return {rank:'mid',amount,note};
-      return {rank:'ref',amount:'—',note};
-    }
-  }
-];
-
-const rankLabel={high:'優先度 高',mid:'優先度 中',ref:'優先度 参考'};
-const rankClass={high:'rank-high',mid:'rank-mid',ref:'rank-ref'};
-const badgeClass={high:'p-high',mid:'p-mid',ref:'p-ref'};
-
-let step=0,answers={},phase='quiz';
-
-function isAnswered(id,type){
-  if(type==='multi') return answers[id]&&answers[id].length>0;
-  return !!answers[id];
-}
-
-function render(){
-  const main=document.getElementById('main');
-  if(phase==='quiz') renderQuiz(main);
-  else if(phase==='result') renderResult(main);
-  else if(phase==='form') renderForm(main);
-  else if(phase==='done') renderDone(main);
-}
-
-function renderQuiz(main){
-  const q=questions[step];
-  const pct=Math.round((step/questions.length)*100);
-  main.innerHTML=`
-    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-    <div class="step-label">質問 ${step+1} / ${questions.length}</div>
-    <div class="question-card">
-      <div class="question-text">${q.text}</div>
-      ${q.note?`<div class="question-note">${q.note}</div>`:''}
-      ${q.type==='multi'?'<div class="multi-note">複数選択できます</div>':''}
-      <div class="options" id="opts"></div>
-    </div>
-    <div class="nav">
-      <button class="btn" onclick="goBack()" ${step===0?'disabled':''}>← 戻る</button>
-      <button class="btn primary" id="nextBtn" onclick="goNext()" ${isAnswered(q.id,q.type)?'':'disabled'}>
-        ${step===questions.length-1?'診断する':'次へ →'}
-      </button>
-    </div>`;
-  const opts=document.getElementById('opts');
-  // 最低賃金計算UI
-  if(q.hasMinWageCalc){
-    const calcDiv=document.createElement('div');
-    calcDiv.style.cssText='background:#f0eeff;border-radius:8px;padding:12px 14px;margin-bottom:12px';
-    const selPref=answers._pref||'';
-    const wage=selPref?MIN_WAGE[selPref]:null;
-    const threshold=wage?wage+50:null;
-    calcDiv.innerHTML=`
-      <p style="font-size:12px;color:#534AB7;margin-bottom:8px;font-weight:500">2025年度 地域別最低賃金を確認する</p>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <select id="pref_sel" style="padding:7px 10px;border:0.5px solid #ccc;border-radius:6px;font-size:13px;background:#fff;color:#1a1a1a;font-family:inherit">
-          <option value="">都道府県を選択</option>
-          ${PREFECTURES.map(p=>`<option value="${p}" ${selPref===p?'selected':''}>${p}</option>`).join('')}
-        </select>
-        ${wage?`<span style="font-size:14px;font-weight:500;color:#3C3489">最低賃金：${wage.toLocaleString()}円／時</span>`:''}
-      </div>
-      ${threshold?`
-      <div style="margin-top:10px">
-        <p style="font-size:12px;color:#534AB7;margin-bottom:6px">事業場内最低賃金を入力（任意）</p>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <input type="number" id="current_wage" placeholder="例：${wage}" value="${answers._currentWage||''}"
-            style="width:120px;padding:7px 10px;border:0.5px solid #ccc;border-radius:6px;font-size:13px;font-family:inherit">
-          <span style="font-size:13px;color:#666">円／時</span>
-          ${answers._currentWage?`<span style="font-size:13px;font-weight:500;color:${threshold-answers._currentWage>=0&&threshold-answers._currentWage<=50?'#1D9E75':'#BA7517'}">
-            差額：${threshold-answers._currentWage}円
-            ${threshold-answers._currentWage>=0&&threshold-answers._currentWage<=50?'✓ 対象の可能性あり':''}
-          </span>`:''}
+  function generateEmployees(val) {
+    const count = parseInt(val);
+    const list = document.getElementById('emp-list');
+    list.innerHTML = '';
+    if (!count || count < 1) return;
+    for (let n = 1; n <= count; n++) {
+      const card = document.createElement('div');
+      card.className = 'emp-card';
+      card.id = 'emp-' + n;
+      card.innerHTML = `
+        <div class="emp-card-header">
+          <span class="emp-num">従業員 ${n}人目</span>
         </div>
-        <p style="font-size:11px;color:#888;margin-top:4px">※ 最低賃金＋50円以内（${wage}〜${threshold}円）が対象目安です</p>
-      </div>`:''}
-    `;
-    opts.parentNode.insertBefore(calcDiv, opts);
-    document.getElementById('pref_sel').addEventListener('change',e=>{
-      answers._pref=e.target.value;
-      renderQuiz(main);
-    });
-    if(answers._pref){
-      setTimeout(()=>{
-        const wi=document.getElementById('current_wage');
-        if(wi){
-          wi.addEventListener('input',e=>{
-            answers._currentWage=e.target.value?parseInt(e.target.value):null;
-            renderQuiz(main);
-          });
-        }
-      },0);
+        <div class="row">
+          <div class="field">
+            <label>氏名<span class="req">*必須</span></label>
+            <input type="text" id="emp-name-${n}" placeholder="例：山田 次郎">
+          </div>
+          <div class="field">
+            <label>現在の雇用形態<span class="req">*必須</span></label>
+            <select id="emp-type-${n}">
+              <option value="">選択してください</option>
+              ${EMP_TYPES.map(t => '<option value="' + t + '">' + t + '</option>').join('')}
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>その働き方で働き始めた日<span class="req">*必須</span></label>
+            <input type="date" id="emp-hire-${n}">
+            <div class="hint">有期雇用・パートとして採用された日</div>
+          </div>
+          <div class="field" id="f-emp-conv-${n}">
+            <label>正社員転換予定日<span class="opt">任意</span></label>
+            <input type="date" id="emp-conv-${n}">
+            <label class="na-check">
+              <input type="checkbox" id="emp-conv-na-${n}" onchange="toggleNA(this,'emp-conv-${n}','f-emp-conv-${n}')">
+              該当なし
+            </label>
+          </div>
+        </div>
+        <div class="field" id="f-emp-wage-${n}">
+          <label>正社員後の月給<span class="opt">任意</span></label>
+          <input type="text" id="emp-wage-${n}" placeholder="例：220,000円">
+        </div>
+        <div style="border-top:1px solid #e8e6e0;margin-top:1rem;padding-top:1rem">
+          <div style="font-size:12px;font-weight:600;color:#534AB7;margin-bottom:0.75rem">📎 ${n}人目の必須書類</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="file-item">
+              <label style="font-size:12px;display:block;margin-bottom:4px">雇用保険被保険者資格喪失届<span class="req">*必須</span></label>
+              <div class="file-area" onclick="triggerFile('f-emp-loss-${n}')">
+                <input type="file" id="f-emp-loss-${n}" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-emp-loss-${n}')">
+                <span class="icon">📄</span>
+                <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
+                <button class="sel-btn" type="button">選択</button>
+              </div>
+            </div>
+            <div class="file-item">
+              <label style="font-size:12px;display:block;margin-bottom:4px">転換前の雇用契約書<span class="req">*必須</span></label>
+              <div class="file-area" onclick="triggerFile('f-contract-before-${n}')">
+                <input type="file" id="f-contract-before-${n}" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-contract-before-${n}')">
+                <span class="icon">📄</span>
+                <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
+                <button class="sel-btn" type="button">選択</button>
+              </div>
+            </div>
+            <div class="file-item">
+              <label style="font-size:12px;display:block;margin-bottom:4px">賃金台帳<span class="req">*必須</span></label>
+              <div class="file-area" onclick="triggerFile('f-wage-${n}')">
+                <input type="file" id="f-wage-${n}" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-wage-${n}')">
+                <span class="icon">📄</span>
+                <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
+                <button class="sel-btn" type="button">選択</button>
+              </div>
+              <div style="font-size:11px;color:#888;margin-top:3px">直近〜6ヶ月分（雇用6ヶ月未満の場合は提出できる期間のみで可）</div>
+            </div>
+            <div class="file-item">
+              <label style="font-size:12px;display:block;margin-bottom:4px">出勤簿・タイムカード<span class="req">*必須</span></label>
+              <div class="file-area" onclick="triggerFile('f-timesheet-${n}')">
+                <input type="file" id="f-timesheet-${n}" accept=".pdf,.PDF,.jpg,.jpeg,.png" onchange="handleFile(this,'fi-timesheet-${n}')">
+                <span class="icon">📄</span>
+                <div class="file-meta"><div class="placeholder">クリックしてファイルを選択</div><div class="fname"></div><div class="fsize"></div></div>
+                <button class="sel-btn" type="button">選択</button>
+              </div>
+              <div style="font-size:11px;color:#888;margin-top:3px">直近〜6ヶ月分（雇用6ヶ月未満の場合は提出できる期間のみで可）</div>
+            </div>
+          </div>
+        </div>
+      `;
+      list.appendChild(card);
     }
   }
 
-  if(q.type==='multi'){
-    if(!answers[q.id]) answers[q.id]=[];
-    const noneOpt=q.id==='caution'?'該当なし':'なし（申請・受給歴なし）';
-    q.options.forEach(opt=>{
-      const isNone=opt===noneOpt;
-      const sel=answers[q.id].includes(opt);
-      const btn=document.createElement('button');
-      btn.className='option-btn'+(sel?' selected':'');
-      btn.innerHTML=`<span class="chk"></span>${opt}`;
-      btn.onclick=()=>{
-        if(isNone){answers[q.id]=sel?[]:[opt];}
-        else{
-          answers[q.id]=answers[q.id].filter(x=>x!==noneOpt);
-          if(answers[q.id].includes(opt)) answers[q.id]=answers[q.id].filter(x=>x!==opt);
-          else answers[q.id].push(opt);
-        }
-        renderQuiz(main);
-      };
-      opts.appendChild(btn);
-    });
-  } else {
-    q.options.forEach(opt=>{
-      const btn=document.createElement('button');
-      btn.className='option-btn'+(answers[q.id]===opt?' selected':'');
-      btn.textContent=opt;
-      btn.onclick=()=>{
-        answers[q.id]=opt;
-        document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));
-        btn.classList.add('selected');
-        document.getElementById('nextBtn').disabled=false;
-      };
-      opts.appendChild(btn);
-    });
+  function toggleDocUpload(type, val) {
+    const area = document.getElementById(type + '-upload-area');
+    if (area) area.style.display = val === 'あり' ? 'block' : 'none';
   }
-}
 
-function goNext(){
-  if(!isAnswered(questions[step].id,questions[step].type)) return;
-  if(step<questions.length-1){step++;render();}
-  else{phase='result';render();}
-}
-function goBack(){if(step>0){step--;render();}}
-
-function getResults(){
-  return grants.map(g=>({...g,result:g.getResult(answers)}));
-}
-
-function getCautionItems(){
-  return (answers.caution||[]).filter(x=>x!=='該当なし');
-}
-
-function buildResultText(){
-  const results=getResults();
-  const cautions=getCautionItems();
-  const sorted=[...results].sort((a,b)=>({high:0,mid:1,ref:2}[a.result.rank]-{high:0,mid:1,ref:2}[b.result.rank]));
-
-  let t='【回答内容】\n';
-  questions.forEach(q=>{
-    if(q.type==='multi'){
-      const val=(answers[q.id]||[]);
-      t+=`・${q.label}：${val.length>0?val.join('、'):'未回答'}\n`;
+  function toggleNA(cb, inputId, fieldId) {
+    const input = document.getElementById(inputId);
+    if (cb.checked) {
+      input.disabled = true;
+      input.value = '';
+      input.style.opacity = '0.4';
     } else {
-      t+=`・${q.label}：${answers[q.id]||'未回答'}\n`;
+      input.disabled = false;
+      input.style.opacity = '1';
     }
-  });
-
-  t+='\n【診断結果】\n';
-  sorted.forEach(g=>{
-    t+=`\n${rankLabel[g.result.rank]}：${g.name}`;
-    if(g.result.amount&&g.result.amount!=='—') t+=`（${g.result.amount}）`;
-    if(g.result.note) t+=`\n　※${g.result.note}`;
-  });
-
-  const past=answers.past||[];
-  t+=`\n\n【過去の申請歴】${past.length>0?past.join('、'):'なし'}`;
-  if(cautions.length>0) t+=`\n\n【要確認事項】\n${cautions.map(c=>`・${c}`).join('\n')}`;
-  return t;
-}
-
-// 助成金IDごとの最大金額（万円）※人材開発支援は%表示のため除外
-const grantMaxAmount={
-  career: a => (a.past||[]).includes('キャリアアップ助成金') ? 100 : 120,
-  gyomu:  a => a.employees==='5人以下' ? 270 : 600,
-  ryoritsu: a => a.employees==='301人以上' ? 0 : 110,
-  senior65: a => a.employees==='301人以上' ? 0 : 160,
-  jinzai: a => 0  // %表示のため合計から除外
-};
-
-function calcTotal(results){
-  const highMid=results.filter(g=>g.result.rank==='high'||g.result.rank==='mid');
-  let total=0;
-  let hasJinzai=false;
-  let hasLargeCompany=false;
-  highMid.forEach(g=>{
-    if(g.id==='jinzai'){hasJinzai=true;return;}
-    if(g.id==='ryoritsu'&&answers.employees==='301人以上'){hasLargeCompany=true;return;}
-    if(g.id==='senior65'&&answers.employees==='301人以上'){hasLargeCompany=true;return;}
-    const fn=grantMaxAmount[g.id];
-    if(fn) total+=fn(answers);
-  });
-  return {total, hasJinzai, hasLargeCompany};
-}
-
-function renderResult(main){
-  const results=getResults();
-  const past=answers.past||[];
-  const sorted=[...results].sort((a,b)=>({high:0,mid:1,ref:2}[a.result.rank]-{high:0,mid:1,ref:2}[b.result.rank]));
-  const {total, hasJinzai, hasLargeCompany}=calcTotal(results);
-
-  const cardsHTML=sorted.map(g=>`
-    <div class="grant-card ${rankClass[g.result.rank]}">
-      <span class="badge ${badgeClass[g.result.rank]}">${rankLabel[g.result.rank]}</span>
-      <div class="grant-name">${g.name}</div>
-      ${g.result.amount&&g.result.amount!=='—'?`<div class="grant-amount">${g.result.amount}</div>`:''}
-      <div class="grant-desc">${g.desc}</div>
-      ${g.result.note?`<div class="grant-note">※ ${g.result.note}</div>`:''}
-    </div>`).join('');
-
-  // 合計金額ボックス
-  const highMidCount=results.filter(g=>g.result.rank==='high'||g.result.rank==='mid').length;
-  let totalHTML='';
-  if(highMidCount>0){
-    const notes=[];
-    if(hasJinzai) notes.push('※ 人材開発支援助成金は研修費用の補助率による（別途）');
-    if(hasLargeCompany) notes.push('※ 大企業対象の助成金は助成率による（別途）');
-    totalHTML=`
-      <div style="background:#EEEDFE;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem;text-align:center">
-        <p style="font-size:12px;color:#534AB7;margin-bottom:6px">最大受給可能額（優先度 高・中の合計）</p>
-        <p style="font-size:28px;font-weight:500;color:#3C3489">約 ${total.toLocaleString()} 万円</p>
-        ${notes.map(n=>`<p style="font-size:11px;color:#7F77DD;margin-top:4px">${n}</p>`).join('')}
-      </div>`;
   }
 
-  main.innerHTML=`
-    <div class="result-header">
-      <div class="result-title">診断結果</div>
-      <div class="result-sub">回答内容をもとに適した助成金を表示しています</div>
-    </div>
-    ${totalHTML}
-    ${cardsHTML}
-    <div class="past-box">
-      <p style="font-size:12px;color:#666;margin-bottom:4px">過去の申請歴</p>
-      <p style="font-size:14px">${past.length>0?past.join('、'):'なし'}</p>
-    </div>
-    <div class="section-title">詳しい情報をネクストシーズンに送信する</div>
-    <button class="send-btn" onclick="phase='form';render()">企業情報を入力して送信する →</button>
-    <button class="restart-btn" onclick="restart()">最初からやり直す</button>`;
-}
+  function triggerFile(inputId) { document.getElementById(inputId).click(); }
 
-function renderForm(main){
-  main.innerHTML=`
-    <div class="step-label" style="margin-bottom:1rem">企業情報の入力</div>
-    <div class="info-form">
-      <div class="field"><label>会社名（法人の場合、法人格も記載） *</label><input id="f_company" type="text" placeholder="株式会社〇〇"></div>
-      <div class="field"><label>担当者名 *</label><input id="f_person" type="text" placeholder="山田 太郎"></div>
-      <div class="field"><label>登記住所</label><input id="f_address" type="text" placeholder="大阪府大阪市〇〇区..."></div>
-      <div class="field"><label>電話番号 *</label><input id="f_phone" type="tel" placeholder="06-1234-5678"></div>
-      <div class="field"><label>メールアドレス *</label><input id="f_email" type="email" placeholder="info@example.com"></div>
-    </div>
-    <div class="section-title" style="margin-top:0">送信される内容</div>
-    <div class="result-preview">${buildResultText()}</div>
-    <button class="send-btn" id="submitBtn" onclick="submitForm()" style="margin-top:1rem">ネクストシーズンに送信する</button>
-    <div class="status-msg" id="statusMsg"></div>
-    <button class="restart-btn" onclick="phase='result';render()">← 診断結果に戻る</button>`;
-}
-
-function submitForm(){
-  const company=document.getElementById('f_company').value.trim();
-  const person=document.getElementById('f_person').value.trim();
-  const address=document.getElementById('f_address').value.trim();
-  const phone=document.getElementById('f_phone').value.trim();
-  const email=document.getElementById('f_email').value.trim();
-  if(!company||!person||!phone||!email){
-    document.getElementById('statusMsg').textContent='※ 必須項目（会社名・担当者名・電話番号・メールアドレス）を入力してください';
-    return;
+  function handleFile(input, itemId) {
+    const file = input.files[0];
+    if (!file) return;
+    fileStore[itemId] = file;
+    const area = input.closest('.file-area');
+    area.classList.add('selected');
+    area.style.borderColor = '';
+    area.querySelector('.placeholder').style.display = 'none';
+    const fn = area.querySelector('.fname');
+    fn.textContent = file.name;
+    fn.style.display = 'block';
+    area.querySelector('.fsize').textContent = fmtSize(file.size);
   }
-  const btn=document.getElementById('submitBtn');
-  btn.disabled=true;btn.textContent='送信中...';
-  document.getElementById('statusMsg').textContent='';
-  const params=new URLSearchParams();
-  params.append(ENTRIES.company,company);
-  params.append(ENTRIES.person,person);
-  params.append(ENTRIES.address,address);
-  params.append(ENTRIES.phone,phone);
-  params.append(ENTRIES.email,email);
-  params.append(ENTRIES.result,buildResultText());
-  fetch(`https://docs.google.com/forms/d/${FORM_ID}/formResponse`,{
-    method:'POST',mode:'no-cors',
-    headers:{'Content-Type':'application/x-www-form-urlencoded'},
-    body:params.toString()
-  }).then(()=>{phase='done';render();})
-  .catch(()=>{
-    btn.disabled=false;btn.textContent='ネクストシーズンに送信する';
-    document.getElementById('statusMsg').textContent='送信に失敗しました。通信環境を確認してください。';
+
+  function fmtSize(b) {
+    if (b < 1024) return b + ' B';
+    if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+    return (b/1048576).toFixed(1) + ' MB';
+  }
+
+  function toBase64(file) {
+    return new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = e => res(e.target.result.split(',')[1]);
+      r.onerror = rej;
+      r.readAsDataURL(file);
+    });
+  }
+
+  function getVal(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+  }
+
+  function validate() {
+    let ok = true;
+    const requiredFields = [
+      ['company', 'f-company'],
+      ['company-phone', 'f-company-phone'],
+      ['dev-position', 'f-dev-position'],
+      ['dev-name', 'f-dev-name'],
+      ['worker-rep', 'f-worker-rep'],
+      ['hw-name', 'f-hw-name'],
+      ['hw-dept', 'f-hw-dept'],
+      ['hw-phone', 'f-hw-phone'],
+      ['hw-email', 'f-hw-email'],
+    ];
+    requiredFields.forEach(([id, fid]) => {
+      const el = document.getElementById(id);
+      const f = document.getElementById(fid);
+      if (el && !el.value.trim()) { f.classList.add('has-error'); ok = false; }
+      else if (f) f.classList.remove('has-error');
+    });
+    const empCountInput = document.getElementById('emp-count-input');
+    const cards = document.querySelectorAll('.emp-card');
+    if (!empCountInput.value || cards.length === 0) {
+      document.getElementById('status-msg').textContent = '※ 申請する従業員の人数を入力してください';
+      empCountInput.style.borderColor = '#e53e3e';
+      ok = false;
+    } else {
+      empCountInput.style.borderColor = '';
+    }
+    cards.forEach(card => {
+      const id = card.id.replace('emp-', '');
+      ['name','type','hire'].forEach(f => {
+        const el = document.getElementById(`emp-${f}-${id}`);
+        if (el && !el.value.trim()) { el.style.borderColor='#e53e3e'; ok = false; }
+        else if (el) el.style.borderColor='';
+      });
+      const requiredFiles = [
+        [`fi-emp-loss-${id}`, '雇用保険被保険者資格喪失届'],
+        [`fi-contract-before-${id}`, '転換前の雇用契約書'],
+        [`fi-wage-${id}`, '賃金台帳'],
+        [`fi-timesheet-${id}`, '出勤簿・タイムカード'],
+      ];
+      requiredFiles.forEach(([fileId]) => {
+        const fileInput = document.getElementById(fileId.replace('fi-','f-'));
+        if (!fileStore[fileId]) {
+          const area = fileInput ? fileInput.closest('.file-area') : null;
+          if (area) { area.style.borderColor = '#e53e3e'; area.style.borderStyle = 'dashed'; }
+          ok = false;
+          document.getElementById('status-msg').textContent = '※ 必須書類をすべて添付してください';
+        }
+      });
+    });
+    ['fi-registry-company','fi-emp-office-company'].forEach(fileId => {
+      const fileInput = document.getElementById(fileId.replace('fi-','f-'));
+      if (!fileStore[fileId]) {
+        const area = fileInput ? fileInput.closest('.file-area') : null;
+        if (area) { area.style.borderColor = '#e53e3e'; area.style.borderStyle = 'dashed'; }
+        ok = false;
+        document.getElementById('status-msg').textContent = '※ 必須書類をすべて添付してください';
+      }
+    });
+    return ok;
+  }
+
+  async function submitForm() {
+    if (!validate()) {
+      if (!document.getElementById('status-msg').textContent)
+        document.getElementById('status-msg').textContent = '※ 必須項目を入力してください';
+      return;
+    }
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    document.getElementById('progress-wrap').style.display = 'block';
+    setProgress(5, '準備中...');
+
+    const company = getVal('company');
+    const date = new Date().toISOString().replace(/[:.]/g,'').slice(0,15);
+    const sessionId = (company || '未入力') + '_' + date;
+
+    const fileUrls = {};
+
+    const commonFiles = [
+      ['履歴事項全部証明書',       'fi-registry-company'],
+      ['雇用保険適用事業所設置届', 'fi-emp-office-company'],
+      ['就業規則',                 'fi-rules-doc'],
+      ['賃金規定',                 'fi-wage-rules-doc'],
+      ['キャリアアップ計画書',     'fi-career-plan-doc'],
+    ];
+    const empCards = document.querySelectorAll('.emp-card');
+    const empFileTypes = [
+      ['雇用保険被保険者資格喪失届', 'fi-emp-loss'],
+      ['転換前雇用契約書',           'fi-contract-before'],
+      ['賃金台帳',                   'fi-wage'],
+      ['出勤簿',                     'fi-timesheet'],
+    ];
+
+    const uploadQueue = [];
+    commonFiles.forEach(([label, key]) => {
+      if (fileStore[key]) uploadQueue.push({ label, key, file: fileStore[key] });
+    });
+    empCards.forEach(card => {
+      const empId = card.id.replace('emp-', '');
+      const empName = (document.getElementById(`emp-name-${empId}`) || {}).value || empId + '人目';
+      empFileTypes.forEach(([fileName, fileKey]) => {
+        const storeKey = `${fileKey}-${empId}`;
+        if (fileStore[storeKey]) {
+          uploadQueue.push({ label: empName + '_' + fileName, key: storeKey, file: fileStore[storeKey] });
+        }
+      });
+    });
+
+    for (let i = 0; i < uploadQueue.length; i++) {
+      const { label, file } = uploadQueue[i];
+      setProgress(10 + Math.round((i / (uploadQueue.length + 1)) * 60), `送信中 (${i+1}/${uploadQueue.length}): ${label}`);
+      const b64 = await toBase64(file);
+      try {
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            type: 'file',
+            sessionId,
+            label,
+            fileName: file.name,
+            mimeType: file.type || 'application/pdf',
+            content: b64
+          })
+        });
+        const json = await res.json();
+        if (json.url) fileUrls[label] = json.url;
+      } catch (err) {
+        console.warn('ファイル送信エラー:', label, err);
+      }
+    }
+
+    setProgress(80, 'データを送信中...');
+    const payload = {
+      type: 'submit',
+      sessionId,
+      company,
+      hasRules:      (document.querySelector('input[name="has-rules"]:checked') || {}).value || '未選択',
+      hasWageRules:  (document.querySelector('input[name="has-wage-rules"]:checked') || {}).value || '未選択',
+      hasCareerPlan: (document.querySelector('input[name="has-career-plan"]:checked') || {}).value || '未選択',
+      companyPhone:  getVal('company-phone'),
+      devPosition:   getVal('dev-position'),
+      devName:       getVal('dev-name'),
+      workerRep:     getVal('worker-rep'),
+      hwName:        getVal('hw-name'),
+      hwDept:        getVal('hw-dept'),
+      hwPhone:       getVal('hw-phone'),
+      hwEmail:       getVal('hw-email'),
+      employees: [],
+      fileUrls
+    };
+
+    empCards.forEach(card => {
+      const id = card.id.replace('emp-', '');
+      const convNa = document.getElementById(`emp-conv-na-${id}`);
+      payload.employees.push({
+        name:      getVal(`emp-name-${id}`),
+        empType:   getVal(`emp-type-${id}`),
+        hireDate:  getVal(`emp-hire-${id}`),
+        convDate:  (convNa && convNa.checked) ? '該当なし' : getVal(`emp-conv-${id}`),
+        wageAfter: getVal(`emp-wage-${id}`),
+      });
+    });
+
+    try {
+      const res = await fetch(GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json();
+      if (json.success) {
+        setProgress(100, '完了しました');
+        setTimeout(() => {
+          document.getElementById('form-area').style.display = 'none';
+          document.getElementById('success-screen').style.display = 'block';
+          window.scrollTo(0, 0);
+        }, 500);
+      } else {
+        throw new Error(json.error || '不明なエラー');
+      }
+    } catch (err) {
+      setProgress(0, '');
+      document.getElementById('status-msg').textContent = '送信に失敗しました: ' + err.message;
+      btn.disabled = false;
+    }
+  }
+
+  function setProgress(pct, msg) {
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('status-msg').textContent = msg;
+  }
+
+  function resetForm() { location.reload(); }
+
+  document.addEventListener('input', e => {
+    const f = e.target.closest('.field, .has-error');
+    if (f) { f.classList.remove('has-error'); e.target.style.borderColor = ''; }
   });
-}
-
-function renderDone(main){
-  main.innerHTML=`
-    <div class="success-msg">
-      <p style="font-size:22px;margin-bottom:0.75rem">✓</p>
-      <p style="font-size:18px;font-weight:500;margin-bottom:0.75rem;color:#085041">送信が完了しました</p>
-      <p style="color:#085041;font-size:14px;line-height:1.8">診断結果と企業情報をネクストシーズンに送信しました。<br>担当者より改めてご連絡いたします。</p>
-    </div>
-    <button class="restart-btn" onclick="restart()">最初からやり直す</button>`;
-}
-
-function restart(){step=0;answers={};phase='quiz';render();}
-render();
 </script>
 </body>
 </html>
