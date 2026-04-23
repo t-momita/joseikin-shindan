@@ -7,589 +7,248 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #0f1f3d;
-    --blue: #1a4fa0;
-    --accent: #2e7df7;
-    --light-blue: #e8f0fe;
-    --green: #1e8c5a;
-    --light-green: #e6f4ee;
-    --gray: #f5f6fa;
-    --border: #dde2ee;
-    --text: #1a2340;
-    --muted: #6b7a99;
-    --white: #ffffff;
-    --error: #d93025;
-    --warning: #f9ab00;
+    --navy: #0f1f3d; --blue: #1a4fa0; --accent: #2e7df7;
+    --light-blue: #e8f0fe; --green: #1e8c5a; --light-green: #e6f4ee;
+    --gray: #f5f6fa; --border: #dde2ee; --text: #1a2340;
+    --muted: #6b7a99; --white: #ffffff; --error: #d93025; --warning: #f9ab00;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', sans-serif; background: #f0f3fa; color: var(--text); min-height: 100vh; }
 
-  body {
-    font-family: 'Noto Sans JP', sans-serif;
-    background: #f0f3fa;
-    color: var(--text);
-    min-height: 100vh;
-  }
+  .header { background: var(--navy); padding: 16px 32px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+  .header-logo { font-family: 'DM Serif Display', serif; color: white; font-size: 20px; }
+  .header-badge { background: var(--accent); color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; }
+  .header-sub { color: rgba(255,255,255,0.5); font-size: 13px; margin-left: auto; }
 
-  /* ヘッダー */
-  .header {
-    background: var(--navy);
-    padding: 16px 32px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
-  }
-  .header-logo {
-    font-family: 'DM Serif Display', serif;
-    color: var(--white);
-    font-size: 20px;
-    letter-spacing: 0.5px;
-  }
-  .header-badge {
-    background: var(--accent);
-    color: white;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 20px;
-    letter-spacing: 1px;
-  }
-  .header-sub {
-    color: rgba(255,255,255,0.5);
-    font-size: 13px;
-    margin-left: auto;
-  }
-
-  /* ステップインジケーター */
-  .step-bar {
-    background: var(--white);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 32px;
-    display: flex;
-    align-items: center;
-    gap: 0;
-    overflow-x: auto;
-  }
-  .step-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    white-space: nowrap;
-  }
-  .step-num {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 700;
-  }
-  .step-item.active .step-num {
-    background: var(--accent);
-    color: white;
-  }
-  .step-item.inactive .step-num {
-    background: var(--border);
-    color: var(--muted);
-  }
-  .step-label {
-    font-size: 13px;
-    font-weight: 500;
-  }
+  .step-bar { background: white; border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; overflow-x: auto; }
+  .step-item { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+  .step-item.active .step-num { background: var(--accent); color: white; }
+  .step-item.inactive .step-num { background: var(--border); color: var(--muted); }
+  .step-label { font-size: 13px; font-weight: 500; }
   .step-item.active .step-label { color: var(--accent); }
   .step-item.inactive .step-label { color: var(--muted); }
-  .step-arrow {
-    margin: 0 16px;
-    color: var(--border);
-    font-size: 18px;
-  }
+  .step-arrow { margin: 0 16px; color: var(--border); font-size: 18px; }
 
-  /* メインコンテンツ */
-  .main {
-    max-width: 760px;
-    margin: 32px auto;
-    padding: 0 20px 60px;
-  }
+  .main { max-width: 800px; margin: 32px auto; padding: 0 20px 60px; }
+  .page-title { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--navy); margin-bottom: 6px; }
+  .page-desc { color: var(--muted); font-size: 14px; margin-bottom: 32px; line-height: 1.7; }
 
-  .page-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 28px;
-    color: var(--navy);
-    margin-bottom: 6px;
-  }
-  .page-desc {
-    color: var(--muted);
-    font-size: 14px;
-    margin-bottom: 32px;
-    line-height: 1.7;
-  }
+  .section-label { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 2px; margin-bottom: 10px; margin-top: 28px; }
+  .section-label::before { content: ''; display: inline-block; width: 4px; height: 16px; background: var(--accent); border-radius: 2px; }
 
-  /* カード */
-  .card {
-    background: var(--white);
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    margin-bottom: 20px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  }
-  .card-header {
-    background: var(--navy);
-    padding: 14px 24px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .card-header-icon {
-    font-size: 18px;
-  }
-  .card-header-title {
-    color: white;
-    font-size: 15px;
-    font-weight: 700;
-  }
-  .card-header-sub {
-    color: rgba(255,255,255,0.6);
-    font-size: 12px;
-    margin-left: auto;
-  }
-  .card-body {
-    padding: 24px;
-  }
+  .card { background: white; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .card-header { background: var(--navy); padding: 14px 24px; display: flex; align-items: center; gap: 10px; }
+  .card-header-icon { font-size: 18px; }
+  .card-header-title { color: white; font-size: 14px; font-weight: 700; line-height: 1.4; }
+  .card-body { padding: 24px; }
 
-  /* フォーム */
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .form-grid.full { grid-template-columns: 1fr; }
-
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
+  .field { display: flex; flex-direction: column; gap: 6px; }
   .field.span2 { grid-column: span 2; }
 
-  label {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--navy);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .req {
-    background: var(--error);
-    color: white;
-    font-size: 10px;
-    padding: 1px 5px;
-    border-radius: 3px;
-    font-weight: 700;
-  }
-  .opt {
-    background: var(--muted);
-    color: white;
-    font-size: 10px;
-    padding: 1px 5px;
-    border-radius: 3px;
-  }
+  label { font-size: 13px; font-weight: 700; color: var(--navy); display: flex; align-items: center; gap: 6px; }
+  .label-hint { font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 2px; line-height: 1.5; }
+  .req { background: var(--error); color: white; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; }
 
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"],
-  select {
-    height: 44px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    padding: 0 14px;
-    font-size: 14px;
-    font-family: 'Noto Sans JP', sans-serif;
-    color: var(--text);
-    background: white;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none;
-    width: 100%;
+  input[type="text"], input[type="email"], input[type="tel"] {
+    height: 44px; border: 1.5px solid var(--border); border-radius: 8px;
+    padding: 0 14px; font-size: 14px; font-family: 'Noto Sans JP', sans-serif;
+    color: var(--text); background: white; transition: border-color 0.2s, box-shadow 0.2s; outline: none; width: 100%;
   }
-  input:focus, select:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(46,125,247,0.12);
-  }
-  input.error { border-color: var(--error); }
+  input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(46,125,247,0.12); }
 
-  /* ラジオボタン（就業規則） */
-  .radio-group {
-    display: flex;
-    gap: 12px;
-  }
-  .radio-btn {
-    flex: 1;
-    position: relative;
-  }
-  .radio-btn input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-  }
-  .radio-btn label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 44px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.2s;
-    color: var(--muted);
-  }
-  .radio-btn input:checked + label {
-    border-color: var(--accent);
-    background: var(--light-blue);
-    color: var(--accent);
-    font-weight: 700;
-  }
+  .radio-group { display: flex; gap: 10px; }
+  .radio-btn { flex: 1; position: relative; }
+  .radio-btn input[type="radio"] { position: absolute; opacity: 0; width: 0; }
+  .radio-btn label { display: flex; align-items: center; justify-content: center; height: 42px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; color: var(--muted); }
+  .radio-btn input:checked + label { border-color: var(--accent); background: var(--light-blue); color: var(--accent); font-weight: 700; }
 
-  /* ファイルアップロード */
-  .file-upload {
-    border: 2px dashed var(--border);
-    border-radius: 8px;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: var(--gray);
-    position: relative;
-  }
-  .file-upload:hover, .file-upload.dragover {
-    border-color: var(--accent);
-    background: var(--light-blue);
-  }
-  .file-upload input[type="file"] {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-  }
-  .file-upload-icon { font-size: 28px; margin-bottom: 6px; }
+  .file-upload { border: 2px dashed var(--border); border-radius: 8px; padding: 14px 18px; cursor: pointer; transition: all 0.2s; background: var(--gray); position: relative; display: flex; align-items: center; gap: 12px; }
+  .file-upload:hover { border-color: var(--accent); background: var(--light-blue); }
+  .file-upload input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .file-upload-icon { font-size: 22px; flex-shrink: 0; }
   .file-upload-text { font-size: 13px; color: var(--muted); }
-  .file-upload-hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
-  .file-selected {
-    display: none;
-    align-items: center;
-    gap: 8px;
-    background: var(--light-green);
-    border: 1.5px solid var(--green);
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 13px;
-    color: var(--green);
-    font-weight: 500;
-  }
+  .file-upload-hint { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .file-selected { display: none; align-items: center; gap: 8px; background: var(--light-green); border: 1.5px solid var(--green); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--green); font-weight: 500; }
   .file-selected.show { display: flex; }
 
-  /* 就業規則なしメッセージ */
-  .shugyo-none-msg {
-    display: none;
-    background: #fff8e1;
-    border: 1.5px solid var(--warning);
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-size: 13px;
-    color: #7a5a00;
-    align-items: center;
-    gap: 8px;
-  }
-  .shugyo-none-msg.show { display: flex; }
+  .field-error { font-size: 11px; color: var(--error); display: none; }
+  .field-error.show { display: block; }
 
-  /* 送信ボタン */
-  .submit-area {
-    margin-top: 28px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
-  .btn-submit {
-    width: 100%;
-    max-width: 400px;
-    height: 56px;
-    background: linear-gradient(135deg, var(--blue), var(--accent));
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 700;
-    font-family: 'Noto Sans JP', sans-serif;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    box-shadow: 0 4px 16px rgba(30,79,160,0.3);
-  }
-  .btn-submit:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(30,79,160,0.4);
-  }
-  .btn-submit:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-  }
-  .submit-note {
-    font-size: 12px;
-    color: var(--muted);
-    text-align: center;
-  }
+  .keikaku-file-area { margin-top: 10px; display: none; }
+  .keikaku-file-area.show { display: block; }
 
-  /* 送信中オーバーレイ */
-  .overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(15,31,61,0.7);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 20px;
-  }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  .submit-area { margin-top: 32px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .btn-submit { width: 100%; max-width: 420px; height: 56px; background: linear-gradient(135deg, var(--blue), var(--accent)); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 16px rgba(30,79,160,0.3); }
+  .btn-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(30,79,160,0.4); }
+  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .submit-note { font-size: 12px; color: var(--muted); text-align: center; }
+
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(15,31,61,0.7); z-index: 1000; align-items: center; justify-content: center; flex-direction: column; gap: 20px; }
   .overlay.show { display: flex; }
-  .spinner {
-    width: 52px;
-    height: 52px;
-    border: 4px solid rgba(255,255,255,0.2);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
+  .spinner { width: 52px; height: 52px; border: 4px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .overlay-text { color: white; font-size: 15px; font-weight: 500; }
   .overlay-sub { color: rgba(255,255,255,0.6); font-size: 12px; }
 
-  /* 完了画面 */
-  .success-screen {
-    display: none;
-    text-align: center;
-    padding: 60px 24px;
-  }
+  .success-screen { display: none; text-align: center; padding: 60px 24px; }
   .success-screen.show { display: block; }
   .success-icon { font-size: 64px; margin-bottom: 20px; }
-  .success-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 28px;
-    color: var(--navy);
-    margin-bottom: 12px;
-  }
+  .success-title { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--navy); margin-bottom: 12px; }
   .success-desc { color: var(--muted); font-size: 14px; line-height: 1.8; margin-bottom: 32px; }
-  .company-id-box {
-    background: var(--navy);
-    color: white;
-    border-radius: 12px;
-    padding: 24px;
-    margin: 0 auto 32px;
-    max-width: 380px;
-  }
+  .company-id-box { background: var(--navy); color: white; border-radius: 12px; padding: 24px; margin: 0 auto 32px; max-width: 380px; }
   .company-id-label { font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 8px; letter-spacing: 1px; }
-  .company-id-value {
-    font-family: 'DM Serif Display', serif;
-    font-size: 32px;
-    letter-spacing: 2px;
-    color: #7eb8ff;
-  }
+  .company-id-value { font-family: 'DM Serif Display', serif; font-size: 32px; letter-spacing: 2px; color: #7eb8ff; }
   .company-id-note { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 8px; }
-  .btn-next {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--green);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 14px 32px;
-    font-size: 15px;
-    font-weight: 700;
-    font-family: 'Noto Sans JP', sans-serif;
-    cursor: pointer;
-    text-decoration: none;
-    box-shadow: 0 4px 12px rgba(30,140,90,0.3);
-    transition: all 0.2s;
-  }
-  .btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(30,140,90,0.4); }
-
-  /* エラーメッセージ */
-  .field-error {
-    font-size: 11px;
-    color: var(--error);
-    display: none;
-  }
-  .field-error.show { display: block; }
-
-  /* 注意書き */
-  .info-box {
-    background: var(--light-blue);
-    border: 1px solid #b3cef5;
-    border-radius: 8px;
-    padding: 14px 16px;
-    font-size: 13px;
-    color: var(--blue);
-    line-height: 1.7;
-    margin-bottom: 20px;
-  }
+  .btn-next { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: white; border: none; border-radius: 10px; padding: 14px 32px; font-size: 15px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; text-decoration: none; box-shadow: 0 4px 12px rgba(30,140,90,0.3); transition: all 0.2s; }
+  .btn-next:hover { transform: translateY(-2px); }
 
   @media (max-width: 600px) {
     .form-grid { grid-template-columns: 1fr; }
     .field.span2 { grid-column: span 1; }
     .header { padding: 12px 16px; }
-    .main { margin: 16px auto; }
-    .step-bar { padding: 12px 16px; }
   }
 </style>
 </head>
 <body>
 
-<!-- ヘッダー -->
 <div class="header">
   <div class="header-logo">NextSeason</div>
   <div class="header-badge">STEP 1</div>
   <div class="header-sub">キャリアアップ助成金申請システム</div>
 </div>
 
-<!-- ステップバー -->
 <div class="step-bar">
-  <div class="step-item active">
-    <div class="step-num">1</div>
-    <div class="step-label">企業登録</div>
-  </div>
+  <div class="step-item active"><div class="step-num">1</div><div class="step-label">企業登録</div></div>
   <div class="step-arrow">›</div>
-  <div class="step-item inactive">
-    <div class="step-num">2</div>
-    <div class="step-label">従業員申請</div>
-  </div>
+  <div class="step-item inactive"><div class="step-num">2</div><div class="step-label">従業員申請</div></div>
   <div class="step-arrow">›</div>
-  <div class="step-item inactive">
-    <div class="step-num">3</div>
-    <div class="step-label">完了</div>
-  </div>
+  <div class="step-item inactive"><div class="step-num">3</div><div class="step-label">完了</div></div>
 </div>
 
-<!-- メイン -->
 <div class="main">
-
-  <!-- フォーム -->
   <div id="formArea">
     <div class="page-title">企業情報の登録</div>
     <p class="page-desc">初回のみ企業情報と必要書類を登録してください。登録後に発行される<strong>企業ID</strong>を従業員申請時にご使用ください。</p>
 
-    <div class="info-box">
-      📋 登録には以下の書類が必要です：登記簿謄本・雇用保険適用事業所設置届（または雇用保険番号通知）・就業規則（お持ちの場合）
-    </div>
-
-    <!-- 企業基本情報 -->
+    <!-- 00 企業情報 -->
+    <div class="section-label">00 企業情報</div>
     <div class="card">
-      <div class="card-header">
-        <span class="card-header-icon">🏢</span>
-        <span class="card-header-title">企業基本情報</span>
-      </div>
       <div class="card-body">
         <div class="form-grid">
-          <div class="field span2">
-            <label>会社名（法人名）<span class="req">必須</span></label>
-            <input type="text" id="companyName" placeholder="例：株式会社サンプル">
+          <div class="field">
+            <label>会社名<span class="req">必須</span></label>
+            <input type="text" id="companyName" placeholder="例：株式会社〇〇">
             <div class="field-error" id="err-companyName">会社名を入力してください</div>
           </div>
           <div class="field">
-            <label>担当者名<span class="req">必須</span></label>
-            <input type="text" id="contactName" placeholder="例：山田 太郎">
-            <div class="field-error" id="err-contactName">担当者名を入力してください</div>
-          </div>
-          <div class="field">
-            <label>電話番号<span class="req">必須</span></label>
+            <label>代表電話番号<span class="req">必須</span></label>
             <input type="tel" id="phone" placeholder="例：06-1234-5678">
             <div class="field-error" id="err-phone">電話番号を入力してください</div>
-          </div>
-          <div class="field span2">
-            <label>メールアドレス<span class="req">必須</span></label>
-            <input type="email" id="email" placeholder="例：info@example.com">
-            <div class="field-error" id="err-email">正しいメールアドレスを入力してください</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 企業書類 -->
+    <!-- 企業必要書類 -->
+    <div class="section-label">企業必要書類</div>
     <div class="card">
-      <div class="card-header">
-        <span class="card-header-icon">📄</span>
-        <span class="card-header-title">企業書類のアップロード</span>
-        <span class="card-header-sub">PDF・画像可</span>
-      </div>
       <div class="card-body">
         <div class="form-grid full">
 
-          <!-- 登記簿謄本 -->
           <div class="field">
-            <label>登記簿謄本（全部事項証明書）<span class="req">必須</span></label>
+            <label>履歴事項全部証明書<span class="req">必須</span></label>
+            <div class="label-hint">法務局で取得した会社の登記簿原本（現在の登記内容が反映されているもの。取得時期は問いません。）</div>
             <div class="file-upload" id="tokiDrop">
               <input type="file" id="tokiFile" accept=".pdf,.jpg,.jpeg,.png">
               <div class="file-upload-icon">📎</div>
-              <div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div>
-              <div class="file-upload-hint">PDF・JPG・PNG対応</div>
+              <div><div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
             </div>
             <div class="file-selected" id="tokiSelected">✅ <span id="tokiFileName"></span></div>
-            <div class="field-error" id="err-tokiFile">登記簿謄本をアップロードしてください</div>
+            <div class="field-error" id="err-tokiFile">履歴事項全部証明書をアップロードしてください</div>
           </div>
 
-          <!-- 雇用保険 -->
+          <hr class="divider">
+
           <div class="field">
-            <label>雇用保険適用事業所設置届（または通知書）<span class="req">必須</span></label>
+            <label>雇用保険適用事業所設置届<span class="req">必須</span></label>
+            <div class="label-hint">ハローワークから交付された届出の控え</div>
             <div class="file-upload" id="koyoDrop">
               <input type="file" id="koyoFile" accept=".pdf,.jpg,.jpeg,.png">
               <div class="file-upload-icon">📎</div>
-              <div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div>
-              <div class="file-upload-hint">PDF・JPG・PNG対応</div>
+              <div><div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
             </div>
             <div class="file-selected" id="koyoSelected">✅ <span id="koyoFileName"></span></div>
-            <div class="field-error" id="err-koyoFile">雇用保険書類をアップロードしてください</div>
+            <div class="field-error" id="err-koyoFile">雇用保険適用事業所設置届をアップロードしてください</div>
           </div>
 
-          <!-- 就業規則 -->
+          <hr class="divider">
+
           <div class="field">
             <label>就業規則<span class="req">必須</span></label>
-            <div class="radio-group" style="margin-bottom:12px;">
+            <div class="radio-group" style="margin-bottom:10px;">
               <div class="radio-btn">
                 <input type="radio" name="shugyoAri" id="shugyoAri" value="1" checked>
-                <label for="shugyoAri">📋 就業規則あり</label>
+                <label for="shugyoAri">あり</label>
               </div>
               <div class="radio-btn">
                 <input type="radio" name="shugyoAri" id="shugyoNashi" value="0">
-                <label for="shugyoNashi">❌ 就業規則なし</label>
+                <label for="shugyoNashi">なし</label>
               </div>
             </div>
             <div id="shugyoFileArea">
               <div class="file-upload" id="shugyoDrop">
                 <input type="file" id="shugyoFile" accept=".pdf,.jpg,.jpeg,.png">
                 <div class="file-upload-icon">📎</div>
-                <div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div>
-                <div class="file-upload-hint">PDF・JPG・PNG対応</div>
+                <div><div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
               </div>
               <div class="file-selected" id="shugyoSelected">✅ <span id="shugyoFileName"></span></div>
               <div class="field-error" id="err-shugyoFile">就業規則をアップロードしてください</div>
             </div>
-            <div class="shugyo-none-msg" id="shugyoNoneMsg">
-              ⚠️ 就業規則なしで登録します。申請時に別途ご確認が必要な場合があります。
+          </div>
+
+          <hr class="divider">
+
+          <div class="field">
+            <label>賃金規定<span class="req">必須</span></label>
+            <div class="radio-group">
+              <div class="radio-btn">
+                <input type="radio" name="chinginAri" id="chinginAri" value="1" checked>
+                <label for="chinginAri">あり</label>
+              </div>
+              <div class="radio-btn">
+                <input type="radio" name="chinginAri" id="chinginNashi" value="0">
+                <label for="chinginNashi">なし</label>
+              </div>
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <div class="field">
+            <label>キャリアアップ計画書<span class="req">必須</span></label>
+            <div class="radio-group" style="margin-bottom:10px;">
+              <div class="radio-btn">
+                <input type="radio" name="keikakuAri" id="keikakuAriPDF" value="pdf" onchange="toggleKeikaku(this)">
+                <label for="keikakuAriPDF">あり（PDF添付）</label>
+              </div>
+              <div class="radio-btn">
+                <input type="radio" name="keikakuAri" id="keikakuNashi" value="0" checked onchange="toggleKeikaku(this)">
+                <label for="keikakuNashi">なし</label>
+              </div>
+            </div>
+            <div class="keikaku-file-area" id="keikakuFileArea">
+              <div class="file-upload" id="keikakuDrop">
+                <input type="file" id="keikakuFile" accept=".pdf,.jpg,.jpeg,.png">
+                <div class="file-upload-icon">📎</div>
+                <div><div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
+              </div>
+              <div class="file-selected" id="keikakuSelected">✅ <span id="keikakuFileName"></span></div>
+              <div class="field-error" id="err-keikakuFile">キャリアアップ計画書をアップロードしてください</div>
             </div>
           </div>
 
@@ -597,11 +256,79 @@
       </div>
     </div>
 
-    <!-- 送信ボタン -->
+    <!-- 01 担当者情報 -->
+    <div class="section-label">01 担当者情報</div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-header-icon">👤</span>
+        <span class="card-header-title">職業能力開発推進者（役員・管理監督者除く）</span>
+      </div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="field">
+            <label>役職<span class="req">必須</span></label>
+            <input type="text" id="tantouYakushoku" placeholder="例：総務課長">
+            <div class="field-error" id="err-tantouYakushoku">役職を入力してください</div>
+          </div>
+          <div class="field">
+            <label>氏名<span class="req">必須</span></label>
+            <input type="text" id="tantouName" placeholder="例：鈴木 花子">
+            <div class="field-error" id="err-tantouName">氏名を入力してください</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-header-icon">👥</span>
+        <span class="card-header-title">事業内職業能力開発計画・職種別訓練実施計画の周知確認をする労働者代表者</span>
+      </div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="field span2">
+            <label>氏名<span class="req">必須</span></label>
+            <input type="text" id="rodoushaDaihyo" placeholder="例：田中 一郎">
+            <div class="field-error" id="err-rodoushaDaihyo">氏名を入力してください</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-header-icon">📞</span>
+        <span class="card-header-title">ハローワークからの問合せ対応窓口</span>
+      </div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="field">
+            <label>氏名<span class="req">必須</span></label>
+            <input type="text" id="contactName" placeholder="例：山田 次郎">
+            <div class="field-error" id="err-contactName">氏名を入力してください</div>
+          </div>
+          <div class="field">
+            <label>所属<span class="req">必須</span></label>
+            <input type="text" id="contactBusho" placeholder="例：総務部">
+            <div class="field-error" id="err-contactBusho">所属を入力してください</div>
+          </div>
+          <div class="field">
+            <label>連絡先電話番号<span class="req">必須</span></label>
+            <input type="tel" id="contactPhone" placeholder="例：06-1234-5678">
+            <div class="field-error" id="err-contactPhone">電話番号を入力してください</div>
+          </div>
+          <div class="field">
+            <label>メールアドレス<span class="req">必須</span></label>
+            <input type="text" id="email" placeholder="例：info@example.com">
+            <div class="field-error" id="err-email">メールアドレスを入力してください</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="submit-area">
-      <button class="btn-submit" id="submitBtn" onclick="submitForm()">
-        🏢 企業を登録して企業IDを取得する
-      </button>
+      <button class="btn-submit" id="submitBtn" onclick="submitForm()">🏢 企業を登録して企業IDを取得する</button>
       <div class="submit-note">送信後、企業IDが発行されます。必ず控えておいてください。</div>
     </div>
   </div>
@@ -621,15 +348,11 @@
         <div class="company-id-value" id="resultCompanyId">-</div>
         <div class="company-id-note">このIDで従業員申請が紐付けられます</div>
       </div>
-      <a href="step2-employee.html" class="btn-next">
-        👤 従業員申請フォームへ進む →
-      </a>
+      <a href="step2-employee.html" class="btn-next">👤 従業員申請フォームへ進む →</a>
     </div>
   </div>
-
 </div>
 
-<!-- 送信中オーバーレイ -->
 <div class="overlay" id="overlay">
   <div class="spinner"></div>
   <div class="overlay-text">書類をアップロード中...</div>
@@ -638,118 +361,99 @@
 
 <script>
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbxn8thednF67SoPIasKonFBtdfxVWI9mCDbK0Uh2Vt-BfjdWrLfuAtmikdC1uu2IgRR/exec';
+const files = { toki: null, koyo: null, shugyo: null, keikaku: null };
 
-// ファイル保持
-const files = { toki: null, koyo: null, shugyo: null };
-
-// ファイル選択イベント
-function setupFileInput(inputId, selectedId, fileNameId, fileKey, errorId) {
-  const input = document.getElementById(inputId);
-  input.addEventListener('change', function() {
+function setupFileInput(inputId, selectedId, fileNameId, fileKey, dropId, errorId) {
+  document.getElementById(inputId).addEventListener('change', function() {
     if (this.files[0]) {
       files[fileKey] = this.files[0];
       document.getElementById(fileNameId).textContent = this.files[0].name;
       document.getElementById(selectedId).classList.add('show');
-      document.getElementById(inputId.replace('File','Drop')).style.display = 'none';
-      hideError(errorId);
+      document.getElementById(dropId).style.display = 'none';
+      if (errorId) hideError(errorId);
     }
   });
 }
+setupFileInput('tokiFile',    'tokiSelected',    'tokiFileName',    'toki',    'tokiDrop',    'err-tokiFile');
+setupFileInput('koyoFile',    'koyoSelected',    'koyoFileName',    'koyo',    'koyoDrop',    'err-koyoFile');
+setupFileInput('shugyoFile',  'shugyoSelected',  'shugyoFileName',  'shugyo',  'shugyoDrop',  'err-shugyoFile');
+setupFileInput('keikakuFile', 'keikakuSelected', 'keikakuFileName', 'keikaku', 'keikakuDrop', 'err-keikakuFile');
 
-setupFileInput('tokiFile', 'tokiSelected', 'tokiFileName', 'toki', 'err-tokiFile');
-setupFileInput('koyoFile', 'koyoSelected', 'koyoFileName', 'koyo', 'err-koyoFile');
-setupFileInput('shugyoFile', 'shugyoSelected', 'shugyoFileName', 'shugyo', 'err-shugyoFile');
-
-// 就業規則あり/なし切替
 document.querySelectorAll('input[name="shugyoAri"]').forEach(r => {
   r.addEventListener('change', function() {
-    const ari = this.value === '1';
-    document.getElementById('shugyoFileArea').style.display = ari ? 'block' : 'none';
-    document.getElementById('shugyoNoneMsg').classList.toggle('show', !ari);
-    hideError('err-shugyoFile');
+    document.getElementById('shugyoFileArea').style.display = this.value === '1' ? 'block' : 'none';
+    if (this.value !== '1') hideError('err-shugyoFile');
   });
 });
 
-// バリデーション
+function toggleKeikaku(radio) {
+  document.getElementById('keikakuFileArea').classList.toggle('show', radio.value === 'pdf');
+  if (radio.value !== 'pdf') hideError('err-keikakuFile');
+}
+
 function showError(id) { document.getElementById(id).classList.add('show'); }
 function hideError(id) { document.getElementById(id).classList.remove('show'); }
 
 function validate() {
   let ok = true;
-  const fields = [
-    { id: 'companyName', errId: 'err-companyName' },
-    { id: 'contactName', errId: 'err-contactName' },
-    { id: 'phone', errId: 'err-phone' },
-    { id: 'email', errId: 'err-email' },
-  ];
-  fields.forEach(f => {
-    const val = document.getElementById(f.id).value.trim();
-    if (!val) { showError(f.errId); ok = false; }
-    else hideError(f.errId);
+  ['companyName','phone','tantouYakushoku','tantouName','rodoushaDaihyo','contactName','contactBusho','contactPhone','email'].forEach(id => {
+    if (!document.getElementById(id).value.trim()) { showError('err-' + id); ok = false; }
+    else hideError('err-' + id);
   });
-  // メール形式
-  const email = document.getElementById('email').value;
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    showError('err-email'); ok = false;
-  }
-  // ファイル
   if (!files.toki) { showError('err-tokiFile'); ok = false; } else hideError('err-tokiFile');
   if (!files.koyo) { showError('err-koyoFile'); ok = false; } else hideError('err-koyoFile');
   const shugyoAri = document.querySelector('input[name="shugyoAri"]:checked').value === '1';
   if (shugyoAri && !files.shugyo) { showError('err-shugyoFile'); ok = false; } else hideError('err-shugyoFile');
+  const keikakuVal = document.querySelector('input[name="keikakuAri"]:checked').value;
+  if (keikakuVal === 'pdf' && !files.keikaku) { showError('err-keikakuFile'); ok = false; } else hideError('err-keikakuFile');
   return ok;
 }
 
-// ファイル → Base64変換
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = e => {
-      const base64 = e.target.result.split(',')[1];
-      const ext = file.name.split('.').pop().toLowerCase();
-      resolve({ data: base64, type: file.type, ext: ext });
-    };
+    reader.onload = e => resolve({ data: e.target.result.split(',')[1], type: file.type, ext: file.name.split('.').pop().toLowerCase() });
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
 }
 
-// 送信
 async function submitForm() {
   if (!validate()) return;
-
   document.getElementById('overlay').classList.add('show');
   document.getElementById('submitBtn').disabled = true;
-
   try {
     const shugyoAri = document.querySelector('input[name="shugyoAri"]:checked').value === '1';
-
-    const [tokiData, koyoData, shugyoData] = await Promise.all([
+    const keikakuVal = document.querySelector('input[name="keikakuAri"]:checked').value;
+    const chinginAri = document.querySelector('input[name="chinginAri"]:checked').value === '1';
+    const [tokiData, koyoData, shugyoData, keikakuData] = await Promise.all([
       fileToBase64(files.toki),
       fileToBase64(files.koyo),
-      shugyoAri && files.shugyo ? fileToBase64(files.shugyo) : Promise.resolve(null)
+      shugyoAri && files.shugyo ? fileToBase64(files.shugyo) : Promise.resolve(null),
+      keikakuVal === 'pdf' && files.keikaku ? fileToBase64(files.keikaku) : Promise.resolve(null),
     ]);
-
     const payload = {
       action: 'registerCompany',
-      companyName: document.getElementById('companyName').value.trim(),
-      contactName: document.getElementById('contactName').value.trim(),
-      phone: document.getElementById('phone').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      shugyoAri: shugyoAri,
-      tokiFile: tokiData,
-      koyoFile: koyoData,
-      shugyoFile: shugyoData,
+      companyName:     document.getElementById('companyName').value.trim(),
+      phone:           document.getElementById('phone').value.trim(),
+      tantouYakushoku: document.getElementById('tantouYakushoku').value.trim(),
+      tantouName:      document.getElementById('tantouName').value.trim(),
+      rodoushaDaihyo:  document.getElementById('rodoushaDaihyo').value.trim(),
+      contactName:     document.getElementById('contactName').value.trim(),
+      contactBusho:    document.getElementById('contactBusho').value.trim(),
+      contactPhone:    document.getElementById('contactPhone').value.trim(),
+      email:           document.getElementById('email').value.trim(),
+      shugyoAri:       shugyoAri,
+      chinginAri:      chinginAri ? 'あり' : 'なし',
+      keikakuAri:      keikakuVal === 'pdf' ? 'あり（PDF添付）' : 'なし',
+      tokiFile:        tokiData,
+      koyoFile:        koyoData,
+      shugyoFile:      shugyoData,
+      keikakuFile:     keikakuData,
     };
-
-    const res = await fetch(GAS_URL, {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    });
+    const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
     const result = await res.json();
-
     document.getElementById('overlay').classList.remove('show');
-
     if (result.success) {
       document.getElementById('resultCompanyId').textContent = result.companyId;
       document.getElementById('formArea').style.display = 'none';
@@ -762,7 +466,7 @@ async function submitForm() {
   } catch (err) {
     document.getElementById('overlay').classList.remove('show');
     document.getElementById('submitBtn').disabled = false;
-    alert('通信エラーが発生しました。時間をおいて再度お試しください。\n' + err.message);
+    alert('通信エラーが発生しました：' + err.message);
   }
 }
 </script>

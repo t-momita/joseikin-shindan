@@ -282,13 +282,13 @@
       </div>
       <div class="card-body">
         <div class="form-grid">
-          <div class="field span2">
-            <label>従業員名<span class="req">必須</span></label>
-            <input type="text" id="employeeName" placeholder="例：鈴木 花子">
-            <div class="field-error" id="err-employeeName">従業員名を入力してください</div>
+          <div class="field">
+            <label>氏名<span class="req">必須</span></label>
+            <input type="text" id="employeeName" placeholder="例：山田 次郎">
+            <div class="field-error" id="err-employeeName">氏名を入力してください</div>
           </div>
           <div class="field">
-            <label>転換前の雇用形態<span class="req">必須</span></label>
+            <label>現在の雇用形態<span class="req">必須</span></label>
             <select id="beforeType">
               <option value="">選択してください</option>
               <option value="パートタイム">パートタイム</option>
@@ -296,21 +296,25 @@
               <option value="派遣社員">派遣社員</option>
               <option value="アルバイト">アルバイト</option>
             </select>
-            <div class="field-error" id="err-beforeType">転換前の雇用形態を選択してください</div>
+            <div class="field-error" id="err-beforeType">現在の雇用形態を選択してください</div>
           </div>
           <div class="field">
-            <label>転換後の雇用形態<span class="req">必須</span></label>
-            <select id="afterType">
-              <option value="">選択してください</option>
-              <option value="正規雇用（正社員）">正規雇用（正社員）</option>
-              <option value="無期雇用フルタイム">無期雇用フルタイム</option>
-            </select>
-            <div class="field-error" id="err-afterType">転換後の雇用形態を選択してください</div>
+            <label>雇用開始日<span class="req">必須</span></label>
+            <input type="date" id="koyoStartDate">
+            <div class="field-error" id="err-koyoStartDate">雇用開始日を入力してください</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px;">有期雇用・パートとして採用された日</div>
+          </div>
+          <div class="field">
+            <label>正社員転換予定日<span class="opt">任意</span></label>
+            <input type="date" id="tenkanDate" style="margin-bottom:6px;">
+            <label style="font-size:12px;font-weight:400;color:var(--muted);cursor:pointer;gap:6px;">
+              <input type="checkbox" id="tenkanNashi" onchange="toggleTenkanDate(this)">
+              該当なし
+            </label>
           </div>
           <div class="field span2">
-            <label>転換日<span class="req">必須</span></label>
-            <input type="date" id="tenkanDate">
-            <div class="field-error" id="err-tenkanDate">転換日を入力してください</div>
+            <label>正社員後の月給<span class="opt">任意</span></label>
+            <input type="text" id="kyuyo" placeholder="例：220,000円">
           </div>
         </div>
       </div>
@@ -320,28 +324,28 @@
     <div class="card">
       <div class="card-header">
         <span class="card-header-icon">📄</span>
-        <span class="card-header-title">書類のアップロード</span>
+        <span class="card-header-title">書類のアップロード（転換前確認用）</span>
         <span class="card-header-sub">PDF・画像可</span>
       </div>
       <div class="card-body">
         <div class="form-grid full">
 
-          <!-- 賃金台帳 -->
+          <!-- 雇用保険被保険者資格喪失届 -->
           <div class="field">
-            <label>賃金台帳（転換前後6ヶ月分）<span class="req">必須</span></label>
-            <div class="file-upload" id="chinginDrop">
-              <input type="file" id="chinginFile" accept=".pdf,.jpg,.jpeg,.png">
+            <label>雇用保険被保険者資格喪失届<span class="req">必須</span></label>
+            <div class="file-upload" id="soshitssuDrop">
+              <input type="file" id="soshitssuFile" accept=".pdf,.jpg,.jpeg,.png">
               <div class="file-upload-icon">📎</div>
               <div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div>
               <div class="file-upload-hint">PDF・JPG・PNG対応</div>
             </div>
-            <div class="file-selected" id="chinginSelected">✅ <span id="chinginFileName"></span></div>
-            <div class="field-error" id="err-chinginFile">賃金台帳をアップロードしてください</div>
+            <div class="file-selected" id="soshitssuSelected">✅ <span id="soshitssuFileName"></span></div>
+            <div class="field-error" id="err-soshitssuFile">雇用保険被保険者資格喪失届をアップロードしてください</div>
           </div>
 
-          <!-- 雇用契約書 -->
+          <!-- 雇用契約書または労働条件通知書 -->
           <div class="field">
-            <label>雇用契約書（転換後）<span class="req">必須</span></label>
+            <label>雇用契約書または労働条件通知書<span class="req">必須</span></label>
             <div class="file-upload" id="keiyakuDrop">
               <input type="file" id="keiyakuFile" accept=".pdf,.jpg,.jpeg,.png">
               <div class="file-upload-icon">📎</div>
@@ -349,19 +353,33 @@
               <div class="file-upload-hint">PDF・JPG・PNG対応</div>
             </div>
             <div class="file-selected" id="keiyakuSelected">✅ <span id="keiyakuFileName"></span></div>
-            <div class="field-error" id="err-keiyakuFile">雇用契約書をアップロードしてください</div>
+            <div class="field-error" id="err-keiyakuFile">雇用契約書または労働条件通知書をアップロードしてください</div>
           </div>
 
-          <!-- 転換前後比較 -->
+          <!-- 賃金台帳 -->
           <div class="field">
-            <label>転換前後の労働条件比較書類<span class="opt">任意</span></label>
-            <div class="file-upload" id="hikakuDrop">
-              <input type="file" id="hikakuFile" accept=".pdf,.jpg,.jpeg,.png">
+            <label>賃金台帳<span class="req">必須</span></label>
+            <div class="file-upload" id="chinginDrop">
+              <input type="file" id="chinginFile" accept=".pdf,.jpg,.jpeg,.png">
               <div class="file-upload-icon">📎</div>
               <div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div>
-              <div class="file-upload-hint">PDF・JPG・PNG対応</div>
+              <div class="file-upload-hint">直近〜6ヶ月分（雇用6ヶ月未満の場合は提出できる期間のみで可）</div>
             </div>
-            <div class="file-selected" id="hikakuSelected">✅ <span id="hikakuFileName"></span></div>
+            <div class="file-selected" id="chinginSelected">✅ <span id="chinginFileName"></span></div>
+            <div class="field-error" id="err-chinginFile">賃金台帳をアップロードしてください</div>
+          </div>
+
+          <!-- 出勤簿またはタイムカード -->
+          <div class="field">
+            <label>出勤簿またはタイムカード<span class="req">必須</span></label>
+            <div class="file-upload" id="shukkinDrop">
+              <input type="file" id="shukkinFile" accept=".pdf,.jpg,.jpeg,.png">
+              <div class="file-upload-icon">📎</div>
+              <div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div>
+              <div class="file-upload-hint">直近〜6ヶ月分（雇用6ヶ月未満の場合は提出できる期間のみで可）</div>
+            </div>
+            <div class="file-selected" id="shukkinSelected">✅ <span id="shukkinFileName"></span></div>
+            <div class="field-error" id="err-shukkinFile">出勤簿またはタイムカードをアップロードしてください</div>
           </div>
 
         </div>
@@ -407,7 +425,14 @@
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbxn8thednF67SoPIasKonFBtdfxVWI9mCDbK0Uh2Vt-BfjdWrLfuAtmikdC1uu2IgRR/exec';
 
 let companyData = null;
-const files = { chingin: null, keiyaku: null, hikaku: null };
+const files = { soshitssu: null, keiyaku: null, chingin: null, shukkin: null };
+
+// 転換予定日「該当なし」トグル
+function toggleTenkanDate(cb) {
+  const input = document.getElementById('tenkanDate');
+  input.disabled = cb.checked;
+  if (cb.checked) input.value = '';
+}
 
 // 企業ID検索
 async function searchCompany() {
@@ -468,9 +493,10 @@ function setupFileInput(inputId, selectedId, fileNameId, fileKey, errorId) {
   });
 }
 
-setupFileInput('chinginFile', 'chinginSelected', 'chinginFileName', 'chingin', 'err-chinginFile');
+setupFileInput('soshitssuFile', 'soshitssuSelected', 'soshitssuFileName', 'soshitssu', 'err-soshitssuFile');
 setupFileInput('keiyakuFile', 'keiyakuSelected', 'keiyakuFileName', 'keiyaku', 'err-keiyakuFile');
-setupFileInput('hikakuFile', 'hikakuSelected', 'hikakuFileName', 'hikaku', null);
+setupFileInput('chinginFile', 'chinginSelected', 'chinginFileName', 'chingin', 'err-chinginFile');
+setupFileInput('shukkinFile', 'shukkinSelected', 'shukkinFileName', 'shukkin', 'err-shukkinFile');
 
 function showError(id) { document.getElementById(id).classList.add('show'); }
 function hideError(id) { document.getElementById(id).classList.remove('show'); }
@@ -481,16 +507,17 @@ function validate() {
   const fields = [
     { id: 'employeeName', errId: 'err-employeeName' },
     { id: 'beforeType', errId: 'err-beforeType' },
-    { id: 'afterType', errId: 'err-afterType' },
-    { id: 'tenkanDate', errId: 'err-tenkanDate' },
+    { id: 'koyoStartDate', errId: 'err-koyoStartDate' },
   ];
   fields.forEach(f => {
     const val = document.getElementById(f.id).value.trim();
     if (!val) { showError(f.errId); ok = false; }
     else hideError(f.errId);
   });
-  if (!files.chingin) { showError('err-chinginFile'); ok = false; } else hideError('err-chinginFile');
+  if (!files.soshitssu) { showError('err-soshitssuFile'); ok = false; } else hideError('err-soshitssuFile');
   if (!files.keiyaku) { showError('err-keiyakuFile'); ok = false; } else hideError('err-keiyakuFile');
+  if (!files.chingin) { showError('err-chinginFile'); ok = false; } else hideError('err-chinginFile');
+  if (!files.shukkin) { showError('err-shukkinFile'); ok = false; } else hideError('err-shukkinFile');
   return ok;
 }
 
@@ -514,10 +541,11 @@ async function submitForm() {
   document.getElementById('submitBtn').disabled = true;
 
   try {
-    const [chinginData, keiyakuData, hikakuData] = await Promise.all([
-      fileToBase64(files.chingin),
+    const [soshitssuData, keiyakuData, chinginData, shukkinData] = await Promise.all([
+      fileToBase64(files.soshitssu),
       fileToBase64(files.keiyaku),
-      files.hikaku ? fileToBase64(files.hikaku) : Promise.resolve(null)
+      fileToBase64(files.chingin),
+      fileToBase64(files.shukkin),
     ]);
 
     const payload = {
@@ -526,11 +554,13 @@ async function submitForm() {
       companyName: companyData.name,
       employeeName: document.getElementById('employeeName').value.trim(),
       beforeType: document.getElementById('beforeType').value,
-      afterType: document.getElementById('afterType').value,
-      tenkanDate: document.getElementById('tenkanDate').value,
-      chinginFile: chinginData,
+      koyoStartDate: document.getElementById('koyoStartDate').value,
+      tenkanDate: document.getElementById('tenkanNashi').checked ? '該当なし' : document.getElementById('tenkanDate').value,
+      kyuyo: document.getElementById('kyuyo').value.trim(),
+      soshitssuFile: soshitssuData,
       keiyakuFile: keiyakuData,
-      hikakuFile: hikakuData,
+      chinginFile: chinginData,
+      shukkinFile: shukkinData,
     };
 
     const res = await fetch(GAS_URL, {
@@ -560,15 +590,18 @@ async function submitForm() {
 function resetForm() {
   // フォームリセット
   companyData = null;
-  files.chingin = null; files.keiyaku = null; files.hikaku = null;
+  files.soshitssu = null; files.keiyaku = null; files.chingin = null; files.shukkin = null;
   document.getElementById('companyIdInput').value = '';
   document.getElementById('companyResult').classList.remove('show');
   document.getElementById('employeeName').value = '';
   document.getElementById('beforeType').value = '';
-  document.getElementById('afterType').value = '';
+  document.getElementById('koyoStartDate').value = '';
   document.getElementById('tenkanDate').value = '';
-  ['chinginSelected','keiyakuSelected','hikakuSelected'].forEach(id => document.getElementById(id).classList.remove('show'));
-  ['chinginDrop','keiyakuDrop','hikakuDrop'].forEach(id => document.getElementById(id).style.display = '');
+  document.getElementById('tenkanNashi').checked = false;
+  document.getElementById('tenkanDate').disabled = false;
+  document.getElementById('kyuyo').value = '';
+  ['soshitssuSelected','keiyakuSelected','chinginSelected','shukkinSelected'].forEach(id => document.getElementById(id).classList.remove('show'));
+  ['soshitssuDrop','keiyakuDrop','chinginDrop','shukkinDrop'].forEach(id => document.getElementById(id).style.display = '');
   document.getElementById('submitBtn').disabled = true;
   document.getElementById('successScreen').classList.remove('show');
   document.getElementById('formArea').style.display = 'block';
