@@ -385,7 +385,7 @@ function empFormHtml(i) {
         </div>
         <div class="field span2">
           <label>正社員後の月給<span class="opt">任意</span></label>
-          <input type="text" id="emp-${i}-kyuyo" placeholder="例：220,000円">
+          <input type="text" id="emp-${i}-kyuyo" placeholder="例：220000" inputmode="numeric" oninput="formatKyuyo(this)">
         </div>
       </div>
       <hr class="divider">
@@ -509,7 +509,7 @@ async function submitAll() {
         beforeType: document.getElementById(`emp-${i}-type`).value,
         koyoStartDate: document.getElementById(`emp-${i}-koyoStart`).value,
         tenkanDate: document.getElementById(`emp-${i}-tenkan`).value || '未定',
-        kyuyo: document.getElementById(`emp-${i}-kyuyo`).value.trim(),
+        kyuyo: document.getElementById(`emp-${i}-kyuyo`).value.replace(/[^0-9]/g, '') ? Number(document.getElementById(`emp-${i}-kyuyo`).value.replace(/[^0-9]/g, '')).toLocaleString('ja-JP') + '円' : '',
         soshitssuUrl, keiyakuUrl, chinginUrl, shukkinUrl,
       };
       const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
@@ -533,6 +533,34 @@ async function submitAll() {
     alert('エラーが発生しました：' + e.message);
   }
 }
+
+// 月給フォーマット
+function formatKyuyo(input) {
+  let val = input.value.replace(/[^0-9]/g, '');
+  if (val) {
+    input.value = Number(val).toLocaleString('ja-JP') + '円';
+    // カーソルを末尾の「円」の前に
+    const pos = input.value.length - 1;
+    input.setSelectionRange(pos, pos);
+  } else {
+    input.value = '';
+  }
+}
+
+// 月給フォーカス時：数字のみにする
+document.addEventListener('focusin', function(e) {
+  if (e.target && e.target.id && e.target.id.includes('-kyuyo')) {
+    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+  }
+});
+
+// 月給フォーカスアウト時：フォーマット
+document.addEventListener('focusout', function(e) {
+  if (e.target && e.target.id && e.target.id.includes('-kyuyo')) {
+    const val = e.target.value.replace(/[^0-9]/g, '');
+    if (val) e.target.value = Number(val).toLocaleString('ja-JP') + '円';
+  }
+});
 
 // 初期化
 setCount(1);
