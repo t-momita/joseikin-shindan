@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>従業員申請 | キャリアアップ助成金申請システム</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f1f3d;
+    --blue: #1a4fa0;
+    --accent: #2e7df7;
+    --light-blue: #e8f0fe;
+    --green: #1e8c5a;
+    --light-green: #e6f4ee;
+    --gray: #f5f6fa;
+    --border: #dde2ee;
+    --text: #1a2340;
+    --muted: #6b7a99;
+    --white: #ffffff;
+    --error: #d93025;
+    --warning: #f9ab00;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', sans-serif; background: #f0f3fa; color: var(--text); min-height: 100vh; }
+
+  .header {
+    background: var(--navy); padding: 16px 32px;
+    display: flex; align-items: center; gap: 16px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+  .header-logo { font-family: 'DM Serif Display', serif; color: white; font-size: 20px; }
+  .header-badge { background: var(--green); color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; }
+  .header-sub { color: rgba(255,255,255,0.5); font-size: 13px; margin-left: auto; }
+
+  .step-bar {
+    background: white; border-bottom: 1px solid var(--border);
+    padding: 16px 32px; display: flex; align-items: center; gap: 0; overflow-x: auto;
+  }
+  .step-item { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+  .step-item.done .step-num { background: var(--green); color: white; }
+  .step-item.active .step-num { background: var(--accent); color: white; }
+  .step-item.inactive .step-num { background: var(--border); color: var(--muted); }
+  .step-label { font-size: 13px; font-weight: 500; }
+  .step-item.done .step-label { color: var(--green); }
+  .step-item.active .step-label { color: var(--accent); }
+  .step-item.inactive .step-label { color: var(--muted); }
+  .step-arrow { margin: 0 16px; color: var(--border); font-size: 18px; }
+
+  .main { max-width: 760px; margin: 32px auto; padding: 0 20px 60px; }
+  .page-title { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--navy); margin-bottom: 6px; }
+  .page-desc { color: var(--muted); font-size: 14px; margin-bottom: 32px; line-height: 1.7; }
+
+  .card { background: white; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .card-header { background: var(--navy); padding: 14px 24px; display: flex; align-items: center; gap: 10px; }
+  .card-header-icon { font-size: 18px; }
+  .card-header-title { color: white; font-size: 15px; font-weight: 700; }
+  .card-header-sub { color: rgba(255,255,255,0.6); font-size: 12px; margin-left: auto; }
+  .card-body { padding: 24px; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-grid.full { grid-template-columns: 1fr; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field.span2 { grid-column: span 2; }
+
+  label { font-size: 13px; font-weight: 700; color: var(--navy); display: flex; align-items: center; gap: 6px; }
+  .req { background: var(--error); color: white; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; }
+  .opt { background: var(--muted); color: white; font-size: 10px; padding: 1px 5px; border-radius: 3px; }
+
+  input[type="text"], input[type="date"], select {
+    height: 44px; border: 1.5px solid var(--border); border-radius: 8px;
+    padding: 0 14px; font-size: 14px; font-family: 'Noto Sans JP', sans-serif;
+    color: var(--text); background: white; transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none; width: 100%;
+  }
+  input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(46,125,247,0.12); }
+  input.error { border-color: var(--error); }
+  input[readonly] { background: var(--gray); color: var(--muted); cursor: not-allowed; }
+
+  /* 企業ID検索エリア */
+  .company-search-box {
+    background: var(--light-blue);
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .company-search-title {
+    font-weight: 700;
+    color: var(--blue);
+    font-size: 14px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .company-search-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .company-search-row input {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .btn-search {
+    height: 44px;
+    padding: 0 20px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .btn-search:hover { background: var(--blue); }
+  .btn-search:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* 企業情報表示 */
+  .company-info-result {
+    display: none;
+    margin-top: 14px;
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    border: 1.5px solid var(--green);
+  }
+  .company-info-result.show { display: block; }
+  .company-info-label { font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: 1px; margin-bottom: 4px; }
+  .company-info-name { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .company-info-detail { font-size: 13px; color: var(--muted); display: flex; gap: 20px; flex-wrap: wrap; }
+  .company-not-found {
+    display: none;
+    margin-top: 12px;
+    background: #fce8e6;
+    border: 1.5px solid var(--error);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--error);
+  }
+  .company-not-found.show { display: block; }
+
+  /* ファイルアップロード */
+  .file-upload {
+    border: 2px dashed var(--border); border-radius: 8px; padding: 20px;
+    text-align: center; cursor: pointer; transition: all 0.2s;
+    background: var(--gray); position: relative;
+  }
+  .file-upload:hover { border-color: var(--accent); background: var(--light-blue); }
+  .file-upload input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .file-upload-icon { font-size: 28px; margin-bottom: 6px; }
+  .file-upload-text { font-size: 13px; color: var(--muted); }
+  .file-upload-hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .file-selected { display: none; align-items: center; gap: 8px; background: var(--light-green); border: 1.5px solid var(--green); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--green); font-weight: 500; }
+  .file-selected.show { display: flex; }
+
+  .field-error { font-size: 11px; color: var(--error); display: none; }
+  .field-error.show { display: block; }
+
+  /* 送信ボタン */
+  .submit-area { margin-top: 28px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .btn-submit {
+    width: 100%; max-width: 400px; height: 56px;
+    background: linear-gradient(135deg, var(--green), #27ae72);
+    color: white; border: none; border-radius: 12px;
+    font-size: 16px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    box-shadow: 0 4px 16px rgba(30,140,90,0.3);
+  }
+  .btn-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(30,140,90,0.4); }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .submit-note { font-size: 12px; color: var(--muted); text-align: center; }
+
+  /* オーバーレイ */
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(15,31,61,0.7); z-index: 1000; align-items: center; justify-content: center; flex-direction: column; gap: 20px; }
+  .overlay.show { display: flex; }
+  .spinner { width: 52px; height: 52px; border: 4px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .overlay-text { color: white; font-size: 15px; font-weight: 500; }
+  .overlay-sub { color: rgba(255,255,255,0.6); font-size: 12px; }
+
+  /* 完了画面 */
+  .success-screen { display: none; text-align: center; padding: 60px 24px; }
+  .success-screen.show { display: block; }
+  .success-icon { font-size: 64px; margin-bottom: 20px; }
+  .success-title { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--navy); margin-bottom: 12px; }
+  .success-desc { color: var(--muted); font-size: 14px; line-height: 1.8; margin-bottom: 32px; }
+  .apply-id-box { background: var(--navy); color: white; border-radius: 12px; padding: 24px; margin: 0 auto 32px; max-width: 380px; }
+  .apply-id-label { font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 8px; letter-spacing: 1px; }
+  .apply-id-value { font-family: 'DM Serif Display', serif; font-size: 22px; letter-spacing: 1px; color: #7eb8ff; word-break: break-all; }
+  .btn-another {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: white; border: none; border-radius: 10px;
+    padding: 14px 32px; font-size: 15px; font-weight: 700;
+    font-family: 'Noto Sans JP', sans-serif; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(46,125,247,0.3); transition: all 0.2s;
+  }
+  .btn-another:hover { transform: translateY(-2px); }
+
+  .info-box { background: var(--light-blue); border: 1px solid #b3cef5; border-radius: 8px; padding: 14px 16px; font-size: 13px; color: var(--blue); line-height: 1.7; margin-bottom: 20px; }
+
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .field.span2 { grid-column: span 1; }
+    .header { padding: 12px 16px; }
+    .company-search-row { flex-direction: column; }
+    .btn-search { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">NextSeason</div>
+  <div class="header-badge">STEP 2</div>
+  <div class="header-sub">キャリアアップ助成金申請システム</div>
+</div>
+
+<div class="step-bar">
+  <div class="step-item done">
+    <div class="step-num">✓</div>
+    <div class="step-label">企業登録</div>
+  </div>
+  <div class="step-arrow">›</div>
+  <div class="step-item active">
+    <div class="step-num">2</div>
+    <div class="step-label">従業員申請</div>
+  </div>
+  <div class="step-arrow">›</div>
+  <div class="step-item inactive">
+    <div class="step-num">3</div>
+    <div class="step-label">完了</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div id="formArea">
+    <div class="page-title">従業員の申請登録</div>
+    <p class="page-desc">企業IDを入力して企業情報を読み込み、申請する従業員の情報と書類を登録してください。複数名いる場合は1名ずつ送信してください。</p>
+
+    <!-- 企業ID検索 -->
+    <div class="company-search-box">
+      <div class="company-search-title">🔍 企業IDで企業情報を呼び出す</div>
+      <div class="company-search-row">
+        <input type="text" id="companyIdInput" placeholder="例：NS-2025-001" style="text-transform:uppercase;">
+        <button class="btn-search" id="searchBtn" onclick="searchCompany()">検索</button>
+      </div>
+      <div class="company-info-result" id="companyResult">
+        <div class="company-info-label">登録企業</div>
+        <div class="company-info-name" id="resultName">-</div>
+        <div class="company-info-detail">
+          <span id="resultContact">-</span>
+          <span id="resultPhone">-</span>
+          <span id="resultEmail">-</span>
+        </div>
+      </div>
+      <div class="company-not-found" id="companyNotFound">
+        ❌ 企業IDが見つかりません。STEP1で登録した企業IDを確認してください。
+      </div>
+    </div>
+
+    <div class="info-box">
+      👤 申請できるのは「<strong>パートタイム・有期雇用→正社員への転換</strong>」が対象です。転換日から6ヶ月分の賃金台帳が必要です。
+    </div>
+
+    <!-- 従業員情報 -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-header-icon">👤</span>
+        <span class="card-header-title">従業員情報</span>
+      </div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="field span2">
+            <label>従業員名<span class="req">必須</span></label>
+            <input type="text" id="employeeName" placeholder="例：鈴木 花子">
+            <div class="field-error" id="err-employeeName">従業員名を入力してください</div>
+          </div>
+          <div class="field">
+            <label>転換前の雇用形態<span class="req">必須</span></label>
+            <select id="beforeType">
+              <option value="">選択してください</option>
+              <option value="パートタイム">パートタイム</option>
+              <option value="有期雇用（契約社員）">有期雇用（契約社員）</option>
+              <option value="派遣社員">派遣社員</option>
+              <option value="アルバイト">アルバイト</option>
+            </select>
+            <div class="field-error" id="err-beforeType">転換前の雇用形態を選択してください</div>
+          </div>
+          <div class="field">
+            <label>転換後の雇用形態<span class="req">必須</span></label>
+            <select id="afterType">
+              <option value="">選択してください</option>
+              <option value="正規雇用（正社員）">正規雇用（正社員）</option>
+              <option value="無期雇用フルタイム">無期雇用フルタイム</option>
+            </select>
+            <div class="field-error" id="err-afterType">転換後の雇用形態を選択してください</div>
+          </div>
+          <div class="field span2">
+            <label>転換日<span class="req">必須</span></label>
+            <input type="date" id="tenkanDate">
+            <div class="field-error" id="err-tenkanDate">転換日を入力してください</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 書類アップロード -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-header-icon">📄</span>
+        <span class="card-header-title">書類のアップロード</span>
+        <span class="card-header-sub">PDF・画像可</span>
+      </div>
+      <div class="card-body">
+        <div class="form-grid full">
+
+          <!-- 賃金台帳 -->
+          <div class="field">
+            <label>賃金台帳（転換前後6ヶ月分）<span class="req">必須</span></label>
+            <div class="file-upload" id="chinginDrop">
+              <input type="file" id="chinginFile" accept=".pdf,.jpg,.jpeg,.png">
+              <div class="file-upload-icon">📎</div>
+              <div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div>
+              <div class="file-upload-hint">PDF・JPG・PNG対応</div>
+            </div>
+            <div class="file-selected" id="chinginSelected">✅ <span id="chinginFileName"></span></div>
+            <div class="field-error" id="err-chinginFile">賃金台帳をアップロードしてください</div>
+          </div>
+
+          <!-- 雇用契約書 -->
+          <div class="field">
+            <label>雇用契約書（転換後）<span class="req">必須</span></label>
+            <div class="file-upload" id="keiyakuDrop">
+              <input type="file" id="keiyakuFile" accept=".pdf,.jpg,.jpeg,.png">
+              <div class="file-upload-icon">📎</div>
+              <div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div>
+              <div class="file-upload-hint">PDF・JPG・PNG対応</div>
+            </div>
+            <div class="file-selected" id="keiyakuSelected">✅ <span id="keiyakuFileName"></span></div>
+            <div class="field-error" id="err-keiyakuFile">雇用契約書をアップロードしてください</div>
+          </div>
+
+          <!-- 転換前後比較 -->
+          <div class="field">
+            <label>転換前後の労働条件比較書類<span class="opt">任意</span></label>
+            <div class="file-upload" id="hikakuDrop">
+              <input type="file" id="hikakuFile" accept=".pdf,.jpg,.jpeg,.png">
+              <div class="file-upload-icon">📎</div>
+              <div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div>
+              <div class="file-upload-hint">PDF・JPG・PNG対応</div>
+            </div>
+            <div class="file-selected" id="hikakuSelected">✅ <span id="hikakuFileName"></span></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="submit-area">
+      <button class="btn-submit" id="submitBtn" onclick="submitForm()" disabled>
+        👤 この従業員を申請登録する
+      </button>
+      <div class="submit-note">企業IDを検索してから送信してください。複数名いる場合は1名ずつ送信してください。</div>
+    </div>
+  </div>
+
+  <!-- 完了画面 -->
+  <div class="card success-screen" id="successScreen">
+    <div class="card-body">
+      <div class="success-icon">✅</div>
+      <div class="success-title">申請登録が完了しました</div>
+      <p class="success-desc">
+        従業員の申請情報がスプレッドシートに保存されました。<br>
+        複数名いる場合は続けて登録してください。
+      </p>
+      <div class="apply-id-box">
+        <div class="apply-id-label">申請ID</div>
+        <div class="apply-id-value" id="resultApplyId">-</div>
+      </div>
+      <button class="btn-another" onclick="resetForm()">
+        👤 別の従業員を続けて登録する
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="spinner"></div>
+  <div class="overlay-text">書類をアップロード中...</div>
+  <div class="overlay-sub">ファイルサイズによっては時間がかかります。画面を閉じないでください。</div>
+</div>
+
+<script>
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxn8thednF67SoPIasKonFBtdfxVWI9mCDbK0Uh2Vt-BfjdWrLfuAtmikdC1uu2IgRR/exec';
+
+let companyData = null;
+const files = { chingin: null, keiyaku: null, hikaku: null };
+
+// 企業ID検索
+async function searchCompany() {
+  const id = document.getElementById('companyIdInput').value.trim().toUpperCase();
+  if (!id) { alert('企業IDを入力してください'); return; }
+
+  const btn = document.getElementById('searchBtn');
+  btn.disabled = true;
+  btn.textContent = '検索中...';
+
+  document.getElementById('companyResult').classList.remove('show');
+  document.getElementById('companyNotFound').classList.remove('show');
+
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'getCompany', companyId: id })
+    });
+    const result = await res.json();
+
+    if (result.success) {
+      companyData = result.company;
+      document.getElementById('resultName').textContent = companyData.name;
+      document.getElementById('resultContact').textContent = '担当：' + companyData.contact;
+      document.getElementById('resultPhone').textContent = companyData.phone;
+      document.getElementById('resultEmail').textContent = companyData.email;
+      document.getElementById('companyResult').classList.add('show');
+      document.getElementById('submitBtn').disabled = false;
+    } else {
+      document.getElementById('companyNotFound').classList.add('show');
+      companyData = null;
+      document.getElementById('submitBtn').disabled = true;
+    }
+  } catch (err) {
+    alert('通信エラーが発生しました：' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '検索';
+  }
+}
+
+// Enterキーで検索
+document.getElementById('companyIdInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') searchCompany();
+});
+
+// ファイル設定
+function setupFileInput(inputId, selectedId, fileNameId, fileKey, errorId) {
+  const input = document.getElementById(inputId);
+  input.addEventListener('change', function() {
+    if (this.files[0]) {
+      files[fileKey] = this.files[0];
+      document.getElementById(fileNameId).textContent = this.files[0].name;
+      document.getElementById(selectedId).classList.add('show');
+      document.getElementById(inputId.replace('File','Drop')).style.display = 'none';
+      if (errorId) hideError(errorId);
+    }
+  });
+}
+
+setupFileInput('chinginFile', 'chinginSelected', 'chinginFileName', 'chingin', 'err-chinginFile');
+setupFileInput('keiyakuFile', 'keiyakuSelected', 'keiyakuFileName', 'keiyaku', 'err-keiyakuFile');
+setupFileInput('hikakuFile', 'hikakuSelected', 'hikakuFileName', 'hikaku', null);
+
+function showError(id) { document.getElementById(id).classList.add('show'); }
+function hideError(id) { document.getElementById(id).classList.remove('show'); }
+
+function validate() {
+  let ok = true;
+  if (!companyData) { alert('先に企業IDを検索してください'); return false; }
+  const fields = [
+    { id: 'employeeName', errId: 'err-employeeName' },
+    { id: 'beforeType', errId: 'err-beforeType' },
+    { id: 'afterType', errId: 'err-afterType' },
+    { id: 'tenkanDate', errId: 'err-tenkanDate' },
+  ];
+  fields.forEach(f => {
+    const val = document.getElementById(f.id).value.trim();
+    if (!val) { showError(f.errId); ok = false; }
+    else hideError(f.errId);
+  });
+  if (!files.chingin) { showError('err-chinginFile'); ok = false; } else hideError('err-chinginFile');
+  if (!files.keiyaku) { showError('err-keiyakuFile'); ok = false; } else hideError('err-keiyakuFile');
+  return ok;
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const base64 = e.target.result.split(',')[1];
+      const ext = file.name.split('.').pop().toLowerCase();
+      resolve({ data: base64, type: file.type, ext });
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function submitForm() {
+  if (!validate()) return;
+
+  document.getElementById('overlay').classList.add('show');
+  document.getElementById('submitBtn').disabled = true;
+
+  try {
+    const [chinginData, keiyakuData, hikakuData] = await Promise.all([
+      fileToBase64(files.chingin),
+      fileToBase64(files.keiyaku),
+      files.hikaku ? fileToBase64(files.hikaku) : Promise.resolve(null)
+    ]);
+
+    const payload = {
+      action: 'registerEmployee',
+      companyId: companyData.id,
+      companyName: companyData.name,
+      employeeName: document.getElementById('employeeName').value.trim(),
+      beforeType: document.getElementById('beforeType').value,
+      afterType: document.getElementById('afterType').value,
+      tenkanDate: document.getElementById('tenkanDate').value,
+      chinginFile: chinginData,
+      keiyakuFile: keiyakuData,
+      hikakuFile: hikakuData,
+    };
+
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+
+    document.getElementById('overlay').classList.remove('show');
+
+    if (result.success) {
+      document.getElementById('resultApplyId').textContent = result.applyId;
+      document.getElementById('formArea').style.display = 'none';
+      document.getElementById('successScreen').classList.add('show');
+      window.scrollTo(0, 0);
+    } else {
+      alert('エラーが発生しました：' + result.error);
+      document.getElementById('submitBtn').disabled = false;
+    }
+  } catch (err) {
+    document.getElementById('overlay').classList.remove('show');
+    document.getElementById('submitBtn').disabled = false;
+    alert('通信エラーが発生しました：' + err.message);
+  }
+}
+
+function resetForm() {
+  // フォームリセット
+  companyData = null;
+  files.chingin = null; files.keiyaku = null; files.hikaku = null;
+  document.getElementById('companyIdInput').value = '';
+  document.getElementById('companyResult').classList.remove('show');
+  document.getElementById('employeeName').value = '';
+  document.getElementById('beforeType').value = '';
+  document.getElementById('afterType').value = '';
+  document.getElementById('tenkanDate').value = '';
+  ['chinginSelected','keiyakuSelected','hikakuSelected'].forEach(id => document.getElementById(id).classList.remove('show'));
+  ['chinginDrop','keiyakuDrop','hikakuDrop'].forEach(id => document.getElementById(id).style.display = '');
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('successScreen').classList.remove('show');
+  document.getElementById('formArea').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
