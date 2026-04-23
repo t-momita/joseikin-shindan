@@ -160,6 +160,7 @@
       <div class="card-body">
         <div class="form-grid full">
 
+          <!-- 履歴事項全部証明書 -->
           <div class="field">
             <label>履歴事項全部証明書<span class="req">必須</span></label>
             <div class="label-hint">法務局で取得した会社の登記簿原本（現在の登記内容が反映されているもの。取得時期は問いません。）</div>
@@ -174,6 +175,7 @@
 
           <hr class="divider">
 
+          <!-- 雇用保険適用事業所設置届 -->
           <div class="field">
             <label>雇用保険適用事業所設置届<span class="req">必須</span></label>
             <div class="label-hint">ハローワークから交付された届出の控え</div>
@@ -188,6 +190,7 @@
 
           <hr class="divider">
 
+          <!-- 就業規則 -->
           <div class="field">
             <label>就業規則<span class="req">必須</span></label>
             <div class="radio-group" style="margin-bottom:10px;">
@@ -213,6 +216,7 @@
 
           <hr class="divider">
 
+          <!-- 賃金規定 -->
           <div class="field">
             <label>賃金規定<span class="req">必須</span></label>
             <div class="radio-group">
@@ -229,6 +233,22 @@
 
           <hr class="divider">
 
+          <!-- 賃金台帳（新規追加） -->
+          <div class="field">
+            <label>賃金台帳<span class="req">必須</span></label>
+            <div class="label-hint">直近3ヶ月分の賃金台帳（全従業員分）</div>
+            <div class="file-upload" id="chinginDaiDrop">
+              <input type="file" id="chinginDaiFile" accept=".pdf,.jpg,.jpeg,.png">
+              <div class="file-upload-icon">📎</div>
+              <div><div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
+            </div>
+            <div class="file-selected" id="chinginDaiSelected">✅ <span id="chinginDaiFileName"></span></div>
+            <div class="field-error" id="err-chinginDaiFile">賃金台帳をアップロードしてください</div>
+          </div>
+
+          <hr class="divider">
+
+          <!-- キャリアアップ計画書 -->
           <div class="field">
             <label>キャリアアップ計画書<span class="req">必須</span></label>
             <div class="radio-group" style="margin-bottom:10px;">
@@ -361,7 +381,7 @@
 
 <script>
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbxn8thednF67SoPIasKonFBtdfxVWI9mCDbK0Uh2Vt-BfjdWrLfuAtmikdC1uu2IgRR/exec';
-const files = { toki: null, koyo: null, shugyo: null, keikaku: null };
+const files = { toki: null, koyo: null, shugyo: null, chinginDai: null, keikaku: null };
 
 function setupFileInput(inputId, selectedId, fileNameId, fileKey, dropId, errorId) {
   document.getElementById(inputId).addEventListener('change', function() {
@@ -374,10 +394,11 @@ function setupFileInput(inputId, selectedId, fileNameId, fileKey, dropId, errorI
     }
   });
 }
-setupFileInput('tokiFile',    'tokiSelected',    'tokiFileName',    'toki',    'tokiDrop',    'err-tokiFile');
-setupFileInput('koyoFile',    'koyoSelected',    'koyoFileName',    'koyo',    'koyoDrop',    'err-koyoFile');
-setupFileInput('shugyoFile',  'shugyoSelected',  'shugyoFileName',  'shugyo',  'shugyoDrop',  'err-shugyoFile');
-setupFileInput('keikakuFile', 'keikakuSelected', 'keikakuFileName', 'keikaku', 'keikakuDrop', 'err-keikakuFile');
+setupFileInput('tokiFile',       'tokiSelected',       'tokiFileName',       'toki',       'tokiDrop',       'err-tokiFile');
+setupFileInput('koyoFile',       'koyoSelected',       'koyoFileName',       'koyo',       'koyoDrop',       'err-koyoFile');
+setupFileInput('shugyoFile',     'shugyoSelected',     'shugyoFileName',     'shugyo',     'shugyoDrop',     'err-shugyoFile');
+setupFileInput('chinginDaiFile', 'chinginDaiSelected', 'chinginDaiFileName', 'chinginDai', 'chinginDaiDrop', 'err-chinginDaiFile');
+setupFileInput('keikakuFile',    'keikakuSelected',    'keikakuFileName',    'keikaku',    'keikakuDrop',    'err-keikakuFile');
 
 document.querySelectorAll('input[name="shugyoAri"]').forEach(r => {
   r.addEventListener('change', function() {
@@ -400,8 +421,9 @@ function validate() {
     if (!document.getElementById(id).value.trim()) { showError('err-' + id); ok = false; }
     else hideError('err-' + id);
   });
-  if (!files.toki) { showError('err-tokiFile'); ok = false; } else hideError('err-tokiFile');
-  if (!files.koyo) { showError('err-koyoFile'); ok = false; } else hideError('err-koyoFile');
+  if (!files.toki)       { showError('err-tokiFile');       ok = false; } else hideError('err-tokiFile');
+  if (!files.koyo)       { showError('err-koyoFile');       ok = false; } else hideError('err-koyoFile');
+  if (!files.chinginDai) { showError('err-chinginDaiFile'); ok = false; } else hideError('err-chinginDaiFile');
   const shugyoAri = document.querySelector('input[name="shugyoAri"]:checked').value === '1';
   if (shugyoAri && !files.shugyo) { showError('err-shugyoFile'); ok = false; } else hideError('err-shugyoFile');
   const keikakuVal = document.querySelector('input[name="keikakuAri"]:checked').value;
@@ -423,17 +445,18 @@ async function submitForm() {
   document.getElementById('overlay').classList.add('show');
   document.getElementById('submitBtn').disabled = true;
   try {
-    const shugyoAri = document.querySelector('input[name="shugyoAri"]:checked').value === '1';
+    const shugyoAri  = document.querySelector('input[name="shugyoAri"]:checked').value === '1';
     const keikakuVal = document.querySelector('input[name="keikakuAri"]:checked').value;
     const chinginAri = document.querySelector('input[name="chinginAri"]:checked').value === '1';
-    const [tokiData, koyoData, shugyoData, keikakuData] = await Promise.all([
+    const [tokiData, koyoData, shugyoData, chinginDaiData, keikakuData] = await Promise.all([
       fileToBase64(files.toki),
       fileToBase64(files.koyo),
       shugyoAri && files.shugyo ? fileToBase64(files.shugyo) : Promise.resolve(null),
+      fileToBase64(files.chinginDai),
       keikakuVal === 'pdf' && files.keikaku ? fileToBase64(files.keikaku) : Promise.resolve(null),
     ]);
     const payload = {
-      action: 'registerCompany',
+      action:          'registerCompany',
       companyName:     document.getElementById('companyName').value.trim(),
       phone:           document.getElementById('phone').value.trim(),
       tantouYakushoku: document.getElementById('tantouYakushoku').value.trim(),
@@ -449,6 +472,7 @@ async function submitForm() {
       tokiFile:        tokiData,
       koyoFile:        koyoData,
       shugyoFile:      shugyoData,
+      chinginDaiFile:  chinginDaiData,
       keikakuFile:     keikakuData,
     };
     const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
