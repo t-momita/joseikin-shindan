@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マイページ | キャリアアップ助成金申請システム</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f1f3d; --blue: #1a4fa0; --accent: #2e7df7;
+    --light-blue: #e8f0fe; --green: #1e8c5a; --light-green: #e6f4ee;
+    --gray: #f5f6fa; --border: #dde2ee; --text: #1a2340;
+    --muted: #6b7a99; --error: #d93025; --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', sans-serif; background: #f0f3fa; color: var(--text); min-height: 100vh; }
+
+  .header { background: var(--navy); padding: 16px 32px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+  .header-logo { font-family: 'DM Serif Display', serif; color: white; font-size: 20px; }
+  .header-badge { background: var(--accent); color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+  .header-company { color: rgba(255,255,255,0.7); font-size: 13px; margin-left: auto; }
+
+  .main { max-width: 860px; margin: 32px auto; padding: 0 20px 80px; }
+
+  /* ===== LOGIN ===== */
+  #loginArea { max-width: 420px; margin: 80px auto; }
+  .login-card { background: white; border-radius: 16px; padding: 40px; border: 1px solid var(--border); box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+  .login-title { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--navy); margin-bottom: 8px; }
+  .login-desc { color: var(--muted); font-size: 13px; margin-bottom: 28px; line-height: 1.6; }
+  .login-field label { display: block; font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .login-field input { width: 100%; height: 48px; border: 1.5px solid var(--border); border-radius: 8px; padding: 0 16px; font-size: 15px; font-family: inherit; outline: none; transition: border-color 0.2s; }
+  .login-field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(46,125,247,0.12); }
+  .btn-login { width: 100%; height: 52px; background: linear-gradient(135deg, var(--blue), var(--accent)); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; margin-top: 20px; transition: all 0.2s; }
+  .btn-login:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(30,79,160,0.3); }
+  .login-error { color: var(--error); font-size: 13px; margin-top: 12px; display: none; text-align: center; }
+  .login-error.show { display: block; }
+
+  /* ===== TABS ===== */
+  #mypageArea { display: none; }
+  .tabs { display: flex; gap: 4px; background: white; border-radius: 12px; padding: 6px; border: 1px solid var(--border); margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .tab { flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.2s; color: var(--muted); border: none; background: transparent; font-family: inherit; }
+  .tab.active { background: var(--navy); color: white; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ===== CARDS ===== */
+  .card { background: white; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .card-header { background: var(--navy); padding: 14px 24px; display: flex; align-items: center; gap: 10px; }
+  .card-header-icon { font-size: 18px; }
+  .card-header-title { color: white; font-size: 14px; font-weight: 700; }
+  .card-body { padding: 24px; }
+
+  .section-label { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 2px; margin-bottom: 10px; margin-top: 28px; }
+  .section-label:first-child { margin-top: 0; }
+  .section-label::before { content: ''; display: inline-block; width: 4px; height: 16px; background: var(--accent); border-radius: 2px; }
+
+  /* ===== FORM ===== */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-grid.full { grid-template-columns: 1fr; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field.span2 { grid-column: span 2; }
+  label { font-size: 13px; font-weight: 700; color: var(--navy); display: flex; align-items: center; gap: 6px; }
+  input[type="text"], input[type="tel"], input[type="date"] {
+    height: 44px; border: 1.5px solid var(--border); border-radius: 8px;
+    padding: 0 14px; font-size: 14px; font-family: inherit; color: var(--text);
+    background: white; transition: border-color 0.2s; outline: none; width: 100%;
+  }
+  input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(46,125,247,0.12); }
+  .req { background: var(--error); color: white; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; }
+
+  /* ===== FILE UPLOAD ===== */
+  .file-upload { border: 2px dashed var(--border); border-radius: 8px; padding: 12px 16px; cursor: pointer; transition: all 0.2s; background: var(--gray); position: relative; display: flex; align-items: center; gap: 10px; }
+  .file-upload:hover { border-color: var(--accent); background: var(--light-blue); }
+  .file-upload input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .file-upload-icon { font-size: 20px; flex-shrink: 0; }
+  .file-upload-text { font-size: 13px; color: var(--muted); }
+  .file-upload-hint { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .file-selected { display: none; align-items: center; gap: 8px; background: var(--light-green); border: 1.5px solid var(--green); border-radius: 8px; padding: 8px 12px; font-size: 13px; color: var(--green); font-weight: 500; margin-top: 6px; }
+  .file-selected.show { display: flex; }
+  .current-file { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .current-file a { color: var(--accent); text-decoration: none; }
+  .current-file a:hover { text-decoration: underline; }
+
+  .radio-group { display: flex; gap: 10px; }
+  .radio-btn { flex: 1; position: relative; }
+  .radio-btn input[type="radio"] { position: absolute; opacity: 0; width: 0; }
+  .radio-btn label { display: flex; align-items: center; justify-content: center; height: 42px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; color: var(--muted); }
+  .radio-btn input:checked + label { border-color: var(--accent); background: var(--light-blue); color: var(--accent); font-weight: 700; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  /* ===== BUTTONS ===== */
+  .btn-save { height: 48px; padding: 0 32px; background: linear-gradient(135deg, var(--blue), var(--accent)); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+  .btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(30,79,160,0.3); }
+  .btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .save-area { display: flex; justify-content: flex-end; margin-top: 24px; }
+
+  /* ===== EMPLOYEE LIST ===== */
+  .emp-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: box-shadow 0.2s; }
+  .emp-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+  .emp-name { font-size: 16px; font-weight: 700; color: var(--navy); }
+  .emp-meta { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+  .badge-new { background: #dbeafe; color: #1d4ed8; }
+  .badge-progress { background: #fef3c7; color: #92400e; }
+  .badge-done { background: #d1fae5; color: #065f46; }
+  .btn-edit { padding: 8px 20px; background: transparent; border: 1.5px solid var(--accent); color: var(--accent); border-radius: 8px; font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+  .btn-edit:hover { background: var(--accent); color: white; }
+  .btn-add { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 24px; background: var(--green); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+  .btn-add:hover { background: #166647; }
+
+  /* ===== EMP EDIT MODAL ===== */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.active { display: flex; }
+  .modal { background: white; border-radius: 16px; width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 80px rgba(0,0,0,0.3); }
+  .modal-header { padding: 20px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: white; border-radius: 16px 16px 0 0; }
+  .modal-header h3 { font-size: 16px; font-weight: 700; color: var(--navy); }
+  .modal-close { width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--gray); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--muted); }
+  .modal-close:hover { background: #fee2e2; color: var(--error); }
+  .modal-body { padding: 24px 28px; }
+
+  /* ===== OVERLAY / TOAST ===== */
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(15,31,61,0.7); z-index: 1000; align-items: center; justify-content: center; flex-direction: column; gap: 20px; }
+  .overlay.show { display: flex; }
+  .spinner { width: 48px; height: 48px; border: 4px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .overlay-text { color: white; font-size: 15px; font-weight: 500; }
+  .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 20px; background: var(--navy); color: white; border-radius: 10px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.2); z-index: 999; transform: translateY(80px); opacity: 0; transition: all 0.3s ease; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: var(--green); }
+  .toast.error { background: var(--error); }
+
+  .empty { text-align: center; padding: 48px; color: var(--muted); font-size: 14px; }
+  .label-hint { font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 2px; line-height: 1.5; }
+
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .field.span2 { grid-column: span 1; }
+    .header { padding: 12px 16px; }
+    .emp-card { flex-direction: column; align-items: flex-start; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">NextSeason</div>
+  <div class="header-badge">マイページ</div>
+  <div class="header-company" id="headerCompanyName"></div>
+</div>
+
+<!-- ===== LOGIN ===== -->
+<div class="main" id="loginArea">
+  <div class="login-card">
+    <div class="login-title">企業ログイン</div>
+    <p class="login-desc">企業登録時に発行された<strong>企業ID</strong>を入力してください。</p>
+    <div class="login-field">
+      <label>企業ID</label>
+      <input type="text" id="loginId" placeholder="例：NS-2026-001" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn-login" onclick="doLogin()">ログイン →</button>
+    <div class="login-error" id="loginError">企業IDが見つかりません。ご確認ください。</div>
+  </div>
+</div>
+
+<!-- ===== MYPAGE ===== -->
+<div class="main" id="mypageArea">
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('company')">🏢 企業情報</button>
+    <button class="tab" onclick="switchTab('employee')">👤 従業員申請</button>
+  </div>
+
+  <!-- 企業情報タブ -->
+  <div class="tab-content active" id="tab-company">
+
+    <div class="section-label">00 企業情報</div>
+    <div class="card">
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="field">
+            <label>会社名<span class="req">必須</span></label>
+            <input type="text" id="c_companyName" placeholder="例：株式会社〇〇">
+          </div>
+          <div class="field">
+            <label>代表電話番号<span class="req">必須</span></label>
+            <input type="tel" id="c_phone" placeholder="例：06-1234-5678">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">書類</div>
+    <div class="card">
+      <div class="card-body">
+        <div class="form-grid full">
+
+          <div class="field">
+            <label>履歴事項全部証明書</label>
+            <div class="current-file" id="cur_toki"></div>
+            <div class="file-upload">
+              <input type="file" id="c_tokiFile" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileChange(this,'c_tokiSelected','c_tokiFileName','c_toki')">
+              <div class="file-upload-icon">📎</div>
+              <div><div class="file-upload-text">差し替える場合はここをクリック</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
+            </div>
+            <div class="file-selected" id="c_tokiSelected">✅ <span id="c_tokiFileName"></span></div>
+          </div>
+
+          <hr class="divider">
+
+          <div class="field">
+            <label>雇用保険適用事業所設置届</label>
+            <div class="current-file" id="cur_koyo"></div>
+            <div class="file-upload">
+              <input type="file" id="c_koyoFile" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileChange(this,'c_koyoSelected','c_koyoFileName','c_koyo')">
+              <div class="file-upload-icon">📎</div>
+              <div><div class="file-upload-text">差し替える場合はここをクリック</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
+            </div>
+            <div class="file-selected" id="c_koyoSelected">✅ <span id="c_koyoFileName"></span></div>
+          </div>
+
+          <hr class="divider">
+
+          <div class="field">
+            <label>就業規則</label>
+            <div class="current-file" id="cur_shugyo"></div>
+            <div class="file-upload">
+              <input type="file" id="c_shugyoFile" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileChange(this,'c_shugyoSelected','c_shugyoFileName','c_shugyo')">
+              <div class="file-upload-icon">📎</div>
+              <div><div class="file-upload-text">差し替える場合はここをクリック</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
+            </div>
+            <div class="file-selected" id="c_shugyoSelected">✅ <span id="c_shugyoFileName"></span></div>
+          </div>
+
+          <hr class="divider">
+
+          <div class="field">
+            <label>賃金規定</label>
+            <div class="current-file" id="cur_chinginKitei"></div>
+            <div class="file-upload">
+              <input type="file" id="c_chinginKiteiFile" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileChange(this,'c_chinginKiteiSelected','c_chinginKiteiFileName','c_chinginKitei')">
+              <div class="file-upload-icon">📎</div>
+              <div><div class="file-upload-text">差し替える場合はここをクリック</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
+            </div>
+            <div class="file-selected" id="c_chinginKiteiSelected">✅ <span id="c_chinginKiteiFileName"></span></div>
+          </div>
+
+          <hr class="divider">
+
+          <div class="field">
+            <label>キャリアアップ計画書</label>
+            <div class="current-file" id="cur_keikaku"></div>
+            <div class="file-upload">
+              <input type="file" id="c_keikakuFile" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileChange(this,'c_keikakuSelected','c_keikakuFileName','c_keikaku')">
+              <div class="file-upload-icon">📎</div>
+              <div><div class="file-upload-text">差し替える場合はここをクリック</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
+            </div>
+            <div class="file-selected" id="c_keikakuSelected">✅ <span id="c_keikakuFileName"></span></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">01 担当者情報</div>
+    <div class="card">
+      <div class="card-header"><span class="card-header-icon">👤</span><span class="card-header-title">職業能力開発推進者</span></div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="field">
+            <label>役職</label>
+            <input type="text" id="c_tantouYakushoku" placeholder="例：総務課長">
+          </div>
+          <div class="field">
+            <label>氏名</label>
+            <input type="text" id="c_tantouName" placeholder="例：鈴木 花子">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-header-icon">👥</span><span class="card-header-title">労働者代表者</span></div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="field span2">
+            <label>氏名</label>
+            <input type="text" id="c_rodoushaDaihyo" placeholder="例：田中 一郎">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-header-icon">📞</span><span class="card-header-title">ハローワーク問合せ窓口</span></div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="field">
+            <label>氏名</label>
+            <input type="text" id="c_contactName" placeholder="例：山田 次郎">
+          </div>
+          <div class="field">
+            <label>所属</label>
+            <input type="text" id="c_contactBusho" placeholder="例：総務部">
+          </div>
+          <div class="field">
+            <label>電話番号</label>
+            <input type="tel" id="c_contactPhone" placeholder="例：06-1234-5678">
+          </div>
+          <div class="field">
+            <label>メールアドレス</label>
+            <input type="text" id="c_email" placeholder="例：info@example.com">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="save-area">
+      <button class="btn-save" id="btnSaveCompany" onclick="saveCompany()">💾 企業情報を保存する</button>
+    </div>
+  </div>
+
+  <!-- 従業員申請タブ -->
+  <div class="tab-content" id="tab-employee">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+      <div style="font-size:13px;color:var(--muted)">登録済みの従業員申請一覧</div>
+      <a href="step2-employee.html" class="btn-add" id="linkStep2">＋ 新規従業員を申請する</a>
+    </div>
+    <div id="empList"><div class="empty">読み込み中...</div></div>
+  </div>
+
+</div>
+
+<!-- ===== 従業員編集モーダル ===== -->
+<div class="modal-overlay" id="empModal" onclick="if(event.target===this)closeEmpModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="empModalTitle">従業員情報の編集</h3>
+      <button class="modal-close" onclick="closeEmpModal()">✕</button>
+    </div>
+    <div class="modal-body" id="empModalBody"></div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="spinner"></div>
+  <div class="overlay-text" id="overlayText">保存中...</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxn8thednF67SoPIasKonFBtdfxVWI9mCDbK0Uh2Vt-BfjdWrLfuAtmikdC1uu2IgRR/exec';
+
+let companyData = null;
+let employeeData = [];
+let newFiles = {}; // 差し替えファイルを保持
+
+// ===== LOGIN =====
+async function doLogin() {
+  const id = document.getElementById('loginId').value.trim().toUpperCase();
+  if (!id) return;
+  showOverlay('企業情報を読み込み中...');
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'getCompanyFull', companyId: id })
+    });
+    const result = await res.json();
+    hideOverlay();
+    if (result.success) {
+      companyData = result.company;
+      employeeData = result.employees || [];
+      document.getElementById('loginArea').style.display = 'none';
+      document.getElementById('mypageArea').style.display = 'block';
+      document.getElementById('headerCompanyName').textContent = companyData.name;
+      document.getElementById('linkStep2').href = `step2-employee.html?companyId=${id}`;
+      fillCompanyForm();
+      renderEmpList();
+    } else {
+      hideOverlay();
+      document.getElementById('loginError').classList.add('show');
+    }
+  } catch(e) {
+    hideOverlay();
+    document.getElementById('loginError').classList.add('show');
+  }
+}
+
+// ===== FILL COMPANY FORM =====
+function fillCompanyForm() {
+  const c = companyData;
+  document.getElementById('c_companyName').value     = c.name || '';
+  document.getElementById('c_phone').value           = c.phone || '';
+  document.getElementById('c_tantouYakushoku').value = c.tantouYakushoku || '';
+  document.getElementById('c_tantouName').value      = c.tantouName || '';
+  document.getElementById('c_rodoushaDaihyo').value  = c.rodoushaDaihyo || '';
+  document.getElementById('c_contactName').value     = c.contactName || '';
+  document.getElementById('c_contactBusho').value    = c.contactBusho || '';
+  document.getElementById('c_contactPhone').value    = c.contactPhone || '';
+  document.getElementById('c_email').value           = c.email || '';
+
+  setCurrentFile('cur_toki',         c.tokiUrl,         '履歴事項全部証明書');
+  setCurrentFile('cur_koyo',         c.koyoUrl,         '雇用保険設置届');
+  setCurrentFile('cur_shugyo',       c.shugyoUrl,       '就業規則');
+  setCurrentFile('cur_chinginKitei', c.chinginKiteiUrl, '賃金規定');
+  setCurrentFile('cur_keikaku',      c.keikakuAri,      'キャリアアップ計画書');
+}
+
+function setCurrentFile(elId, url, label) {
+  const el = document.getElementById(elId);
+  if (url && url.startsWith('http')) {
+    el.innerHTML = `現在のファイル：<a href="${url}" target="_blank">📄 ${label}を確認する</a>`;
+  } else if (url) {
+    el.textContent = `現在の状態：${url}`;
+  }
+}
+
+// ===== FILE CHANGE =====
+function onFileChange(input, selectedId, fileNameId, fileKey) {
+  if (input.files[0]) {
+    newFiles[fileKey] = input.files[0];
+    document.getElementById(fileNameId).textContent = input.files[0].name;
+    document.getElementById(selectedId).classList.add('show');
+  }
+}
+
+// ===== SAVE COMPANY =====
+async function saveCompany() {
+  showOverlay('保存中...');
+  document.getElementById('btnSaveCompany').disabled = true;
+  try {
+    const fileKeys = ['c_toki','c_koyo','c_shugyo','c_chinginKitei','c_keikaku'];
+    const fileData = {};
+    for (const key of fileKeys) {
+      fileData[key] = newFiles[key] ? await fileToBase64(newFiles[key]) : null;
+    }
+    const payload = {
+      action:          'updateCompany',
+      companyId:       companyData.id,
+      companyName:     document.getElementById('c_companyName').value.trim(),
+      phone:           document.getElementById('c_phone').value.trim(),
+      tantouYakushoku: document.getElementById('c_tantouYakushoku').value.trim(),
+      tantouName:      document.getElementById('c_tantouName').value.trim(),
+      rodoushaDaihyo:  document.getElementById('c_rodoushaDaihyo').value.trim(),
+      contactName:     document.getElementById('c_contactName').value.trim(),
+      contactBusho:    document.getElementById('c_contactBusho').value.trim(),
+      contactPhone:    document.getElementById('c_contactPhone').value.trim(),
+      email:           document.getElementById('c_email').value.trim(),
+      tokiFile:        fileData['c_toki'],
+      koyoFile:        fileData['c_koyo'],
+      shugyoFile:      fileData['c_shugyo'],
+      chinginKiteiFile:fileData['c_chinginKitei'],
+      keikakuFile:     fileData['c_keikaku'],
+    };
+    const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+    const result = await res.json();
+    hideOverlay();
+    document.getElementById('btnSaveCompany').disabled = false;
+    if (result.success) {
+      newFiles = {};
+      showToast('企業情報を保存しました', 'success');
+    } else {
+      showToast('保存に失敗しました：' + result.error, 'error');
+    }
+  } catch(e) {
+    hideOverlay();
+    document.getElementById('btnSaveCompany').disabled = false;
+    showToast('通信エラーが発生しました', 'error');
+  }
+}
+
+// ===== EMPLOYEE LIST =====
+function renderEmpList() {
+  const el = document.getElementById('empList');
+  if (!employeeData.length) {
+    el.innerHTML = '<div class="empty">まだ従業員申請がありません</div>';
+    return;
+  }
+  el.innerHTML = employeeData.map((emp, i) => `
+    <div class="emp-card">
+      <div>
+        <div class="emp-name">${esc(emp.employeeName)}</div>
+        <div class="emp-meta">${esc(emp.beforeType)} → 正社員 ／ 転換予定：${esc(emp.tenkanDate)} ／ 申請日：${esc(emp.appliedAt)}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="badge ${badgeClass(emp.status)}">${esc(emp.status)}</span>
+        <button class="btn-edit" onclick="openEmpModal(${i})">編集</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function badgeClass(s) {
+  if (s === '書類収集中') return 'badge-new';
+  if (s === '申請済み') return 'badge-done';
+  return 'badge-progress';
+}
+
+// ===== EMPLOYEE MODAL =====
+let editingEmpIndex = null;
+let empNewFiles = {};
+
+function openEmpModal(i) {
+  editingEmpIndex = i;
+  empNewFiles = {};
+  const emp = employeeData[i];
+  document.getElementById('empModalTitle').textContent = `${emp.employeeName} さんの情報を編集`;
+
+  document.getElementById('empModalBody').innerHTML = `
+    <div class="form-grid" style="margin-bottom:16px">
+      <div class="field">
+        <label>従業員名</label>
+        <input type="text" id="e_employeeName" value="${esc(emp.employeeName||'')}">
+      </div>
+      <div class="field">
+        <label>現在の雇用形態</label>
+        <input type="text" id="e_beforeType" value="${esc(emp.beforeType||'')}">
+      </div>
+      <div class="field">
+        <label>雇用開始日</label>
+        <input type="date" id="e_koyoStartDate" value="${esc(emp.koyoStartDate||'')}">
+      </div>
+      <div class="field">
+        <label>正社員転換予定日</label>
+        <input type="date" id="e_tenkanDate" value="${esc(emp.tenkanDate||'')}">
+      </div>
+      <div class="field span2">
+        <label>正社員後月給</label>
+        <input type="text" id="e_kyuyo" value="${esc(emp.kyuyo||'')}">
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="form-grid full" style="gap:16px">
+      ${empFileField('資格喪失届', emp.soshitssuUrl, 'e_soshitssu')}
+      ${empFileField('雇用契約書', emp.keiyakuUrl,   'e_keiyaku')}
+      ${empFileField('賃金台帳',   emp.chinginUrl,   'e_chingin')}
+      ${empFileField('出勤簿',     emp.shukkinUrl,   'e_shukkin')}
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;margin-top:24px">
+      <button class="btn-save" onclick="saveEmployee()">💾 保存する</button>
+    </div>
+  `;
+
+  // ファイルイベント設定
+  ['e_soshitssu','e_keiyaku','e_chingin','e_shukkin'].forEach(key => {
+    const input = document.getElementById(key + 'File');
+    if (input) input.addEventListener('change', function() {
+      if (this.files[0]) {
+        empNewFiles[key] = this.files[0];
+        document.getElementById(key + 'FileName').textContent = this.files[0].name;
+        document.getElementById(key + 'Selected').classList.add('show');
+      }
+    });
+  });
+
+  document.getElementById('empModal').classList.add('active');
+}
+
+function empFileField(label, url, key) {
+  const currentHtml = url && url.startsWith('http')
+    ? `<div class="current-file">現在：<a href="${url}" target="_blank">📄 確認する</a></div>`
+    : '';
+  return `
+    <div class="field">
+      <label>${label}</label>
+      ${currentHtml}
+      <div class="file-upload">
+        <input type="file" id="${key}File" accept=".pdf,.jpg,.jpeg,.png">
+        <div class="file-upload-icon">📎</div>
+        <div><div class="file-upload-text">差し替える場合はここをクリック</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
+      </div>
+      <div class="file-selected" id="${key}Selected">✅ <span id="${key}FileName"></span></div>
+    </div>`;
+}
+
+function closeEmpModal() {
+  document.getElementById('empModal').classList.remove('active');
+}
+
+async function saveEmployee() {
+  showOverlay('保存中...');
+  const emp = employeeData[editingEmpIndex];
+  try {
+    const fileKeys = ['e_soshitssu','e_keiyaku','e_chingin','e_shukkin'];
+    const fileData = {};
+    for (const key of fileKeys) {
+      fileData[key] = empNewFiles[key] ? await fileToBase64(empNewFiles[key]) : null;
+    }
+    const payload = {
+      action:        'updateEmployee',
+      applyId:       emp.applyId,
+      employeeName:  document.getElementById('e_employeeName').value.trim(),
+      beforeType:    document.getElementById('e_beforeType').value.trim(),
+      koyoStartDate: document.getElementById('e_koyoStartDate').value,
+      tenkanDate:    document.getElementById('e_tenkanDate').value,
+      kyuyo:         document.getElementById('e_kyuyo').value.trim(),
+      soshitssuFile: fileData['e_soshitssu'],
+      keiyakuFile:   fileData['e_keiyaku'],
+      chinginFile:   fileData['e_chingin'],
+      shukkinFile:   fileData['e_shukkin'],
+    };
+    const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+    const result = await res.json();
+    hideOverlay();
+    if (result.success) {
+      // ローカルデータも更新
+      employeeData[editingEmpIndex] = { ...emp, ...payload };
+      renderEmpList();
+      closeEmpModal();
+      showToast('従業員情報を保存しました', 'success');
+    } else {
+      showToast('保存に失敗しました：' + result.error, 'error');
+    }
+  } catch(e) {
+    hideOverlay();
+    showToast('通信エラーが発生しました', 'error');
+  }
+}
+
+// ===== TABS =====
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (name==='company'&&i===0)||(name==='employee'&&i===1)));
+  document.querySelectorAll('.tab-content').forEach((c,i) => c.classList.toggle('active', (name==='company'&&i===0)||(name==='employee'&&i===1)));
+}
+
+// ===== HELPERS =====
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => resolve({ data: e.target.result.split(',')[1], type: file.type, ext: file.name.split('.').pop().toLowerCase() });
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showOverlay(text) {
+  document.getElementById('overlayText').textContent = text || '処理中...';
+  document.getElementById('overlay').classList.add('show');
+}
+function hideOverlay() { document.getElementById('overlay').classList.remove('show'); }
+
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type?' '+type:'');
+  setTimeout(() => { t.className = 'toast'; }, 3000);
+}
+</script>
+</body>
+</html>
