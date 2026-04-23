@@ -374,18 +374,77 @@
   <div class="overlay-sub">ファイルサイズによっては時間がかかります。画面を閉じないでください。</div>
 </div>
 
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbxn8thednF67SoPIasKonFBtdfxVWI9mCDbK0Uh2Vt-BfjdWrLfuAtmikdC1uu2IgRR/exec';
+const CLIENT_ID = '545894761587-ja5v4hedor9kf1hq41n2p85gvqv97irm.apps.googleusercontent.com';
+const DRIVE_FOLDER_ID = '138czCzVkN5hlRwk54cj22M-NTpG20K9s';
+const SCOPES = 'https://www.googleapis.com/auth/drive.file';
+
+let accessToken = null;
 const files = { toki: null, koyo: null, shugyo: null, chinginKitei: null, keikaku: null };
 
-const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+// ===== OAuth認証 =====
+function getAccessToken() {
+  return new Promise((resolve, reject) => {
+    if (accessToken) { resolve(accessToken); return; }
+    const client = google.accounts.oauth2.initTokenClient({
+      client_id: CLIENT_ID,
+      scope: SCOPES,
+      callback: (resp) => {
+        if (resp.error) { reject(resp.error); return; }
+        accessToken = resp.access_token;
+        resolve(accessToken);
+      }
+    });
+    client.requestAccessToken();
+  });
+}
+
+// ===== ファイルをDriveに直接アップロード =====
+async function uploadToDrive(file, fileName, folderId, token) {
+  if (!file) return '';
+  const ext = file.name.split('.').pop().toLowerCase();
+  const fullName = fileName + '.' + ext;
+  const metadata = { name: fullName, parents: [folderId] };
+  const form = new FormData();
+  form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+  form.append('file', file);
+  const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink', {
+    method: 'POST',
+    headers: { Authorization: 'Bearer ' + token },
+    body: form
+  });
+  const json = await res.json();
+  if (!json.id) throw new Error('アップロード失敗: ' + JSON.stringify(json));
+  // 共有設定
+  await fetch('https://www.googleapis.com/drive/v3/files/' + json.id + '/permissions', {
+    method: 'POST',
+    headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ role: 'reader', type: 'anyone' })
+  });
+  return json.webViewLink || '';
+}
+
+// ===== Driveにサブフォルダを作成 =====
+async function createFolder(name, parentId, token) {
+  const res = await fetch('https://www.googleapis.com/drive/v3/files?fields=id', {
+    method: 'POST',
+    headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, mimeType: 'application/vnd.google-apps.folder', parents: [parentId] })
+  });
+  const json = await res.json();
+  return json.id;
+}
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 function setupFileInput(inputId, selectedId, fileNameId, fileKey, dropId, errorId) {
   document.getElementById(inputId).addEventListener('change', function() {
     if (this.files[0]) {
       const sizeMB = (this.files[0].size / 1024 / 1024).toFixed(1);
       if (this.files[0].size > MAX_FILE_SIZE) {
-        alert('ファイルサイズが大きすぎます。\n現在：' + sizeMB + 'MB\n2MB以下のファイルをご使用ください。\n\nPDFを圧縮する場合はilovepdf.com等をご利用ください。');
+        alert('ファイルサイズが大きすぎます。\n現在：' + sizeMB + 'MB\n10MB以下のファイルをご使用ください。');
         this.value = '';
         return;
       }
@@ -397,11 +456,11 @@ function setupFileInput(inputId, selectedId, fileNameId, fileKey, dropId, errorI
     }
   });
 }
-setupFileInput('tokiFile',       'tokiSelected',       'tokiFileName',       'toki',       'tokiDrop',       'err-tokiFile');
-setupFileInput('koyoFile',       'koyoSelected',       'koyoFileName',       'koyo',       'koyoDrop',       'err-koyoFile');
-setupFileInput('shugyoFile',     'shugyoSelected',     'shugyoFileName',     'shugyo',     'shugyoDrop',     'err-shugyoFile');
+setupFileInput('tokiFile',         'tokiSelected',         'tokiFileName',         'toki',         'tokiDrop',         'err-tokiFile');
+setupFileInput('koyoFile',         'koyoSelected',         'koyoFileName',         'koyo',         'koyoDrop',         'err-koyoFile');
+setupFileInput('shugyoFile',       'shugyoSelected',       'shugyoFileName',       'shugyo',       'shugyoDrop',       'err-shugyoFile');
 setupFileInput('chinginKiteiFile', 'chinginKiteiSelected', 'chinginKiteiFileName', 'chinginKitei', 'chinginKiteiDrop', 'err-chinginKiteiFile');
-setupFileInput('keikakuFile',    'keikakuSelected',    'keikakuFileName',    'keikaku',    'keikakuDrop',    'err-keikakuFile');
+setupFileInput('keikakuFile',      'keikakuSelected',      'keikakuFileName',      'keikaku',      'keikakuDrop',      'err-keikakuFile');
 
 document.querySelectorAll('input[name="shugyoAri"]').forEach(r => {
   r.addEventListener('change', function() {
@@ -429,8 +488,8 @@ function validate() {
     if (!document.getElementById(id).value.trim()) { showError('err-' + id); ok = false; }
     else hideError('err-' + id);
   });
-  if (!files.toki)       { showError('err-tokiFile');       ok = false; } else hideError('err-tokiFile');
-  if (!files.koyo)       { showError('err-koyoFile');       ok = false; } else hideError('err-koyoFile');
+  if (!files.toki) { showError('err-tokiFile'); ok = false; } else hideError('err-tokiFile');
+  if (!files.koyo) { showError('err-koyoFile'); ok = false; } else hideError('err-koyoFile');
   const chinginKiteiAri = document.querySelector('input[name="chinginKiteiAri"]:checked').value === '1';
   if (chinginKiteiAri && !files.chinginKitei) { showError('err-chinginKiteiFile'); ok = false; } else hideError('err-chinginKiteiFile');
   const shugyoAri = document.querySelector('input[name="shugyoAri"]:checked').value === '1';
@@ -440,33 +499,44 @@ function validate() {
   return ok;
 }
 
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = e => resolve({ data: e.target.result.split(',')[1], type: file.type, ext: file.name.split('.').pop().toLowerCase() });
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
 async function submitForm() {
   if (!validate()) return;
   document.getElementById('overlay').classList.add('show');
   document.getElementById('submitBtn').disabled = true;
   try {
-    const shugyoAri      = document.querySelector('input[name="shugyoAri"]:checked').value === '1';
+    // OAuth認証
+    const token = await getAccessToken();
+    const companyName = document.getElementById('companyName').value.trim();
+    const shugyoAri       = document.querySelector('input[name="shugyoAri"]:checked').value === '1';
     const chinginKiteiAri = document.querySelector('input[name="chinginKiteiAri"]:checked').value === '1';
-    const keikakuVal     = document.querySelector('input[name="keikakuAri"]:checked').value;
-    const [tokiData, koyoData, shugyoData, chinginKiteiData, keikakuData] = await Promise.all([
-      fileToBase64(files.toki),
-      fileToBase64(files.koyo),
-      shugyoAri && files.shugyo ? fileToBase64(files.shugyo) : Promise.resolve(null),
-      chinginKiteiAri && files.chinginKitei ? fileToBase64(files.chinginKitei) : Promise.resolve(null),
-      keikakuVal === 'pdf' && files.keikaku ? fileToBase64(files.keikaku) : Promise.resolve(null),
+    const keikakuVal      = document.querySelector('input[name="keikakuAri"]:checked').value;
+
+    // 企業IDを先にGASから取得（仮発行）
+    const idRes = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'reserveCompanyId' })
+    });
+    const idJson = await idRes.json();
+    const companyId = idJson.companyId;
+
+    // Driveにフォルダ作成
+    const folderName = companyId + '_' + companyName;
+    const folderId = await createFolder(folderName, DRIVE_FOLDER_ID, token);
+
+    // ファイルアップロード
+    const [tokiUrl, koyoUrl, shugyoUrl, chinginKiteiUrl, keikakuUrl] = await Promise.all([
+      uploadToDrive(files.toki,         '履歴事項全部証明書_' + companyName, folderId, token),
+      uploadToDrive(files.koyo,         '雇用保険設置届_' + companyName,     folderId, token),
+      shugyoAri       ? uploadToDrive(files.shugyo,       '就業規則_' + companyName,           folderId, token) : Promise.resolve('就業規則なし'),
+      chinginKiteiAri ? uploadToDrive(files.chinginKitei, '賃金規定_' + companyName,           folderId, token) : Promise.resolve('なし'),
+      keikakuVal === 'pdf' ? uploadToDrive(files.keikaku, 'キャリアアップ計画書_' + companyName, folderId, token) : Promise.resolve(keikakuVal === '0' ? 'なし' : 'なし'),
     ]);
+
+    // GASにURLだけ送信
     const payload = {
-      action:          'registerCompany',
-      companyName:     document.getElementById('companyName').value.trim(),
+      action:          'registerCompanyWithUrls',
+      companyId:       companyId,
+      companyName:     companyName,
       phone:           document.getElementById('phone').value.trim(),
       tantouYakushoku: document.getElementById('tantouYakushoku').value.trim(),
       tantouName:      document.getElementById('tantouName').value.trim(),
@@ -475,20 +545,16 @@ async function submitForm() {
       contactBusho:    document.getElementById('contactBusho').value.trim(),
       contactPhone:    document.getElementById('contactPhone').value.trim(),
       email:           document.getElementById('email').value.trim(),
-      shugyoAri:        shugyoAri,
-      chinginKiteiAri:  chinginKiteiAri ? 'あり' : 'なし',
-      keikakuAri:       keikakuVal === 'pdf' ? 'あり（PDF添付）' : 'なし',
-      tokiFile:        tokiData,
-      koyoFile:        koyoData,
-      shugyoFile:      shugyoData,
-      chinginKiteiFile:  chinginKiteiData,
-      keikakuFile:     keikakuData,
+      shugyoAri:       shugyoAri,
+      chinginKiteiAri: chinginKiteiAri ? 'あり' : 'なし',
+      keikakuAri:      keikakuVal === 'pdf' ? 'あり（PDF添付）' : 'なし',
+      tokiUrl, koyoUrl, shugyoUrl, chinginKiteiUrl, keikakuUrl,
     };
     const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
     const result = await res.json();
     document.getElementById('overlay').classList.remove('show');
     if (result.success) {
-      document.getElementById('resultCompanyId').textContent = result.companyId;
+      document.getElementById('resultCompanyId').textContent = companyId;
       document.getElementById('formArea').style.display = 'none';
       document.getElementById('successScreen').classList.add('show');
       window.scrollTo(0, 0);
@@ -499,7 +565,7 @@ async function submitForm() {
   } catch (err) {
     document.getElementById('overlay').classList.remove('show');
     document.getElementById('submitBtn').disabled = false;
-    alert('通信エラーが発生しました：' + err.message);
+    alert('エラーが発生しました：' + err.message);
   }
 }
 </script>
