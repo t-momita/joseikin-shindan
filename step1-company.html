@@ -219,14 +219,26 @@
           <!-- 賃金規定 -->
           <div class="field">
             <label>賃金規定<span class="req">必須</span></label>
-            <div class="label-hint">就業規則と一体の場合は同じファイルで構いません</div>
-            <div class="file-upload" id="chinginKiteiDrop">
-              <input type="file" id="chinginKiteiFile" accept=".pdf,.jpg,.jpeg,.png">
-              <div class="file-upload-icon">📎</div>
-              <div><div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
+            <div class="radio-group" style="margin-bottom:10px;">
+              <div class="radio-btn">
+                <input type="radio" name="chinginKiteiAri" id="chinginKiteiAri" value="1" checked onchange="toggleChinginKitei(this)">
+                <label for="chinginKiteiAri">あり</label>
+              </div>
+              <div class="radio-btn">
+                <input type="radio" name="chinginKiteiAri" id="chinginKiteiNashi" value="0" onchange="toggleChinginKitei(this)">
+                <label for="chinginKiteiNashi">なし</label>
+              </div>
             </div>
-            <div class="file-selected" id="chinginKiteiSelected">✅ <span id="chinginKiteiFileName"></span></div>
-            <div class="field-error" id="err-chinginKiteiFile">賃金規定をアップロードしてください</div>
+            <div id="chinginKiteiFileArea">
+              <div class="label-hint" style="margin-bottom:8px">就業規則と一体の場合は同じファイルで構いません</div>
+              <div class="file-upload" id="chinginKiteiDrop">
+                <input type="file" id="chinginKiteiFile" accept=".pdf,.jpg,.jpeg,.png">
+                <div class="file-upload-icon">📎</div>
+                <div><div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
+              </div>
+              <div class="file-selected" id="chinginKiteiSelected">✅ <span id="chinginKiteiFileName"></span></div>
+              <div class="field-error" id="err-chinginKiteiFile">賃金規定をアップロードしてください</div>
+            </div>
           </div>
 
           <hr class="divider">
@@ -390,6 +402,11 @@ document.querySelectorAll('input[name="shugyoAri"]').forEach(r => {
   });
 });
 
+function toggleChinginKitei(radio) {
+  document.getElementById('chinginKiteiFileArea').style.display = radio.value === '1' ? 'block' : 'none';
+  if (radio.value !== '1') hideError('err-chinginKiteiFile');
+}
+
 function toggleKeikaku(radio) {
   document.getElementById('keikakuFileArea').classList.toggle('show', radio.value === 'pdf');
   if (radio.value !== 'pdf') hideError('err-keikakuFile');
@@ -406,7 +423,8 @@ function validate() {
   });
   if (!files.toki)       { showError('err-tokiFile');       ok = false; } else hideError('err-tokiFile');
   if (!files.koyo)       { showError('err-koyoFile');       ok = false; } else hideError('err-koyoFile');
-  if (!files.chinginKitei) { showError('err-chinginKiteiFile'); ok = false; } else hideError('err-chinginKiteiFile');
+  const chinginKiteiAri = document.querySelector('input[name="chinginKiteiAri"]:checked').value === '1';
+  if (chinginKiteiAri && !files.chinginKitei) { showError('err-chinginKiteiFile'); ok = false; } else hideError('err-chinginKiteiFile');
   const shugyoAri = document.querySelector('input[name="shugyoAri"]:checked').value === '1';
   if (shugyoAri && !files.shugyo) { showError('err-shugyoFile'); ok = false; } else hideError('err-shugyoFile');
   const keikakuVal = document.querySelector('input[name="keikakuAri"]:checked').value;
@@ -428,13 +446,14 @@ async function submitForm() {
   document.getElementById('overlay').classList.add('show');
   document.getElementById('submitBtn').disabled = true;
   try {
-    const shugyoAri  = document.querySelector('input[name="shugyoAri"]:checked').value === '1';
-    const keikakuVal = document.querySelector('input[name="keikakuAri"]:checked').value;
+    const shugyoAri      = document.querySelector('input[name="shugyoAri"]:checked').value === '1';
+    const chinginKiteiAri = document.querySelector('input[name="chinginKiteiAri"]:checked').value === '1';
+    const keikakuVal     = document.querySelector('input[name="keikakuAri"]:checked').value;
     const [tokiData, koyoData, shugyoData, chinginKiteiData, keikakuData] = await Promise.all([
       fileToBase64(files.toki),
       fileToBase64(files.koyo),
       shugyoAri && files.shugyo ? fileToBase64(files.shugyo) : Promise.resolve(null),
-      fileToBase64(files.chinginKitei),
+      chinginKiteiAri && files.chinginKitei ? fileToBase64(files.chinginKitei) : Promise.resolve(null),
       keikakuVal === 'pdf' && files.keikaku ? fileToBase64(files.keikaku) : Promise.resolve(null),
     ]);
     const payload = {
@@ -448,8 +467,9 @@ async function submitForm() {
       contactBusho:    document.getElementById('contactBusho').value.trim(),
       contactPhone:    document.getElementById('contactPhone').value.trim(),
       email:           document.getElementById('email').value.trim(),
-      shugyoAri:       shugyoAri,
-      keikakuAri:      keikakuVal === 'pdf' ? 'あり（PDF添付）' : 'なし',
+      shugyoAri:        shugyoAri,
+      chinginKiteiAri:  chinginKiteiAri ? 'あり' : 'なし',
+      keikakuAri:       keikakuVal === 'pdf' ? 'あり（PDF添付）' : 'なし',
       tokiFile:        tokiData,
       koyoFile:        koyoData,
       shugyoFile:      shugyoData,
