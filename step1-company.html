@@ -219,31 +219,14 @@
           <!-- 賃金規定 -->
           <div class="field">
             <label>賃金規定<span class="req">必須</span></label>
-            <div class="radio-group">
-              <div class="radio-btn">
-                <input type="radio" name="chinginAri" id="chinginAri" value="1" checked>
-                <label for="chinginAri">あり</label>
-              </div>
-              <div class="radio-btn">
-                <input type="radio" name="chinginAri" id="chinginNashi" value="0">
-                <label for="chinginNashi">なし</label>
-              </div>
-            </div>
-          </div>
-
-          <hr class="divider">
-
-          <!-- 賃金台帳（新規追加） -->
-          <div class="field">
-            <label>賃金台帳<span class="req">必須</span></label>
-            <div class="label-hint">直近3ヶ月分の賃金台帳（全従業員分）</div>
-            <div class="file-upload" id="chinginDaiDrop">
-              <input type="file" id="chinginDaiFile" accept=".pdf,.jpg,.jpeg,.png">
+            <div class="label-hint">就業規則と一体の場合は同じファイルで構いません</div>
+            <div class="file-upload" id="chinginKiteiDrop">
+              <input type="file" id="chinginKiteiFile" accept=".pdf,.jpg,.jpeg,.png">
               <div class="file-upload-icon">📎</div>
               <div><div class="file-upload-text">クリックまたはドラッグ＆ドロップ</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
             </div>
-            <div class="file-selected" id="chinginDaiSelected">✅ <span id="chinginDaiFileName"></span></div>
-            <div class="field-error" id="err-chinginDaiFile">賃金台帳をアップロードしてください</div>
+            <div class="file-selected" id="chinginKiteiSelected">✅ <span id="chinginKiteiFileName"></span></div>
+            <div class="field-error" id="err-chinginKiteiFile">賃金規定をアップロードしてください</div>
           </div>
 
           <hr class="divider">
@@ -381,7 +364,7 @@
 
 <script>
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbxn8thednF67SoPIasKonFBtdfxVWI9mCDbK0Uh2Vt-BfjdWrLfuAtmikdC1uu2IgRR/exec';
-const files = { toki: null, koyo: null, shugyo: null, chinginDai: null, keikaku: null };
+const files = { toki: null, koyo: null, shugyo: null, chinginKitei: null, keikaku: null };
 
 function setupFileInput(inputId, selectedId, fileNameId, fileKey, dropId, errorId) {
   document.getElementById(inputId).addEventListener('change', function() {
@@ -397,7 +380,7 @@ function setupFileInput(inputId, selectedId, fileNameId, fileKey, dropId, errorI
 setupFileInput('tokiFile',       'tokiSelected',       'tokiFileName',       'toki',       'tokiDrop',       'err-tokiFile');
 setupFileInput('koyoFile',       'koyoSelected',       'koyoFileName',       'koyo',       'koyoDrop',       'err-koyoFile');
 setupFileInput('shugyoFile',     'shugyoSelected',     'shugyoFileName',     'shugyo',     'shugyoDrop',     'err-shugyoFile');
-setupFileInput('chinginDaiFile', 'chinginDaiSelected', 'chinginDaiFileName', 'chinginDai', 'chinginDaiDrop', 'err-chinginDaiFile');
+setupFileInput('chinginKiteiFile', 'chinginKiteiSelected', 'chinginKiteiFileName', 'chinginKitei', 'chinginKiteiDrop', 'err-chinginKiteiFile');
 setupFileInput('keikakuFile',    'keikakuSelected',    'keikakuFileName',    'keikaku',    'keikakuDrop',    'err-keikakuFile');
 
 document.querySelectorAll('input[name="shugyoAri"]').forEach(r => {
@@ -423,7 +406,7 @@ function validate() {
   });
   if (!files.toki)       { showError('err-tokiFile');       ok = false; } else hideError('err-tokiFile');
   if (!files.koyo)       { showError('err-koyoFile');       ok = false; } else hideError('err-koyoFile');
-  if (!files.chinginDai) { showError('err-chinginDaiFile'); ok = false; } else hideError('err-chinginDaiFile');
+  if (!files.chinginKitei) { showError('err-chinginKiteiFile'); ok = false; } else hideError('err-chinginKiteiFile');
   const shugyoAri = document.querySelector('input[name="shugyoAri"]:checked').value === '1';
   if (shugyoAri && !files.shugyo) { showError('err-shugyoFile'); ok = false; } else hideError('err-shugyoFile');
   const keikakuVal = document.querySelector('input[name="keikakuAri"]:checked').value;
@@ -447,12 +430,11 @@ async function submitForm() {
   try {
     const shugyoAri  = document.querySelector('input[name="shugyoAri"]:checked').value === '1';
     const keikakuVal = document.querySelector('input[name="keikakuAri"]:checked').value;
-    const chinginAri = document.querySelector('input[name="chinginAri"]:checked').value === '1';
-    const [tokiData, koyoData, shugyoData, chinginDaiData, keikakuData] = await Promise.all([
+    const [tokiData, koyoData, shugyoData, chinginKiteiData, keikakuData] = await Promise.all([
       fileToBase64(files.toki),
       fileToBase64(files.koyo),
       shugyoAri && files.shugyo ? fileToBase64(files.shugyo) : Promise.resolve(null),
-      fileToBase64(files.chinginDai),
+      fileToBase64(files.chinginKitei),
       keikakuVal === 'pdf' && files.keikaku ? fileToBase64(files.keikaku) : Promise.resolve(null),
     ]);
     const payload = {
@@ -467,12 +449,11 @@ async function submitForm() {
       contactPhone:    document.getElementById('contactPhone').value.trim(),
       email:           document.getElementById('email').value.trim(),
       shugyoAri:       shugyoAri,
-      chinginAri:      chinginAri ? 'あり' : 'なし',
       keikakuAri:      keikakuVal === 'pdf' ? 'あり（PDF添付）' : 'なし',
       tokiFile:        tokiData,
       koyoFile:        koyoData,
       shugyoFile:      shugyoData,
-      chinginDaiFile:  chinginDaiData,
+      chinginKiteiFile:  chinginKiteiData,
       keikakuFile:     keikakuData,
     };
     const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
