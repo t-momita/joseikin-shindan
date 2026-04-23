@@ -378,11 +378,19 @@
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbxn8thednF67SoPIasKonFBtdfxVWI9mCDbK0Uh2Vt-BfjdWrLfuAtmikdC1uu2IgRR/exec';
 const files = { toki: null, koyo: null, shugyo: null, chinginKitei: null, keikaku: null };
 
+const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+
 function setupFileInput(inputId, selectedId, fileNameId, fileKey, dropId, errorId) {
   document.getElementById(inputId).addEventListener('change', function() {
     if (this.files[0]) {
+      const sizeMB = (this.files[0].size / 1024 / 1024).toFixed(1);
+      if (this.files[0].size > MAX_FILE_SIZE) {
+        alert('ファイルサイズが大きすぎます。\n現在：' + sizeMB + 'MB\n2MB以下のファイルをご使用ください。\n\nPDFを圧縮する場合はilovepdf.com等をご利用ください。');
+        this.value = '';
+        return;
+      }
       files[fileKey] = this.files[0];
-      document.getElementById(fileNameId).textContent = this.files[0].name;
+      document.getElementById(fileNameId).textContent = this.files[0].name + '（' + sizeMB + 'MB）';
       document.getElementById(selectedId).classList.add('show');
       document.getElementById(dropId).style.display = 'none';
       if (errorId) hideError(errorId);
