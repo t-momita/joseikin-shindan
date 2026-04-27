@@ -66,11 +66,6 @@
   .stat-value { font-size: 28px; font-weight: 700; font-family: 'Inter', sans-serif; color: var(--primary); }
   .stat-value span { font-size: 13px; font-weight: 400; color: var(--text-sub); margin-left: 4px; }
 
-  /* TABS */
-  .tab-bar { display: flex; gap: 4px; background: white; border-radius: 12px; padding: 6px; border: 1px solid var(--border); margin-bottom: 20px; width: fit-content; }
-  .tab-btn { padding: 8px 24px; border-radius: 8px; border: none; background: transparent; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; color: var(--text-sub); transition: all 0.2s; }
-  .tab-btn.active { background: var(--accent); color: white; }
-
   /* FILTER */
   .filter-bar { background: white; border-radius: 12px; padding: 16px 20px; border: 1px solid var(--border); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .filter-bar input[type="text"] { flex: 1; min-width: 200px; padding: 9px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; transition: border-color 0.2s; }
@@ -102,7 +97,7 @@
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.active { display: flex; }
   .modal { background: white; border-radius: 16px; width: 100%; max-width: 720px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 80px rgba(0,0,0,0.3); }
-  .modal-header { padding: 24px 28px 0; border-bottom: none; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: white; border-radius: 16px 16px 0 0; z-index: 10; }
+  .modal-header { padding: 24px 28px 0; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: white; border-radius: 16px 16px 0 0; z-index: 10; }
   .modal-header h3 { font-size: 17px; font-weight: 700; color: var(--primary); padding-bottom: 16px; }
   .modal-close { width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--bg); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-sub); transition: background 0.2s; margin-bottom: 16px; }
   .modal-close:hover { background: #fee2e2; color: var(--danger); }
@@ -221,45 +216,20 @@
           <div class="stat-card"><div class="stat-label">申請済み</div><div class="stat-value" id="s-submitted" style="color:#059669">—</div></div>
         </div>
 
-        <div class="tab-bar">
-          <button class="tab-btn active" id="tab-company" onclick="switchTab('company')">🏢 企業マスタ</button>
-          <button class="tab-btn" id="tab-employee" onclick="switchTab('employee')">👤 従業員申請</button>
-        </div>
-
         <!-- 企業一覧 -->
-        <div id="view-company">
-          <div class="filter-bar">
-            <input type="text" id="companySearch" placeholder="🔍　会社名・担当者名で検索..." oninput="renderCompanyTable()">
-            <select id="companyStatusFilter" onchange="renderCompanyTable()">
-              <option value="">すべてのステータス</option>
-              <option value="新規">新規</option>
-              <option value="連絡済み">連絡済み</option>
-              <option value="対応中">対応中</option>
-              <option value="申請済み">申請済み</option>
-              <option value="完了">完了</option>
-            </select>
-          </div>
-          <div class="table-wrap">
-            <div id="companyTableContent"><div class="loading"><div class="spinner"></div>データを読み込み中...</div></div>
-          </div>
+        <div class="filter-bar">
+          <input type="text" id="companySearch" placeholder="🔍　会社名・担当者名で検索..." oninput="renderCompanyTable()">
+          <select id="companyStatusFilter" onchange="renderCompanyTable()">
+            <option value="">すべてのステータス</option>
+            <option value="新規">新規</option>
+            <option value="連絡済み">連絡済み</option>
+            <option value="対応中">対応中</option>
+            <option value="申請済み">申請済み</option>
+            <option value="完了">完了</option>
+          </select>
         </div>
-
-        <!-- 従業員申請一覧 -->
-        <div id="view-employee" style="display:none">
-          <div class="filter-bar">
-            <input type="text" id="employeeSearch" placeholder="🔍　会社名・従業員名で検索..." oninput="renderEmployeeTable()">
-            <select id="employeeStatusFilter" onchange="renderEmployeeTable()">
-              <option value="">すべてのステータス</option>
-              <option value="新規">新規</option>
-              <option value="連絡済み">連絡済み</option>
-              <option value="対応中">対応中</option>
-              <option value="申請済み">申請済み</option>
-              <option value="完了">完了</option>
-            </select>
-          </div>
-          <div class="table-wrap">
-            <div id="employeeTableContent"><div class="loading"><div class="spinner"></div>データを読み込み中...</div></div>
-          </div>
+        <div class="table-wrap">
+          <div id="companyTableContent"><div class="loading"><div class="spinner"></div>データを読み込み中...</div></div>
         </div>
       </div>
 
@@ -304,7 +274,6 @@ const PASSWORD = 'next1234';
 
 let companies = [];
 let employees = [];
-let currentTab = 'company';
 
 // ==========================================
 // LOGIN
@@ -338,23 +307,10 @@ function showPage(name) {
 }
 
 // ==========================================
-// TAB（メイン画面）
-// ==========================================
-function switchTab(tab) {
-  currentTab = tab;
-  document.getElementById('tab-company').classList.toggle('active', tab === 'company');
-  document.getElementById('tab-employee').classList.toggle('active', tab === 'employee');
-  document.getElementById('view-company').style.display = tab === 'company' ? 'block' : 'none';
-  document.getElementById('view-employee').style.display = tab === 'employee' ? 'block' : 'none';
-}
-
-// ==========================================
 // LOAD DATA
 // ==========================================
 async function loadData() {
-  const html = '<div class="loading"><div class="spinner"></div>データを読み込み中...</div>';
-  document.getElementById('companyTableContent').innerHTML = html;
-  document.getElementById('employeeTableContent').innerHTML = html;
+  document.getElementById('companyTableContent').innerHTML = '<div class="loading"><div class="spinner"></div>データを読み込み中...</div>';
   try {
     const res = await fetch(GAS_URL + '?action=getAdminData');
     const json = await res.json();
@@ -363,11 +319,9 @@ async function loadData() {
     employees = json.employees || [];
     updateStats();
     renderCompanyTable();
-    renderEmployeeTable();
     showToast('データを更新しました', 'success');
   } catch(e) {
     document.getElementById('companyTableContent').innerHTML = '<div class="empty">⚠️ データの取得に失敗しました</div>';
-    document.getElementById('employeeTableContent').innerHTML = '<div class="empty">⚠️ データの取得に失敗しました</div>';
     showToast('通信エラーが発生しました', 'error');
   }
 }
@@ -417,36 +371,6 @@ function renderCompanyTable() {
 }
 
 // ==========================================
-// EMPLOYEE TABLE
-// ==========================================
-function renderEmployeeTable() {
-  const q = document.getElementById('employeeSearch').value.toLowerCase();
-  const st = document.getElementById('employeeStatusFilter').value;
-  const filtered = employees.filter(r => {
-    const matchQ = !q || (r.companyName||'').toLowerCase().includes(q) || (r.employeeName||'').toLowerCase().includes(q);
-    return matchQ && (!st || (r.status||'新規') === st);
-  });
-  if (!filtered.length) {
-    document.getElementById('employeeTableContent').innerHTML = '<div class="empty">該当するデータがありません</div>';
-    return;
-  }
-  const rows = filtered.map(r => `<tr>
-    <td><div class="primary-text">${esc(r.applyId||'—')}</div></td>
-    <td>${esc(r.companyName||'—')}</td>
-    <td><div class="primary-text">${esc(r.employeeName||'—')}</div></td>
-    <td><div class="sub-text">${esc(r.beforeType||'—')}</div></td>
-    <td>${formatDate(r.tenkanDate)}</td>
-    <td>${formatDate(r.appliedAt)}</td>
-    <td><span class="badge ${badgeClass(r.status||'新規')}">${r.status||'新規'}</span></td>
-    <td><button class="btn-detail" onclick="openEmployeeModal('${esc(r.applyId)}')">詳細</button></td>
-  </tr>`).join('');
-  document.getElementById('employeeTableContent').innerHTML = `
-    <table><thead><tr>
-      <th>申請ID</th><th>会社名</th><th>従業員名</th><th>転換前雇用区分</th><th>転換予定日</th><th>申請日時</th><th>ステータス</th><th></th>
-    </tr></thead><tbody>${rows}</tbody></table>`;
-}
-
-// ==========================================
 // COMPANY MODAL（タブ付き）
 // ==========================================
 function openCompanyModal(id) {
@@ -465,15 +389,12 @@ function openCompanyModal(id) {
       <div id="empListContent"><div class="loading"><div class="spinner"></div>読み込み中...</div></div>
     </div>`;
   document.getElementById('modalOverlay').classList.add('active');
-  // 従業員申請データを非同期取得
   loadCompanyEmployees(id);
 }
 
 function switchModalTab(tab, btnEl) {
-  // タブボタンの切り替え
   btnEl.closest('.modal-tab-bar').querySelectorAll('.modal-tab-btn').forEach(b => b.classList.remove('active'));
   btnEl.classList.add('active');
-  // コンテンツの切り替え
   document.getElementById('modalTab-companyInfo').classList.toggle('active', tab === 'companyInfo');
   document.getElementById('modalTab-empList').classList.toggle('active', tab === 'empList');
 }
@@ -605,18 +526,15 @@ async function loadCompanyEmployees(companyId) {
   }
 }
 
-// モーダル内従業員ステータス更新
 async function updateEmpStatusFromModal(applyId) {
   const newStatus = document.getElementById('empStat-' + applyId).value;
   await postGAS({ action: 'updateEmployeeStatus', applyId, status: newStatus }, () => {
     const r = employees.find(e => e.applyId === applyId);
     if (r) r.status = newStatus;
-    renderEmployeeTable();
     updateStats();
   });
 }
 
-// モーダル内従業員メモ保存
 async function saveEmpMemoFromModal(applyId) {
   const memo = document.getElementById('empMemo-' + applyId).value;
   await postGAS({ action: 'saveEmployeeMemo', applyId, memo }, () => {
@@ -625,69 +543,12 @@ async function saveEmpMemoFromModal(applyId) {
   });
 }
 
-// ==========================================
-// EMPLOYEE MODAL（従業員タブからの詳細）
-// ==========================================
-function openEmployeeModal(applyId) {
-  const r = employees.find(e => e.applyId === applyId);
-  if (!r) return;
-  const status = r.status || '新規';
-  document.getElementById('modalTitle').textContent = r.employeeName + '（' + (r.companyName||'') + '）';
-  const docItems = [
-    { label: '資格喪失届', url: r.soshitssuUrl },
-    { label: '雇用契約書', url: r.keiyakuUrl },
-    { label: '賃金台帳', url: r.chinginUrl },
-    { label: '出勤簿', url: r.shukkinUrl },
-  ];
-  const docsHtml = docItems.some(d => d.url && d.url.startsWith('http'))
-    ? `<div class="doc-links">${docItems.map(d => d.url && d.url.startsWith('http') ? `<a href="${esc(d.url)}" target="_blank" class="doc-link">📄 ${d.label}</a>` : '').join('')}</div>`
-    : '<p class="doc-link-none">書類未アップロード</p>';
-  document.getElementById('modalBody').innerHTML = `
-    <div style="padding: 24px 28px;">
-      <div class="detail-section">
-        <h4>申請情報</h4>
-        <div class="detail-grid">
-          <div class="detail-item"><label>申請ID</label><p>${esc(r.applyId||'—')}</p></div>
-          <div class="detail-item"><label>企業ID</label><p>${esc(r.companyId||'—')}</p></div>
-          <div class="detail-item"><label>会社名</label><p>${esc(r.companyName||'—')}</p></div>
-          <div class="detail-item"><label>従業員名</label><p>${esc(r.employeeName||'—')}</p></div>
-          <div class="detail-item"><label>転換前雇用区分</label><p>${esc(r.beforeType||'—')}</p></div>
-          <div class="detail-item"><label>雇用開始日</label><p>${formatDate(r.koyoStartDate)}</p></div>
-          <div class="detail-item"><label>転換予定日</label><p>${formatDate(r.tenkanDate)}</p></div>
-          <div class="detail-item"><label>転換後賃金</label><p>${esc(r.kyuyo||'—')}</p></div>
-          <div class="detail-item"><label>申請日時</label><p>${formatDate(r.appliedAt)}</p></div>
-          <div class="detail-item"><label>ステータス</label><p>${esc(status)}</p></div>
-        </div>
-      </div>
-      <div class="detail-section">
-        <h4>アップロード書類</h4>
-        ${docsHtml}
-      </div>
-      <div class="detail-section">
-        <h4>ステータス管理</h4>
-        <div class="status-select-wrap">
-          <label>ステータス</label>
-          <select id="statusSel">${statusOptions(status)}</select>
-          <button class="btn-update" onclick="updateEmployeeStatus('${esc(r.applyId)}')">更新</button>
-        </div>
-        <div class="memo-wrap">
-          <label>管理メモ</label>
-          <textarea id="memoInput" placeholder="対応内容、連絡記録など...">${esc(r.memo||'')}</textarea>
-        </div>
-        <div style="text-align:right;margin-top:10px">
-          <button class="btn-update" onclick="saveEmployeeMemo('${esc(r.applyId)}')">メモを保存</button>
-        </div>
-      </div>
-    </div>`;
-  document.getElementById('modalOverlay').classList.add('active');
-}
-
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('active');
 }
 
 // ==========================================
-// UPDATE STATUS
+// UPDATE STATUS / SAVE MEMO（企業）
 // ==========================================
 async function updateCompanyStatus(id) {
   const newStatus = document.getElementById('statusSel').value;
@@ -699,31 +560,10 @@ async function updateCompanyStatus(id) {
   });
 }
 
-async function updateEmployeeStatus(applyId) {
-  const newStatus = document.getElementById('statusSel').value;
-  await postGAS({ action: 'updateEmployeeStatus', applyId, status: newStatus }, () => {
-    const r = employees.find(e => e.applyId === applyId);
-    if (r) r.status = newStatus;
-    renderEmployeeTable();
-    updateStats();
-  });
-}
-
-// ==========================================
-// SAVE MEMO
-// ==========================================
 async function saveCompanyMemo(id) {
   const memo = document.getElementById('memoInput').value;
   await postGAS({ action: 'saveCompanyMemo', id, memo }, () => {
     const r = companies.find(c => c.id === id);
-    if (r) r.memo = memo;
-  });
-}
-
-async function saveEmployeeMemo(applyId) {
-  const memo = document.getElementById('memoInput').value;
-  await postGAS({ action: 'saveEmployeeMemo', applyId, memo }, () => {
-    const r = employees.find(e => e.applyId === applyId);
     if (r) r.memo = memo;
   });
 }
