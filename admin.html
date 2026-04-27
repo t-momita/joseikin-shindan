@@ -9,12 +9,9 @@
   :root {
     --primary: #1a2744;
     --accent: #2563eb;
-    --accent-light: #3b82f6;
     --success: #059669;
-    --warning: #d97706;
     --danger: #dc2626;
     --bg: #f0f4f8;
-    --card: #ffffff;
     --text: #1e293b;
     --text-sub: #64748b;
     --border: #e2e8f0;
@@ -23,7 +20,6 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  /* LOGIN */
   #loginScreen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #1a2744 0%, #2563eb 100%); }
   .login-box { background: white; border-radius: 16px; padding: 48px 40px; width: 360px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
   .login-logo { text-align: center; margin-bottom: 32px; }
@@ -32,11 +28,10 @@
   .login-box label { display: block; font-size: 13px; font-weight: 500; color: var(--text-sub); margin-bottom: 6px; }
   .login-box input { width: 100%; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 15px; font-family: inherit; outline: none; transition: border-color 0.2s; margin-bottom: 20px; }
   .login-box input:focus { border-color: var(--accent); }
-  .btn-login { width: 100%; padding: 13px; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; font-family: inherit; cursor: pointer; transition: background 0.2s; }
+  .btn-login { width: 100%; padding: 13px; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; font-family: inherit; cursor: pointer; }
   .btn-login:hover { background: #1d4ed8; }
   .login-error { color: var(--danger); font-size: 13px; text-align: center; margin-top: 12px; display: none; }
 
-  /* LAYOUT */
   #mainScreen { display: none; }
   .sidebar { position: fixed; left: 0; top: 0; width: var(--sidebar-w); height: 100vh; background: var(--primary); color: white; display: flex; flex-direction: column; z-index: 100; }
   .sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -53,26 +48,23 @@
   .topbar { background: white; border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
   .topbar h2 { font-size: 18px; font-weight: 700; color: var(--primary); }
   .topbar-right { display: flex; align-items: center; gap: 12px; }
-  .btn-refresh { display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; transition: background 0.2s; }
+  .btn-refresh { display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; }
   .btn-refresh:hover { background: #1d4ed8; }
-  .btn-logout { padding: 8px 16px; background: transparent; color: var(--text-sub); border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+  .btn-logout { padding: 8px 16px; background: transparent; color: var(--text-sub); border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; cursor: pointer; }
   .btn-logout:hover { background: #fee2e2; color: var(--danger); border-color: #fca5a5; }
   .main-content { padding: 32px; }
 
-  /* STATS */
   .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
   .stat-card { background: white; border-radius: 12px; padding: 20px 24px; border: 1px solid var(--border); }
   .stat-label { font-size: 12px; color: var(--text-sub); font-weight: 500; margin-bottom: 8px; }
   .stat-value { font-size: 28px; font-weight: 700; font-family: 'Inter', sans-serif; color: var(--primary); }
   .stat-value span { font-size: 13px; font-weight: 400; color: var(--text-sub); margin-left: 4px; }
 
-  /* FILTER */
   .filter-bar { background: white; border-radius: 12px; padding: 16px 20px; border: 1px solid var(--border); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .filter-bar input[type="text"] { flex: 1; min-width: 200px; padding: 9px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; transition: border-color 0.2s; }
+  .filter-bar input[type="text"] { flex: 1; min-width: 200px; padding: 9px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; }
   .filter-bar input:focus { border-color: var(--accent); }
   .filter-bar select { padding: 9px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; background: white; cursor: pointer; }
 
-  /* TABLE */
   .table-wrap { background: white; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   thead { background: #f8fafc; border-bottom: 1px solid var(--border); }
@@ -81,37 +73,33 @@
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: #f8fafc; }
   .primary-text { font-weight: 600; color: var(--primary); }
-  .sub-text { font-size: 12px; color: var(--text-sub); }
   .btn-detail { padding: 5px 14px; background: transparent; border: 1.5px solid var(--accent); color: var(--accent); border-radius: 6px; font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.2s; }
   .btn-detail:hover { background: var(--accent); color: white; }
 
-  /* BADGES */
   .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
   .badge-new { background: #dbeafe; color: #1d4ed8; }
   .badge-contact { background: #fef3c7; color: #92400e; }
   .badge-progress { background: #ede9fe; color: #6d28d9; }
   .badge-submitted { background: #d1fae5; color: #065f46; }
   .badge-done { background: #f1f5f9; color: #475569; }
+  .badge-sharoushi { background: #fce7f3; color: #9d174d; }
 
-  /* MODAL */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.active { display: flex; }
   .modal { background: white; border-radius: 16px; width: 100%; max-width: 720px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 80px rgba(0,0,0,0.3); }
   .modal-header { padding: 24px 28px 0; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: white; border-radius: 16px 16px 0 0; z-index: 10; }
   .modal-header h3 { font-size: 17px; font-weight: 700; color: var(--primary); padding-bottom: 16px; }
-  .modal-close { width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--bg); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-sub); transition: background 0.2s; margin-bottom: 16px; }
+  .modal-close { width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--bg); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-sub); margin-bottom: 16px; }
   .modal-close:hover { background: #fee2e2; color: var(--danger); }
   .modal-body { padding: 0; }
 
-  /* MODAL INNER TABS */
-  .modal-tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--border); background: white; padding: 0 28px; position: sticky; top: 73px; z-index: 9; }
+  .modal-tab-bar { display: flex; border-bottom: 1px solid var(--border); background: white; padding: 0 28px; position: sticky; top: 73px; z-index: 9; }
   .modal-tab-btn { padding: 10px 22px; border: none; background: transparent; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; color: var(--text-sub); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s; }
   .modal-tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
   .modal-tab-btn:hover:not(.active) { color: var(--text); }
   .modal-tab-content { display: none; padding: 24px 28px; }
   .modal-tab-content.active { display: block; }
 
-  /* DETAIL SECTIONS */
   .detail-section { margin-bottom: 24px; }
   .detail-section h4 { font-size: 12px; font-weight: 700; color: var(--text-sub); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
   .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -125,14 +113,13 @@
   .status-select-wrap { display: flex; align-items: center; gap: 10px; margin-top: 8px; padding: 16px; background: var(--bg); border-radius: 10px; }
   .status-select-wrap label { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
   .status-select-wrap select { flex: 1; padding: 9px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; background: white; cursor: pointer; }
-  .btn-update { padding: 9px 20px; background: var(--success); color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+  .btn-update { padding: 9px 20px; background: var(--success); color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap; }
   .btn-update:hover { background: #047857; }
   .memo-wrap { margin-top: 16px; }
   .memo-wrap label { display: block; font-size: 12px; font-weight: 600; color: var(--text-sub); margin-bottom: 6px; }
-  .memo-wrap textarea { width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; resize: vertical; min-height: 80px; outline: none; transition: border-color 0.2s; }
+  .memo-wrap textarea { width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; resize: vertical; min-height: 80px; outline: none; }
   .memo-wrap textarea:focus { border-color: var(--accent); }
 
-  /* EMPLOYEE CARDS (モーダル内) */
   .emp-card { border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; background: #fafbfc; }
   .emp-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
   .emp-card-name { font-weight: 700; font-size: 14px; color: var(--primary); }
@@ -141,7 +128,6 @@
   .emp-card-item p { font-size: 13px; font-weight: 500; color: var(--text); }
   .emp-card-docs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
 
-  /* MISC */
   .loading { text-align: center; padding: 60px; color: var(--text-sub); }
   .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -161,7 +147,6 @@
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-logo">
@@ -177,7 +162,6 @@
   </div>
 </div>
 
-<!-- MAIN -->
 <div id="mainScreen">
   <div class="sidebar">
     <div class="sidebar-header">
@@ -206,8 +190,6 @@
     </div>
 
     <div class="main-content">
-
-      <!-- LIST PAGE -->
       <div id="page-list" class="page active">
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">企業数</div><div class="stat-value" id="s-companies">—</div></div>
@@ -215,8 +197,6 @@
           <div class="stat-card"><div class="stat-label">新規（未対応）</div><div class="stat-value" id="s-new" style="color:#1d4ed8">—</div></div>
           <div class="stat-card"><div class="stat-label">申請済み</div><div class="stat-value" id="s-submitted" style="color:#059669">—</div></div>
         </div>
-
-        <!-- 企業一覧 -->
         <div class="filter-bar">
           <input type="text" id="companySearch" placeholder="🔍　会社名・担当者名で検索..." oninput="renderCompanyTable()">
           <select id="companyStatusFilter" onchange="renderCompanyTable()">
@@ -227,13 +207,15 @@
             <option value="申請済み">申請済み</option>
             <option value="完了">完了</option>
           </select>
+          <select id="sharoushiFilter" onchange="renderCompanyTable()">
+            <option value="">すべての担当社労士</option>
+          </select>
         </div>
         <div class="table-wrap">
           <div id="companyTableContent"><div class="loading"><div class="spinner"></div>データを読み込み中...</div></div>
         </div>
       </div>
 
-      <!-- STATS PAGE -->
       <div id="page-stats" class="page">
         <div class="stats-grid" style="grid-template-columns: repeat(2,1fr); margin-bottom:24px">
           <div class="table-wrap" style="padding:24px">
@@ -250,12 +232,10 @@
           <div id="statsMonthly"></div>
         </div>
       </div>
-
     </div>
   </div>
 </div>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-header">
@@ -272,12 +252,8 @@
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbxn8thednF67SoPIasKonFBtdfxVWI9mCDbK0Uh2Vt-BfjdWrLfuAtmikdC1uu2IgRR/exec';
 const PASSWORD = 'next1234';
 
-let companies = [];
-let employees = [];
+let companies = [], employees = [], sharoushiList = [];
 
-// ==========================================
-// LOGIN
-// ==========================================
 function doLogin() {
   const pw = document.getElementById('pwInput').value;
   if (pw === PASSWORD) {
@@ -294,9 +270,6 @@ function doLogout() {
   document.getElementById('pwInput').value = '';
 }
 
-// ==========================================
-// PAGE NAV
-// ==========================================
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
@@ -306,18 +279,21 @@ function showPage(name) {
   if (name === 'stats') renderStats();
 }
 
-// ==========================================
-// LOAD DATA
-// ==========================================
 async function loadData() {
   document.getElementById('companyTableContent').innerHTML = '<div class="loading"><div class="spinner"></div>データを読み込み中...</div>';
   try {
-    const res = await fetch(GAS_URL + '?action=getAdminData');
-    const json = await res.json();
-    if (!json.success) throw new Error('GAS error');
-    companies = json.companies || [];
-    employees = json.employees || [];
+    const [adminRes, sharoushiRes] = await Promise.all([
+      fetch(GAS_URL + '?action=getAdminData'),
+      fetch(GAS_URL + '?action=getSharoushiList')
+    ]);
+    const adminJson = await adminRes.json();
+    const sharoushiJson = await sharoushiRes.json();
+    if (!adminJson.success) throw new Error();
+    companies = adminJson.companies || [];
+    employees = adminJson.employees || [];
+    sharoushiList = sharoushiJson.success ? sharoushiJson.list : [];
     updateStats();
+    updateSharoushiFilter();
     renderCompanyTable();
     showToast('データを更新しました', 'success');
   } catch(e) {
@@ -326,9 +302,15 @@ async function loadData() {
   }
 }
 
-// ==========================================
-// STATS CARDS
-// ==========================================
+function updateSharoushiFilter() {
+  const sel = document.getElementById('sharoushiFilter');
+  const current = sel.value;
+  sel.innerHTML = '<option value="">すべての担当社労士</option>'
+    + '<option value="未割当">未割当</option>'
+    + sharoushiList.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
+  sel.value = current;
+}
+
 function updateStats() {
   document.getElementById('s-companies').innerHTML = companies.length + '<span>社</span>';
   document.getElementById('s-employees').innerHTML = employees.length + '<span>件</span>';
@@ -340,15 +322,15 @@ function updateStats() {
   document.getElementById('s-submitted').innerHTML = submittedCount + '<span>件</span>';
 }
 
-// ==========================================
-// COMPANY TABLE
-// ==========================================
 function renderCompanyTable() {
   const q = document.getElementById('companySearch').value.toLowerCase();
   const st = document.getElementById('companyStatusFilter').value;
+  const sh = document.getElementById('sharoushiFilter').value;
   const filtered = companies.filter(r => {
     const matchQ = !q || (r.name||'').toLowerCase().includes(q) || (r.contactName||'').toLowerCase().includes(q) || (r.tantouName||'').toLowerCase().includes(q);
-    return matchQ && (!st || (r.status||'新規') === st);
+    const matchSt = !st || (r.status||'新規') === st;
+    const matchSh = !sh || (sh === '未割当' ? !r.sharoushi : r.sharoushi === sh);
+    return matchQ && matchSt && matchSh;
   });
   if (!filtered.length) {
     document.getElementById('companyTableContent').innerHTML = '<div class="empty">該当するデータがありません</div>';
@@ -359,20 +341,17 @@ function renderCompanyTable() {
     <td><div class="primary-text">${esc(r.name||'—')}</div></td>
     <td>${esc(r.contactName||r.tantouName||'—')}</td>
     <td>${esc(r.phone||r.contactPhone||'—')}</td>
-    <td>${esc(r.email||'—')}</td>
+    <td>${r.sharoushi ? `<span class="badge badge-sharoushi">👤 ${esc(r.sharoushi)}</span>` : '<span style="color:var(--text-sub);font-size:12px">未割当</span>'}</td>
     <td>${formatDate(r.registeredAt)}</td>
     <td><span class="badge ${badgeClass(r.status||'新規')}">${r.status||'新規'}</span></td>
     <td><button class="btn-detail" onclick="openCompanyModal('${esc(r.id)}')">詳細</button></td>
   </tr>`).join('');
   document.getElementById('companyTableContent').innerHTML = `
     <table><thead><tr>
-      <th>企業ID</th><th>会社名</th><th>担当者</th><th>電話番号</th><th>メール</th><th>登録日時</th><th>ステータス</th><th></th>
+      <th>企業ID</th><th>会社名</th><th>担当者</th><th>電話番号</th><th>担当社労士</th><th>登録日時</th><th>ステータス</th><th></th>
     </tr></thead><tbody>${rows}</tbody></table>`;
 }
 
-// ==========================================
-// COMPANY MODAL（タブ付き）
-// ==========================================
 function openCompanyModal(id) {
   const r = companies.find(c => c.id === id);
   if (!r) return;
@@ -382,9 +361,7 @@ function openCompanyModal(id) {
       <button class="modal-tab-btn active" onclick="switchModalTab('companyInfo', this)">🏢 企業情報</button>
       <button class="modal-tab-btn" onclick="switchModalTab('empList', this)">👤 従業員申請</button>
     </div>
-    <div id="modalTab-companyInfo" class="modal-tab-content active">
-      ${buildCompanyInfoHtml(r)}
-    </div>
+    <div id="modalTab-companyInfo" class="modal-tab-content active">${buildCompanyInfoHtml(r)}</div>
     <div id="modalTab-empList" class="modal-tab-content">
       <div id="empListContent"><div class="loading"><div class="spinner"></div>読み込み中...</div></div>
     </div>`;
@@ -401,6 +378,7 @@ function switchModalTab(tab, btnEl) {
 
 function buildCompanyInfoHtml(r) {
   const status = r.status || '新規';
+  const sharoushi = r.sharoushi || '';
   const docItems = [
     { label: '履歴事項全部証明書', url: r.tokiUrl },
     { label: '雇用保険適用事業所設置届', url: r.koyoUrl },
@@ -411,6 +389,8 @@ function buildCompanyInfoHtml(r) {
   const docsHtml = docItems.some(d => d.url && d.url.startsWith('http'))
     ? `<div class="doc-links">${docItems.map(d => d.url && d.url.startsWith('http') ? `<a href="${esc(d.url)}" target="_blank" class="doc-link">📄 ${d.label}</a>` : '').join('')}</div>`
     : '<p class="doc-link-none">書類未アップロード</p>';
+  const sharoushiOptions = '<option value="">未割当</option>'
+    + sharoushiList.map(n => `<option value="${esc(n)}" ${n === sharoushi ? 'selected' : ''}>${esc(n)}</option>`).join('');
   return `
     <div class="detail-section">
       <h4>企業基本情報</h4>
@@ -445,6 +425,14 @@ function buildCompanyInfoHtml(r) {
       ${docsHtml}
     </div>
     <div class="detail-section">
+      <h4>担当社労士</h4>
+      <div class="status-select-wrap">
+        <label>担当社労士</label>
+        <select id="sharoushiSel">${sharoushiOptions}</select>
+        <button class="btn-update" onclick="updateSharoushi('${esc(r.id)}')">更新</button>
+      </div>
+    </div>
+    <div class="detail-section">
       <h4>ステータス管理</h4>
       <div class="status-select-wrap">
         <label>ステータス</label>
@@ -461,24 +449,15 @@ function buildCompanyInfoHtml(r) {
     </div>`;
 }
 
-// ==========================================
-// 従業員申請タブ：getCompanyFullで取得して表示
-// ==========================================
 async function loadCompanyEmployees(companyId) {
   try {
-    const res = await fetch(GAS_URL, {
-      method: 'POST',
-      body: JSON.stringify({ action: 'getCompanyFull', companyId })
-    });
+    const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'getCompanyFull', companyId }) });
     const json = await res.json();
     const el = document.getElementById('empListContent');
     if (!el) return;
     if (!json.success) throw new Error();
     const emps = json.employees || [];
-    if (!emps.length) {
-      el.innerHTML = '<div class="empty">この企業の従業員申請はまだありません</div>';
-      return;
-    }
+    if (!emps.length) { el.innerHTML = '<div class="empty">この企業の従業員申請はまだありません</div>'; return; }
     el.innerHTML = emps.map(e => {
       const status = e.status || '新規';
       const docItems = [
@@ -488,8 +467,7 @@ async function loadCompanyEmployees(companyId) {
         { label: '出勤簿', url: e.shukkinUrl },
       ];
       const docsHtml = docItems.some(d => d.url && d.url.startsWith('http'))
-        ? docItems.map(d => d.url && d.url.startsWith('http')
-            ? `<a href="${esc(d.url)}" target="_blank" class="doc-link">📄 ${d.label}</a>` : '').join('')
+        ? docItems.map(d => d.url && d.url.startsWith('http') ? `<a href="${esc(d.url)}" target="_blank" class="doc-link">📄 ${d.label}</a>` : '').join('')
         : '<span class="doc-link-none">書類未アップロード</span>';
       return `
         <div class="emp-card">
@@ -543,13 +521,17 @@ async function saveEmpMemoFromModal(applyId) {
   });
 }
 
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('active');
+function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+
+async function updateSharoushi(id) {
+  const sharoushi = document.getElementById('sharoushiSel').value;
+  await postGAS({ action: 'updateSharoushi', id, sharoushi }, () => {
+    const r = companies.find(c => c.id === id);
+    if (r) r.sharoushi = sharoushi;
+    renderCompanyTable();
+  });
 }
 
-// ==========================================
-// UPDATE STATUS / SAVE MEMO（企業）
-// ==========================================
 async function updateCompanyStatus(id) {
   const newStatus = document.getElementById('statusSel').value;
   await postGAS({ action: 'updateCompanyStatus', id, status: newStatus }, () => {
@@ -574,14 +556,9 @@ async function postGAS(body, onSuccess) {
     const json = await res.json();
     if (json.success) { showToast('更新しました', 'success'); if (onSuccess) onSuccess(); }
     else showToast('更新に失敗しました', 'error');
-  } catch(e) {
-    showToast('通信エラーが発生しました', 'error');
-  }
+  } catch(e) { showToast('通信エラーが発生しました', 'error'); }
 }
 
-// ==========================================
-// STATS PAGE
-// ==========================================
 function renderStats() {
   renderStatusBar('statsCompanyStatus', companies);
   renderStatusBar('statsEmployeeStatus', employees);
@@ -592,7 +569,7 @@ function renderStatusBar(elId, data) {
   const counts = {};
   data.forEach(r => { const s = r.status || '新規'; counts[s] = (counts[s]||0) + 1; });
   const total = data.length || 1;
-  const rows = ['新規','連絡済み','対応中','申請済み','完了'].map(s => {
+  document.getElementById(elId).innerHTML = ['新規','連絡済み','対応中','申請済み','完了'].map(s => {
     const v = counts[s] || 0;
     const pct = Math.round(v / total * 100);
     return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
@@ -603,7 +580,6 @@ function renderStatusBar(elId, data) {
       <span style="font-size:12px;color:var(--text-sub);width:30px;text-align:right">${v}</span>
     </div>`;
   }).join('');
-  document.getElementById(elId).innerHTML = rows;
 }
 
 function renderMonthly() {
@@ -629,9 +605,6 @@ function renderMonthly() {
   }).join('');
 }
 
-// ==========================================
-// HELPERS
-// ==========================================
 function statusOptions(current) {
   return ['新規','連絡済み','対応中','申請済み','完了'].map(s => `<option ${s===current?'selected':''}>${s}</option>`).join('');
 }
