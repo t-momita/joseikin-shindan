@@ -22,7 +22,7 @@
 
   .main { max-width: 860px; margin: 32px auto; padding: 0 20px 80px; }
 
-  /* ===== LOGIN ===== */
+  /* LOGIN */
   #loginArea { max-width: 420px; margin: 80px auto; }
   .login-card { background: white; border-radius: 16px; padding: 40px; border: 1px solid var(--border); box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
   .login-title { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--navy); margin-bottom: 8px; }
@@ -35,7 +35,7 @@
   .login-error { color: var(--error); font-size: 13px; margin-top: 12px; display: none; text-align: center; }
   .login-error.show { display: block; }
 
-  /* ===== TABS ===== */
+  /* TABS */
   #mypageArea { display: none; }
   .tabs { display: flex; gap: 4px; background: white; border-radius: 12px; padding: 6px; border: 1px solid var(--border); margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
   .tab { flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.2s; color: var(--muted); border: none; background: transparent; font-family: inherit; }
@@ -43,7 +43,7 @@
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
-  /* ===== CARDS ===== */
+  /* CARDS */
   .card { background: white; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
   .card-header { background: var(--navy); padding: 14px 24px; display: flex; align-items: center; gap: 10px; }
   .card-header-icon { font-size: 18px; }
@@ -54,7 +54,7 @@
   .section-label:first-child { margin-top: 0; }
   .section-label::before { content: ''; display: inline-block; width: 4px; height: 16px; background: var(--accent); border-radius: 2px; }
 
-  /* ===== FORM ===== */
+  /* FORM */
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .form-grid.full { grid-template-columns: 1fr; }
   .field { display: flex; flex-direction: column; gap: 6px; }
@@ -68,7 +68,7 @@
   input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(46,125,247,0.12); }
   .req { background: var(--error); color: white; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; }
 
-  /* ===== FILE UPLOAD ===== */
+  /* FILE UPLOAD */
   .file-upload { border: 2px dashed var(--border); border-radius: 8px; padding: 12px 16px; cursor: pointer; transition: all 0.2s; background: var(--gray); position: relative; display: flex; align-items: center; gap: 10px; }
   .file-upload:hover { border-color: var(--accent); background: var(--light-blue); }
   .file-upload input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
@@ -77,25 +77,19 @@
   .file-upload-hint { font-size: 11px; color: var(--muted); margin-top: 2px; }
   .file-selected { display: none; align-items: center; gap: 8px; background: var(--light-green); border: 1.5px solid var(--green); border-radius: 8px; padding: 8px 12px; font-size: 13px; color: var(--green); font-weight: 500; margin-top: 6px; }
   .file-selected.show { display: flex; }
-  .current-file { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .current-file { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
   .current-file a { color: var(--accent); text-decoration: none; }
   .current-file a:hover { text-decoration: underline; }
 
-  .radio-group { display: flex; gap: 10px; }
-  .radio-btn { flex: 1; position: relative; }
-  .radio-btn input[type="radio"] { position: absolute; opacity: 0; width: 0; }
-  .radio-btn label { display: flex; align-items: center; justify-content: center; height: 42px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; color: var(--muted); }
-  .radio-btn input:checked + label { border-color: var(--accent); background: var(--light-blue); color: var(--accent); font-weight: 700; }
-
   .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 
-  /* ===== BUTTONS ===== */
+  /* BUTTONS */
   .btn-save { height: 48px; padding: 0 32px; background: linear-gradient(135deg, var(--blue), var(--accent)); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s; }
   .btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(30,79,160,0.3); }
   .btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
   .save-area { display: flex; justify-content: flex-end; margin-top: 24px; }
 
-  /* ===== EMPLOYEE LIST ===== */
+  /* EMPLOYEE LIST */
   .emp-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: box-shadow 0.2s; }
   .emp-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
   .emp-name { font-size: 16px; font-weight: 700; color: var(--navy); }
@@ -109,7 +103,7 @@
   .btn-add { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 24px; background: var(--green); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s; text-decoration: none; }
   .btn-add:hover { background: #166647; }
 
-  /* ===== EMP EDIT MODAL ===== */
+  /* MODAL */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.active { display: flex; }
   .modal { background: white; border-radius: 16px; width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 80px rgba(0,0,0,0.3); }
@@ -119,7 +113,7 @@
   .modal-close:hover { background: #fee2e2; color: var(--error); }
   .modal-body { padding: 24px 28px; }
 
-  /* ===== OVERLAY / TOAST ===== */
+  /* OVERLAY / TOAST */
   .overlay { display: none; position: fixed; inset: 0; background: rgba(15,31,61,0.7); z-index: 1000; align-items: center; justify-content: center; flex-direction: column; gap: 20px; }
   .overlay.show { display: flex; }
   .spinner { width: 48px; height: 48px; border: 4px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
@@ -129,9 +123,7 @@
   .toast.show { transform: translateY(0); opacity: 1; }
   .toast.success { background: var(--green); }
   .toast.error { background: var(--error); }
-
   .empty { text-align: center; padding: 48px; color: var(--muted); font-size: 14px; }
-  .label-hint { font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 2px; line-height: 1.5; }
 
   @media (max-width: 600px) {
     .form-grid { grid-template-columns: 1fr; }
@@ -149,7 +141,7 @@
   <div class="header-company" id="headerCompanyName"></div>
 </div>
 
-<!-- ===== LOGIN ===== -->
+<!-- LOGIN -->
 <div class="main" id="loginArea">
   <div class="login-card">
     <div class="login-title">企業ログイン</div>
@@ -163,9 +155,8 @@
   </div>
 </div>
 
-<!-- ===== MYPAGE ===== -->
+<!-- MYPAGE -->
 <div class="main" id="mypageArea">
-
   <div class="tabs">
     <button class="tab active" onclick="switchTab('company')">🏢 企業情報</button>
     <button class="tab" onclick="switchTab('employee')">👤 従業員申請</button>
@@ -173,7 +164,6 @@
 
   <!-- 企業情報タブ -->
   <div class="tab-content active" id="tab-company">
-
     <div class="section-label">00 企業情報</div>
     <div class="card">
       <div class="card-body">
@@ -199,59 +189,55 @@
             <label>履歴事項全部証明書</label>
             <div class="current-file" id="cur_toki"></div>
             <div class="file-upload">
-              <input type="file" id="c_tokiFile" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileChange(this,'c_tokiSelected','c_tokiFileName','c_toki')">
+              <input type="file" id="c_tokiFile" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileChange(this,'c_tokiSelected','c_tokiFileName','toki')">
               <div class="file-upload-icon">📎</div>
               <div><div class="file-upload-text">差し替える場合はここをクリック</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
             </div>
             <div class="file-selected" id="c_tokiSelected">✅ <span id="c_tokiFileName"></span></div>
           </div>
-
           <hr class="divider">
 
           <div class="field">
             <label>雇用保険適用事業所設置届</label>
             <div class="current-file" id="cur_koyo"></div>
             <div class="file-upload">
-              <input type="file" id="c_koyoFile" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileChange(this,'c_koyoSelected','c_koyoFileName','c_koyo')">
+              <input type="file" id="c_koyoFile" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileChange(this,'c_koyoSelected','c_koyoFileName','koyo')">
               <div class="file-upload-icon">📎</div>
               <div><div class="file-upload-text">差し替える場合はここをクリック</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
             </div>
             <div class="file-selected" id="c_koyoSelected">✅ <span id="c_koyoFileName"></span></div>
           </div>
-
           <hr class="divider">
 
           <div class="field">
             <label>就業規則</label>
             <div class="current-file" id="cur_shugyo"></div>
             <div class="file-upload">
-              <input type="file" id="c_shugyoFile" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileChange(this,'c_shugyoSelected','c_shugyoFileName','c_shugyo')">
+              <input type="file" id="c_shugyoFile" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileChange(this,'c_shugyoSelected','c_shugyoFileName','shugyo')">
               <div class="file-upload-icon">📎</div>
               <div><div class="file-upload-text">差し替える場合はここをクリック</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
             </div>
             <div class="file-selected" id="c_shugyoSelected">✅ <span id="c_shugyoFileName"></span></div>
           </div>
-
           <hr class="divider">
 
           <div class="field">
             <label>賃金規定</label>
             <div class="current-file" id="cur_chinginKitei"></div>
             <div class="file-upload">
-              <input type="file" id="c_chinginKiteiFile" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileChange(this,'c_chinginKiteiSelected','c_chinginKiteiFileName','c_chinginKitei')">
+              <input type="file" id="c_chinginKiteiFile" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileChange(this,'c_chinginKiteiSelected','c_chinginKiteiFileName','chinginKitei')">
               <div class="file-upload-icon">📎</div>
               <div><div class="file-upload-text">差し替える場合はここをクリック</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
             </div>
             <div class="file-selected" id="c_chinginKiteiSelected">✅ <span id="c_chinginKiteiFileName"></span></div>
           </div>
-
           <hr class="divider">
 
           <div class="field">
             <label>キャリアアップ計画書</label>
             <div class="current-file" id="cur_keikaku"></div>
             <div class="file-upload">
-              <input type="file" id="c_keikakuFile" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileChange(this,'c_keikakuSelected','c_keikakuFileName','c_keikaku')">
+              <input type="file" id="c_keikakuFile" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileChange(this,'c_keikakuSelected','c_keikakuFileName','keikaku')">
               <div class="file-upload-icon">📎</div>
               <div><div class="file-upload-text">差し替える場合はここをクリック</div><div class="file-upload-hint">PDF・JPG・PNG対応</div></div>
             </div>
@@ -267,14 +253,8 @@
       <div class="card-header"><span class="card-header-icon">👤</span><span class="card-header-title">職業能力開発推進者</span></div>
       <div class="card-body">
         <div class="form-grid">
-          <div class="field">
-            <label>役職</label>
-            <input type="text" id="c_tantouYakushoku" placeholder="例：総務課長">
-          </div>
-          <div class="field">
-            <label>氏名</label>
-            <input type="text" id="c_tantouName" placeholder="例：鈴木 花子">
-          </div>
+          <div class="field"><label>役職</label><input type="text" id="c_tantouYakushoku" placeholder="例：総務課長"></div>
+          <div class="field"><label>氏名</label><input type="text" id="c_tantouName" placeholder="例：鈴木 花子"></div>
         </div>
       </div>
     </div>
@@ -283,10 +263,7 @@
       <div class="card-header"><span class="card-header-icon">👥</span><span class="card-header-title">労働者代表者</span></div>
       <div class="card-body">
         <div class="form-grid">
-          <div class="field span2">
-            <label>氏名</label>
-            <input type="text" id="c_rodoushaDaihyo" placeholder="例：田中 一郎">
-          </div>
+          <div class="field span2"><label>氏名</label><input type="text" id="c_rodoushaDaihyo" placeholder="例：田中 一郎"></div>
         </div>
       </div>
     </div>
@@ -295,22 +272,10 @@
       <div class="card-header"><span class="card-header-icon">📞</span><span class="card-header-title">ハローワーク問合せ窓口</span></div>
       <div class="card-body">
         <div class="form-grid">
-          <div class="field">
-            <label>氏名</label>
-            <input type="text" id="c_contactName" placeholder="例：山田 次郎">
-          </div>
-          <div class="field">
-            <label>所属</label>
-            <input type="text" id="c_contactBusho" placeholder="例：総務部">
-          </div>
-          <div class="field">
-            <label>電話番号</label>
-            <input type="tel" id="c_contactPhone" placeholder="例：06-1234-5678">
-          </div>
-          <div class="field">
-            <label>メールアドレス</label>
-            <input type="text" id="c_email" placeholder="例：info@example.com">
-          </div>
+          <div class="field"><label>氏名</label><input type="text" id="c_contactName" placeholder="例：山田 次郎"></div>
+          <div class="field"><label>所属</label><input type="text" id="c_contactBusho" placeholder="例：総務部"></div>
+          <div class="field"><label>電話番号</label><input type="tel" id="c_contactPhone" placeholder="例：06-1234-5678"></div>
+          <div class="field"><label>メールアドレス</label><input type="text" id="c_email" placeholder="例：info@example.com"></div>
         </div>
       </div>
     </div>
@@ -328,10 +293,9 @@
     </div>
     <div id="empList"><div class="empty">読み込み中...</div></div>
   </div>
-
 </div>
 
-<!-- ===== 従業員編集モーダル ===== -->
+<!-- 従業員編集モーダル -->
 <div class="modal-overlay" id="empModal" onclick="if(event.target===this)closeEmpModal()">
   <div class="modal">
     <div class="modal-header">
@@ -344,17 +308,80 @@
 
 <div class="overlay" id="overlay">
   <div class="spinner"></div>
-  <div class="overlay-text" id="overlayText">保存中...</div>
+  <div class="overlay-text" id="overlayText">処理中...</div>
 </div>
-
 <div class="toast" id="toast"></div>
 
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbxn8thednF67SoPIasKonFBtdfxVWI9mCDbK0Uh2Vt-BfjdWrLfuAtmikdC1uu2IgRR/exec';
+const CLIENT_ID = '545894761587-ja5v4hedor9kf1hq41n2p85gvqv97irm.apps.googleusercontent.com';
+const DRIVE_FOLDER_ID = '138czCzVkN5hlRwk54cj22M-NTpG20K9s';
+const SCOPES = 'https://www.googleapis.com/auth/drive.file';
 
+let accessToken = null;
 let companyData = null;
 let employeeData = [];
-let newFiles = {}; // 差し替えファイルを保持
+let newFiles = {};
+let empNewFiles = {};
+let editingEmpIndex = null;
+
+// ===== OAuth =====
+function getAccessToken() {
+  return new Promise((resolve, reject) => {
+    if (accessToken) { resolve(accessToken); return; }
+    const client = google.accounts.oauth2.initTokenClient({
+      client_id: CLIENT_ID,
+      scope: SCOPES,
+      callback: (resp) => {
+        if (resp.error) { reject(new Error(resp.error)); return; }
+        accessToken = resp.access_token;
+        resolve(accessToken);
+      }
+    });
+    client.requestAccessToken();
+  });
+}
+
+// ===== Drive アップロード =====
+async function uploadToDrive(file, fileName, folderId, token) {
+  if (!file) return null;
+  const ext = file.name.split('.').pop().toLowerCase();
+  const metadata = { name: fileName + '.' + ext, parents: [folderId] };
+  const form = new FormData();
+  form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+  form.append('file', file);
+  const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink', {
+    method: 'POST',
+    headers: { Authorization: 'Bearer ' + token },
+    body: form
+  });
+  const json = await res.json();
+  if (!json.id) throw new Error('アップロード失敗');
+  await fetch('https://www.googleapis.com/drive/v3/files/' + json.id + '/permissions', {
+    method: 'POST',
+    headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ role: 'reader', type: 'anyone' })
+  });
+  return json.webViewLink || '';
+}
+
+// ===== Driveフォルダ取得 or 作成 =====
+async function getOrCreateFolder(name, parentId, token) {
+  const q = `name='${name}' and '${parentId}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`;
+  const searchRes = await fetch('https://www.googleapis.com/drive/v3/files?q=' + encodeURIComponent(q) + '&fields=files(id)', {
+    headers: { Authorization: 'Bearer ' + token }
+  });
+  const searchJson = await searchRes.json();
+  if (searchJson.files && searchJson.files.length > 0) return searchJson.files[0].id;
+  const res = await fetch('https://www.googleapis.com/drive/v3/files?fields=id', {
+    method: 'POST',
+    headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, mimeType: 'application/vnd.google-apps.folder', parents: [parentId] })
+  });
+  const json = await res.json();
+  return json.id;
+}
 
 // ===== LOGIN =====
 async function doLogin() {
@@ -378,7 +405,6 @@ async function doLogin() {
       fillCompanyForm();
       renderEmpList();
     } else {
-      hideOverlay();
       document.getElementById('loginError').classList.add('show');
     }
   } catch(e) {
@@ -387,7 +413,7 @@ async function doLogin() {
   }
 }
 
-// ===== FILL COMPANY FORM =====
+// ===== フォーム表示 =====
 function fillCompanyForm() {
   const c = companyData;
   document.getElementById('c_companyName').value     = c.name || '';
@@ -404,19 +430,21 @@ function fillCompanyForm() {
   setCurrentFile('cur_koyo',         c.koyoUrl,         '雇用保険設置届');
   setCurrentFile('cur_shugyo',       c.shugyoUrl,       '就業規則');
   setCurrentFile('cur_chinginKitei', c.chinginKiteiUrl, '賃金規定');
-  setCurrentFile('cur_keikaku',      c.keikakuAri,      'キャリアアップ計画書');
+  setCurrentFile('cur_keikaku',      c.keikakuUrl,      'キャリアアップ計画書');
 }
 
 function setCurrentFile(elId, url, label) {
   const el = document.getElementById(elId);
   if (url && url.startsWith('http')) {
     el.innerHTML = `現在のファイル：<a href="${url}" target="_blank">📄 ${label}を確認する</a>`;
-  } else if (url) {
+  } else if (url && url !== '') {
     el.textContent = `現在の状態：${url}`;
+  } else {
+    el.textContent = '';
   }
 }
 
-// ===== FILE CHANGE =====
+// ===== ファイル選択 =====
 function onFileChange(input, selectedId, fileNameId, fileKey) {
   if (input.files[0]) {
     newFiles[fileKey] = input.files[0];
@@ -425,20 +453,37 @@ function onFileChange(input, selectedId, fileNameId, fileKey) {
   }
 }
 
-// ===== SAVE COMPANY =====
+// ===== 企業情報保存（Drive API方式）=====
 async function saveCompany() {
-  showOverlay('保存中...');
   document.getElementById('btnSaveCompany').disabled = true;
   try {
-    const fileKeys = ['c_toki','c_koyo','c_shugyo','c_chinginKitei','c_keikaku'];
-    const fileData = {};
-    for (const key of fileKeys) {
-      fileData[key] = newFiles[key] ? await fileToBase64(newFiles[key]) : null;
+    const hasNewFile = Object.keys(newFiles).length > 0;
+    let folderId = null;
+    let token = null;
+
+    if (hasNewFile) {
+      showOverlay('認証中...');
+      token = await getAccessToken();
+      const folderName = companyData.id + '_' + (document.getElementById('c_companyName').value.trim() || companyData.name);
+      folderId = await getOrCreateFolder(folderName, DRIVE_FOLDER_ID, token);
+      showOverlay('書類をアップロード中...');
+    } else {
+      showOverlay('保存中...');
     }
+
+    const companyName = document.getElementById('c_companyName').value.trim();
+    const [tokiUrl, koyoUrl, shugyoUrl, chinginKiteiUrl, keikakuUrl] = await Promise.all([
+      newFiles.toki         ? uploadToDrive(newFiles.toki,         '履歴事項全部証明書_' + companyName, folderId, token) : Promise.resolve(null),
+      newFiles.koyo         ? uploadToDrive(newFiles.koyo,         '雇用保険設置届_' + companyName,     folderId, token) : Promise.resolve(null),
+      newFiles.shugyo       ? uploadToDrive(newFiles.shugyo,       '就業規則_' + companyName,           folderId, token) : Promise.resolve(null),
+      newFiles.chinginKitei ? uploadToDrive(newFiles.chinginKitei, '賃金規定_' + companyName,           folderId, token) : Promise.resolve(null),
+      newFiles.keikaku      ? uploadToDrive(newFiles.keikaku,      'キャリアアップ計画書_' + companyName, folderId, token) : Promise.resolve(null),
+    ]);
+
     const payload = {
       action:          'updateCompany',
       companyId:       companyData.id,
-      companyName:     document.getElementById('c_companyName').value.trim(),
+      companyName,
       phone:           document.getElementById('c_phone').value.trim(),
       tantouYakushoku: document.getElementById('c_tantouYakushoku').value.trim(),
       tantouName:      document.getElementById('c_tantouName').value.trim(),
@@ -447,12 +492,10 @@ async function saveCompany() {
       contactBusho:    document.getElementById('c_contactBusho').value.trim(),
       contactPhone:    document.getElementById('c_contactPhone').value.trim(),
       email:           document.getElementById('c_email').value.trim(),
-      tokiFile:        fileData['c_toki'],
-      koyoFile:        fileData['c_koyo'],
-      shugyoFile:      fileData['c_shugyo'],
-      chinginKiteiFile:fileData['c_chinginKitei'],
-      keikakuFile:     fileData['c_keikaku'],
+      tokiUrl, koyoUrl, shugyoUrl, chinginKiteiUrl, keikakuUrl,
+      // null の場合GAS側で既存URL維持（updateCompany関数内で判定）
     };
+
     const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
     const result = await res.json();
     hideOverlay();
@@ -461,16 +504,16 @@ async function saveCompany() {
       newFiles = {};
       showToast('企業情報を保存しました', 'success');
     } else {
-      showToast('保存に失敗しました：' + result.error, 'error');
+      showToast('保存に失敗しました：' + (result.error || ''), 'error');
     }
   } catch(e) {
     hideOverlay();
     document.getElementById('btnSaveCompany').disabled = false;
-    showToast('通信エラーが発生しました', 'error');
+    showToast('エラー：' + e.message, 'error');
   }
 }
 
-// ===== EMPLOYEE LIST =====
+// ===== 従業員一覧 =====
 function renderEmpList() {
   const el = document.getElementById('empList');
   if (!employeeData.length) {
@@ -497,16 +540,12 @@ function badgeClass(s) {
   return 'badge-progress';
 }
 
-// ===== EMPLOYEE MODAL =====
-let editingEmpIndex = null;
-let empNewFiles = {};
-
+// ===== 従業員編集モーダル =====
 function openEmpModal(i) {
   editingEmpIndex = i;
   empNewFiles = {};
   const emp = employeeData[i];
   document.getElementById('empModalTitle').textContent = `${emp.employeeName} さんの情報を編集`;
-
   document.getElementById('empModalBody').innerHTML = `
     <div class="form-grid" style="margin-bottom:16px">
       <div class="field">
@@ -530,22 +569,17 @@ function openEmpModal(i) {
         <input type="text" id="e_kyuyo" value="${esc(emp.kyuyo||'')}">
       </div>
     </div>
-
     <hr class="divider">
-
     <div class="form-grid full" style="gap:16px">
       ${empFileField('資格喪失届', emp.soshitssuUrl, 'e_soshitssu')}
       ${empFileField('雇用契約書', emp.keiyakuUrl,   'e_keiyaku')}
       ${empFileField('賃金台帳',   emp.chinginUrl,   'e_chingin')}
       ${empFileField('出勤簿',     emp.shukkinUrl,   'e_shukkin')}
     </div>
-
     <div style="display:flex;justify-content:flex-end;margin-top:24px">
       <button class="btn-save" onclick="saveEmployee()">💾 保存する</button>
     </div>
   `;
-
-  // ファイルイベント設定
   ['e_soshitssu','e_keiyaku','e_chingin','e_shukkin'].forEach(key => {
     const input = document.getElementById(key + 'File');
     if (input) input.addEventListener('change', function() {
@@ -556,7 +590,6 @@ function openEmpModal(i) {
       }
     });
   });
-
   document.getElementById('empModal').classList.add('active');
 }
 
@@ -581,72 +614,88 @@ function closeEmpModal() {
   document.getElementById('empModal').classList.remove('active');
 }
 
+// ===== 従業員情報保存（Drive API方式）=====
 async function saveEmployee() {
-  showOverlay('保存中...');
   const emp = employeeData[editingEmpIndex];
+  const hasNewFile = Object.keys(empNewFiles).length > 0;
+  let folderId = null;
+  let token = null;
+
   try {
-    const fileKeys = ['e_soshitssu','e_keiyaku','e_chingin','e_shukkin'];
-    const fileData = {};
-    for (const key of fileKeys) {
-      fileData[key] = empNewFiles[key] ? await fileToBase64(empNewFiles[key]) : null;
+    if (hasNewFile) {
+      showOverlay('認証中...');
+      token = await getAccessToken();
+      const companyFolderName = companyData.id + '_' + companyData.name;
+      const companyFolderId = await getOrCreateFolder(companyFolderName, DRIVE_FOLDER_ID, token);
+      const empName = document.getElementById('e_employeeName').value.trim() || emp.employeeName;
+      folderId = await getOrCreateFolder('従業員_' + empName, companyFolderId, token);
+      showOverlay('書類をアップロード中...');
+    } else {
+      showOverlay('保存中...');
     }
+
+    const empName = document.getElementById('e_employeeName').value.trim();
+    const [soshitssuUrl, keiyakuUrl, chinginUrl, shukkinUrl] = await Promise.all([
+      empNewFiles.e_soshitssu ? uploadToDrive(empNewFiles.e_soshitssu, '資格喪失届_' + empName, folderId, token) : Promise.resolve(null),
+      empNewFiles.e_keiyaku   ? uploadToDrive(empNewFiles.e_keiyaku,   '雇用契約書_' + empName,  folderId, token) : Promise.resolve(null),
+      empNewFiles.e_chingin   ? uploadToDrive(empNewFiles.e_chingin,   '賃金台帳_' + empName,    folderId, token) : Promise.resolve(null),
+      empNewFiles.e_shukkin   ? uploadToDrive(empNewFiles.e_shukkin,   '出勤簿_' + empName,      folderId, token) : Promise.resolve(null),
+    ]);
+
     const payload = {
       action:        'updateEmployee',
       applyId:       emp.applyId,
-      employeeName:  document.getElementById('e_employeeName').value.trim(),
+      employeeName:  empName,
       beforeType:    document.getElementById('e_beforeType').value.trim(),
       koyoStartDate: document.getElementById('e_koyoStartDate').value,
       tenkanDate:    document.getElementById('e_tenkanDate').value,
       kyuyo:         document.getElementById('e_kyuyo').value.trim(),
-      soshitssuFile: fileData['e_soshitssu'],
-      keiyakuFile:   fileData['e_keiyaku'],
-      chinginFile:   fileData['e_chingin'],
-      shukkinFile:   fileData['e_shukkin'],
+      soshitssuUrl, keiyakuUrl, chinginUrl, shukkinUrl,
     };
+
     const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
     const result = await res.json();
     hideOverlay();
     if (result.success) {
-      // ローカルデータも更新
-      employeeData[editingEmpIndex] = { ...emp, ...payload };
+      employeeData[editingEmpIndex] = {
+        ...emp,
+        employeeName:  payload.employeeName,
+        beforeType:    payload.beforeType,
+        koyoStartDate: payload.koyoStartDate,
+        tenkanDate:    payload.tenkanDate,
+        kyuyo:         payload.kyuyo,
+        soshitssuUrl:  soshitssuUrl || emp.soshitssuUrl,
+        keiyakuUrl:    keiyakuUrl   || emp.keiyakuUrl,
+        chinginUrl:    chinginUrl   || emp.chinginUrl,
+        shukkinUrl:    shukkinUrl   || emp.shukkinUrl,
+      };
       renderEmpList();
       closeEmpModal();
       showToast('従業員情報を保存しました', 'success');
     } else {
-      showToast('保存に失敗しました：' + result.error, 'error');
+      showToast('保存に失敗しました：' + (result.error || ''), 'error');
     }
   } catch(e) {
     hideOverlay();
-    showToast('通信エラーが発生しました', 'error');
+    showToast('エラー：' + e.message, 'error');
   }
 }
 
-// ===== TABS =====
+// ===== タブ切り替え =====
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (name==='company'&&i===0)||(name==='employee'&&i===1)));
   document.querySelectorAll('.tab-content').forEach((c,i) => c.classList.toggle('active', (name==='company'&&i===0)||(name==='employee'&&i===1)));
 }
 
-// ===== HELPERS =====
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = e => resolve({ data: e.target.result.split(',')[1], type: file.type, ext: file.name.split('.').pop().toLowerCase() });
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
+// ===== ヘルパー =====
 function esc(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
 function showOverlay(text) {
   document.getElementById('overlayText').textContent = text || '処理中...';
   document.getElementById('overlay').classList.add('show');
 }
 function hideOverlay() { document.getElementById('overlay').classList.remove('show'); }
-
 function showToast(msg, type='') {
   const t = document.getElementById('toast');
   t.textContent = msg;
