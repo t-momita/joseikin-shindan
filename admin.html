@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>申請管理画面 | Next Season</title>
+<title>申請管理画面 |次のシーズン</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -145,7 +145,7 @@
   .btn-back { padding: 8px 16px; background: transparent; color: var(--text-sub); border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; cursor: pointer; }
   .btn-back:hover { background: var(--bg); }
 
-  /* AI抽出エリア（新） */
+  /* AI抽出エリア */
   .ai-extract-area { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 24px; margin-bottom: 20px; }
   .ai-extract-area h3 { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
   .ai-extract-area p { font-size: 13px; color: var(--text-sub); margin-bottom: 16px; line-height: 1.6; }
@@ -204,7 +204,7 @@
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-logo">
-      <h1>Next Season</h1>
+      <h1>次のシーズン</h1>
       <p>申請管理システム</p>
     </div>
     <div>
@@ -219,7 +219,7 @@
 <div id="mainScreen">
   <div class="sidebar">
     <div class="sidebar-header">
-      <h1>Next Season</h1>
+      <h1>次のシーズン</h1>
       <p>申請管理システム</p>
     </div>
     <nav class="sidebar-nav">
@@ -243,7 +243,7 @@
 
     <div class="main-content">
 
-      <!-- LIST PAGE -->
+      <!-- リストページ -->
       <div id="page-list" class="page active">
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">企業数</div><div class="stat-value" id="s-companies">—</div></div>
@@ -252,7 +252,7 @@
           <div class="stat-card"><div class="stat-label">申請済み</div><div class="stat-value" id="s-submitted" style="color:#059669">—</div></div>
         </div>
         <div class="filter-bar">
-          <input type="text" id="companySearch" placeholder="🔍　会社名・担当者名で検索..." oninput="renderCompanyTable()">
+          <input type="text" id="companySearch" placeholder="🔍 会社名・担当者名で検索..." oninput="renderCompanyTable()">
           <select id="companyStatusFilter" onchange="renderCompanyTable()">
             <option value="">すべてのステータス</option>
             <option value="新規">新規</option><option value="連絡済み">連絡済み</option>
@@ -263,11 +263,11 @@
           </select>
         </div>
         <div class="table-wrap">
-          <div id="companyTableContent"><div class="loading"><div class="spinner"></div>データを読み込み中...</div></div>
+          <div id="companyTableContent"><div class="loading"><div class="spinner"></div>データ読み込み中...</div></div>
         </div>
       </div>
 
-      <!-- STATS PAGE -->
+      <!-- 統計ページ -->
       <div id="page-stats" class="page">
         <div class="stats-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:24px">
           <div class="table-wrap" style="padding:24px"><h3 style="font-size:14px;font-weight:700;color:var(--primary);margin-bottom:16px">🏢 企業ステータス別</h3><div id="statsCompanyStatus"></div></div>
@@ -276,13 +276,13 @@
         <div class="table-wrap" style="padding:24px"><h3 style="font-size:14px;font-weight:700;color:var(--primary);margin-bottom:16px">📅 月別登録数（企業）</h3><div id="statsMonthly"></div></div>
       </div>
 
-      <!-- 申請書作成 PAGE -->
+      <!-- 申請書作成ページ -->
       <div id="page-shinsei" class="page">
         <div id="shinsei-select-view">
           <div class="filter-bar">
-            <input type="text" id="shinseiSearch" placeholder="🔍　会社名で検索..." oninput="renderShinseiList()">
+            <input type="text" id="shinseiSearch" placeholder="🔍 会社名で検索..." oninput="renderShinseiList()">
           </div>
-          <div class="table-wrap"><div id="shinseiListContent"><div class="loading"><div class="spinner"></div>データを読み込み中...</div></div></div>
+          <div class="table-wrap"><div id="shinseiListContent"><div class="loading"><div class="spinner"></div>データ読み込み中...</div></div></div>
         </div>
 
         <div id="shinsei-form-view" style="display:none">
@@ -294,7 +294,7 @@
             <button class="btn-back" onclick="backToShinseiList()">← 企業選択に戻る</button>
           </div>
 
-          <!-- AI自動抽出エリア（GAS経由） -->
+          <!-- AI自動抽出エリア -->
           <div class="ai-extract-area">
             <h3>🤖 登録済み書類からAI自動入力</h3>
             <p>企業登録時にアップロードされた書類をAIが読み取り、申請書に自動入力します。</p>
@@ -308,7 +308,7 @@
           <!-- 様式第３号 -->
           <div class="shinsei-form-wrap">
             <div class="shinsei-form-header">
-              <h3>様式第３号　キャリアアップ助成金支給申請書</h3>
+              <h3>様式第３号 キャリアアップ助成金支給申請書</h3>
               <button class="btn-print" onclick="window.print()">🖨️ 印刷</button>
             </div>
             <div class="form-body">
@@ -329,28 +329,29 @@
                 <div class="form-section-title">事業主情報</div>
                 <div class="form-row full">
                   <div class="form-group">
-                    <label>所在地（〒） <span id="badge_zip" class="ai-badge" style="display:none">✨ AI抽出</span></label>
+                    <label>所在地（〒） <span id="badge_zip" class="ai-badge" style="display:none">✨ AI 抽出</span></label>
                     <input type="text" id="f_jigyonushi_zip" placeholder="000-0000">
                   </div>
                 </div>
                 <div class="form-row full">
                   <div class="form-group">
-                    <label>所在地（住所） <span id="badge_addr" class="ai-badge" style="display:none">✨ AI抽出</span></label>
-                    <input type="text" id="f_jigyonushi_addr" placeholder="大阪府...">
+                    <label>所在地（住所） <span id="badge_addr" class="ai-badge" style="display:none">✨ AI 抽出</span></label>
+                    <input type="text" id="f_jigyunushi_addr" placeholder="大阪府...">
                   </div>
                 </div>
-                <div class="form-row">
+                <div class="form-row three">
                   <div class="form-group">
-                    <label>名称（会社名） <span id="badge_jname" class="ai-badge" style="display:none">✨ AI抽出</span></label>
-                    <input type="text" id="f_jigyonushi_name" placeholder="株式会社〇〇">
+                    <label>名称（会社名） <span id="badge_jname" class="ai-badge" style="display:none">✨ AI 抽出</span></label>
+                    <input type="text" id="f_jigyunushi_name" placeholder="株式会社〇〇">
+                    <span class="info-note">履歴事項全部証明書の商号</span>
                   </div>
                   <div class="form-group">
-                    <label>代表者役職 <span id="badge_rep_yakushoku" class="ai-badge" style="display:none">✨ AI抽出</span></label>
-                    <input type="text" id="f_jigyonushi_yakushoku" placeholder="代表取締役">
+                    <label>代表役職 <span id="badge_rep_akusoku" class="ai-badge" style="display:none">✨ AI 抽出</span></label>
+                    <input type="text" id="f_jigyunushi_akusoku" placeholder="代表取締役">
                   </div>
                   <div class="form-group">
-                    <label>代表者氏名 <span id="badge_rep" class="ai-badge" style="display:none">✨ AI抽出</span></label>
-                    <input type="text" id="f_jigyonushi_rep" placeholder="山田太郎">
+                    <label>代表者氏名 <span id="badge_rep" class="ai-badge" style="display:none">✨ AI 抽出</span></label>
+                    <input type="text" id="f_jigyunushi_rep" placeholder="山田太郎">
                   </div>
                 </div>
               </div>
@@ -359,14 +360,14 @@
               <div class="form-section">
                 <div class="form-section-title">代理人・事務代理者（固定）</div>
                 <div class="form-row full">
-                  <div class="form-group"><label>所在地</label><input type="text" class="fixed" readonly value="大阪府大阪市中央区内本町１－２－１３谷四ばんらいビル１０階"></div>
+                  <div class="form-group"><label>所在地</label><input type="text" class="fixed" readonly value="大阪府大阪市中央区内本町１－２－１３谷四番来ビル１０階"></div>
                 </div>
                 <div class="form-row">
-                  <div class="form-group"><label>名称</label><input type="text" class="fixed" readonly value="社会保険労務士事務所ネクストシーズン"></div>
-                  <div class="form-group"><label>TEL</label><input type="text" class="fixed" readonly value="０６４７９０６０９０"></div>
+                  <div class="form-group"><label>名前</label><input type="text" class="fixed" readonly value="社会保険労務士事務所 次シーズン"></div>
+                  <div class="form-group"><label>電話番号</label><input type="text" class="fixed" readonly value="0647906090"></div>
                 </div>
                 <div class="form-row full">
-                  <div class="form-group"><label>氏名（担当社労士）</label><input type="text" id="f_dairi_tanto" class="fixed" readonly value="社会保険労務士　松本　季一郎"></div>
+                  <div class="form-group"><label>氏名（社労士）</label><input type="text" id="f_dairi_tanto" class="fixed" readonly value="社会保険労務士 松本季一郎"></div>
                 </div>
               </div>
 
@@ -375,18 +376,18 @@
                 <div class="form-section-title">番号・担当者情報</div>
                 <div class="form-row">
                   <div class="form-group">
-                    <label>① 雇用保険適用事業所番号 <span id="badge_koyohoken" class="ai-badge" style="display:none">✨ AI抽出</span></label>
+                    <label>① 雇用保険適用事業所番号 <span id="badge_koyohoken" class="ai-badge" style="display:none">✨ AI 抽出</span></label>
                     <input type="text" id="f_koyohoken" placeholder="00-000000-0">
-                    <span class="info-note">雇用保険適用事業所設置届から読み取ります</span>
+                    <span class="info-note">雇用保険適用事業所設置届から抽出</span>
                   </div>
                   <div class="form-group">
-                    <label>② 労働保険番号 <span id="badge_rodo" class="ai-badge" style="display:none">✨ AI抽出</span></label>
+                    <label>② 労働保険番号 <span id="badge_rodo" class="ai-badge" style="display:none">✨ AI 抽出</span></label>
                     <input type="text" id="f_rodo" placeholder="00-0-00-000000-000">
-                    <span class="info-note">雇用保険適用事業所設置届から読み取ります</span>
+                    <span class="info-note">雇用保険適用事業所設置届から抽出</span>
                   </div>
                 </div>
                 <div class="form-row full">
-                  <div class="form-group"><label>③ キャリアアップ計画書の受理番号</label><input type="text" id="f_keikaku_no" placeholder="受理番号"></div>
+                  <div class="form-group"><label>③ キャリアアップ計画書受理番号</label><input type="text" id="f_keikaku_no" placeholder="受理番号"></div>
                 </div>
                 <div class="form-row">
                   <div class="form-group"><label>④ 担当者所属</label><input type="text" id="f_tanto_busho" placeholder="総務部"></div>
@@ -402,16 +403,16 @@
                 <div class="form-section-title">企業情報</div>
                 <div class="form-row full">
                   <div class="form-group">
-                    <label>⑤ 企業の名称 <span id="badge_kigyo_name" class="ai-badge" style="display:none">✨ AI抽出</span></label>
-                    <input type="text" id="f_kigyo_name" placeholder="株式会社〇〇">
-                    <span class="info-note">履歴事項全部証明書から読み取ります</span>
+                    <label>⑤ 企業名 <span id="badge_kikyo_name" class="ai-badge" style="display:none">✨ AI 抽出</span></label>
+                    <input type="text" id="f_kikyo_name" placeholder="株式会社〇〇">
+                    <span class="info-note">雇用保険適用事業所設置届の事業所名称</span>
                   </div>
                 </div>
                 <div class="form-row full">
                   <div class="form-group">
-                    <label>⑥ 企業の主たる事業 <span id="badge_jigyou" class="ai-badge" style="display:none">✨ AI抽出</span></label>
-                    <input type="text" id="f_kigyo_jigyou" placeholder="製造業・飲食業など">
-                    <span class="info-note">雇用保険適用事業所設置届の事業の種類コードから変換します</span>
+                    <label>⑥ 主たる事業 <span id="badge_jigyou" class="ai-badge" style="display:none">✨ AI 抽出</span></label>
+                    <input type="text" id="f_kikyo_jigyou" placeholder="製造業・飲食業など">
+                    <span class="info-note">雇用保険適用事業所設置届の産業分類コードから変換</span>
                   </div>
                 </div>
                 <div class="form-row">
@@ -423,17 +424,17 @@
                       <label id="shokibo_label" style="display:none"><input type="radio" name="kigyo_scale" value="小規模企業" id="r_shokibo" onchange="clearScaleAuto()"> 小規模企業</label>
                     </div>
                     <div class="kigyo_scale_auto" id="scale_auto_msg"></div>
-                    <span class="info-note">⑥⑧⑨の情報から自動判定します</span>
+                    <span class="info-note">⑥⑧⑨の情報から自動判定</span>
                   </div>
                   <div class="form-group">
-                    <label>⑧ 資本の額または出資の総額（万円） <span id="badge_shihon" class="ai-badge" style="display:none">✨ AI抽出</span></label>
+                    <label>⑧ 資本の額（万円） <span id="badge_shihon" class="ai-badge" style="display:none">✨ AI 抽出</span></label>
                     <input type="number" id="f_shihon" placeholder="0" oninput="autoJudgeScale()">
-                    <span class="info-note">履歴事項全部証明書から読み取ります</span>
+                    <span class="info-note">履歴事項全部証明書から抽出</span>
                   </div>
                 </div>
                 <div class="form-row full">
                   <div class="form-group">
-                    <label>⑨ 企業全体の常時雇用する労働者数（人）</label>
+                    <label>⑨ 常時雇用する労働者数（人）</label>
                     <input type="number" id="f_rodosha_num" placeholder="0" oninput="autoJudgeScale()">
                     <span class="info-note">企業登録時の入力値から自動入力</span>
                   </div>
@@ -444,10 +445,10 @@
               <div class="form-section">
                 <div class="form-section-title">⑩ 支給申請コース</div>
                 <div class="checkbox-group" style="flex-direction:column;gap:8px">
-                  <label><input type="checkbox" id="course1"> 1. 正社員化コース</label>
-                  <label><input type="checkbox" id="course2"> 2. 障害者正社員化コース</label>
-                  <label><input type="checkbox" id="course3"> 3. 賃金規定等改定コース</label>
-                  <label><input type="checkbox" id="course4"> 4. 賃金規定等共通化コース</label>
+                  <label><input type="checkbox" id="course1"> 1. 正規化コース</label>
+                  <label><input type="checkbox" id="course2"> 2. 障害者正規化コース</label>
+                  <label><input type="checkbox" id="course3"> 3. 暫定規定等改定コース</label>
+                  <label><input type="checkbox" id="course4"> 4. 暫定規定等共通化コース</label>
                   <label><input type="checkbox" id="course5"> 5. 賞与・退職金制度導入コース</label>
                   <label><input type="checkbox" id="course6" onchange="toggleShokibo()"> 6. 短時間労働者労働時間延長支援コース</label>
                 </div>
@@ -456,14 +457,14 @@
               <!-- 他助成金 -->
               <div class="form-section">
                 <div class="form-section-title">⑪ 他の助成金との重複</div>
-                <p style="font-size:13px;color:var(--text-sub);margin-bottom:10px">国または地方公共団体の助成金・奨励金・補助金等の支給申請・受給の有無</p>
+                <p style="font-size:13px;color:var(--text-sub);margin-bottom:10px">国または地方公共団体の助成金・奨励金・補助金等の申請・受給の有無</p>
                 <div class="checkbox-group">
                   <label><input type="radio" name="joseikin" value="有"> 有</label>
                   <label><input type="radio" name="joseikin" value="無" checked> 無</label>
                 </div>
                 <div class="form-group" style="margin-top:10px">
-                  <label>有の場合、名称</label>
-                  <input type="text" id="f_joseikin_name" placeholder="助成金名称">
+                  <label>有の場合の助成金名</label>
+                  <input type="text" id="f_joseikin_name" placeholder="助成金名">
                 </div>
               </div>
 
@@ -476,7 +477,7 @@
   </div>
 </div>
 
-<!-- MODAL -->
+<!-- モーダル -->
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-header">
@@ -496,47 +497,61 @@ const PASSWORD = 'next1234';
 let companies = [], employees = [], sharoushiList = [];
 let currentShinseiCompany = null;
 
-// 産業分類コード→事業名変換テーブル
 const INDUSTRY_CODE_MAP = {
   '01':'農業','02':'林業','03':'漁業','04':'水産養殖業',
   '05':'鉱業、採石業、砂利採取業',
-  '06':'建設業','07':'建設業',
-  '08':'食料品製造業','09':'繊維工業','10':'木材・木製品製造業',
-  '11':'家具・装備品製造業','12':'パルプ・紙・紙加工品製造業',
-  '13':'印刷・同関連業','14':'化学工業','15':'石油製品・石炭製品製造業',
-  '16':'プラスチック製品製造業','17':'ゴム製品製造業','18':'なめし革・同製品・毛皮製造業',
-  '19':'窯業・土石製品製造業','20':'鉄鋼業','21':'非鉄金属製造業',
-  '22':'金属製品製造業','23':'はん用機械器具製造業','24':'生産用機械器具製造業',
-  '25':'業務用機械器具製造業','26':'電子部品・デバイス・電子回路製造業',
-  '27':'電気機械器具製造業','28':'情報通信機械器具製造業','29':'輸送用機械器具製造業',
-  '30':'その他の製造業',
-  '31':'電気・ガス・熱供給・水道業',
-  '32':'通信業','33':'放送業','34':'情報サービス業','35':'インターネット附随サービス業',
-  '36':'映像・音声・文字情報制作業',
-  '37':'運輸業、郵便業',
-  '38':'卸売業','39':'小売業',
-  '40':'金融業、保険業',
-  '41':'不動産業、物品賃貸業',
-  '42':'学術研究、専門・技術サービス業',
-  '43':'宿泊業','44':'飲食サービス業',
-  '45':'生活関連サービス業、娯楽業',
-  '46':'教育、学習支援業',
-  '47':'医療業','48':'福祉業','49':'医療、福祉',
-  '50':'複合サービス事業',
-  '51':'その他のサービス業',
-  '52':'国家公務','53':'地方公務',
-  '54':'その他',
+  '06':'総合工事業','07':'職別工事業','08':'設備工事業',
+  '09':'食料品製造業','10':'飲料・たばこ・飼料製造業',
+  '11':'繊維工業','12':'木材・木製品製造業','13':'家具・装備品製造業',
+  '14':'パルプ・紙・紙加工品製造業','15':'印刷・同関連業',
+  '16':'化学工業','17':'石油製品・石炭製品製造業',
+  '18':'プラスチック製品製造業','19':'ゴム製品製造業',
+  '20':'なめし革・同製品・毛皮製造業','21':'窯業・土石製品製造業',
+  '22':'鉄鋼業','23':'非鉄金属製造業','24':'金属製品製造業',
+  '25':'はん用機械器具製造業','26':'生産用機械器具製造業',
+  '27':'業務用機械器具製造業','28':'電子部品・デバイス・電子回路製造業',
+  '29':'電気機械器具製造業','30':'情報通信機械器具製造業',
+  '31':'輸送用機械器具製造業','32':'その他の製造業',
+  '33':'電気業','34':'ガス業','35':'熱供給業','36':'水道業',
+  '37':'通信業','38':'放送業','39':'情報サービス業',
+  '40':'インターネット附随サービス業','41':'映像・音声・文字情報制作業',
+  '42':'鉄道業','43':'道路旅客運送業','44':'道路貨物運送業',
+  '45':'水運業','46':'航空運輸業','47':'倉庫業',
+  '48':'運輸に附帯するサービス業','49':'郵便業',
+  '50':'各種商品卸売業','51':'繊維・衣服等卸売業',
+  '52':'飲食料品卸売業','53':'建築材料、鉱物・金属材料等卸売業',
+  '54':'機械器具卸売業','55':'その他の卸売業',
+  '56':'各種商品小売業','57':'織物・衣服・身の回り品小売業',
+  '58':'飲食料品小売業','59':'機械器具小売業',
+  '60':'その他の小売業','61':'無店舗小売業',
+  '62':'銀行業','63':'協同組織金融業','64':'貸金業、クレジットカード業等',
+  '65':'金融商品取引業、商品先物取引業','66':'補助的金融業等',
+  '67':'保険業','68':'不動産取引業','69':'不動産賃貸業・管理業',
+  '70':'物品賃貸業',
+  '71':'学術・開発研究機関','72':'専門サービス業',
+  '73':'広告業','74':'技術サービス業',
+  '75':'宿泊業','76':'飲食店','77':'持ち帰り・配達飲食サービス業',
+  '78':'洗濯・理容・美容・浴場業','79':'その他の生活関連サービス業',
+  '80':'娯楽業',
+  '81':'学校教育','82':'その他の教育、学習支援業',
+  '83':'医療業','84':'保健衛生',
+  '85':'社会保険・社会福祉・介護事業',
+  '86':'郵便局','87':'協同組合',
+  '88':'廃棄物処理業','89':'自動車整備業','90':'機械等修理業',
+  '91':'職業紹介・労働者派遣業','92':'その他の事業サービス業',
+  '93':'外国公務','94':'国家公務','95':'地方公務',
+  '96':'その他のサービス業'
 };
 
 const SCALE_TABLE = [
   { keywords:['小売','飲食'], capital: 5000, workers: 50 },
   { keywords:['サービス','社会保険','社会福祉','介護','医療','保健','教育','学習支援','宿泊','娯楽','生活関連','理容','美容','洗濯'], capital: 5000, workers: 100 },
-  { keywords:['卸売'],        capital: 10000, workers: 100 },
-  { default: true,            capital: 30000, workers: 300 },
+  { keywords:['卸売'], capital: 10000, workers: 100 },
+  { default: true, capital: 30000, workers: 300 },
 ];
 
 // ==========================================
-// LOGIN
+// ログイン
 // ==========================================
 function doLogin() {
   const pw = document.getElementById('pwInput').value;
@@ -555,7 +570,7 @@ function doLogout() {
 }
 
 // ==========================================
-// PAGE NAV
+// ページナビゲーション
 // ==========================================
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -573,10 +588,10 @@ function onRefresh() {
 }
 
 // ==========================================
-// LOAD DATA
+// データ読み込み
 // ==========================================
 async function loadData() {
-  document.getElementById('companyTableContent').innerHTML = '<div class="loading"><div class="spinner"></div>データを読み込み中...</div>';
+  document.getElementById('companyTableContent').innerHTML = '<div class="loading"><div class="spinner"></div>データ読み込み中...</div>';
   try {
     const [adminRes, sharoushiRes] = await Promise.all([
       fetch(GAS_URL + '?action=getAdminData'),
@@ -616,7 +631,7 @@ function updateStats() {
 }
 
 // ==========================================
-// COMPANY TABLE
+// 会社一覧テーブル
 // ==========================================
 function renderCompanyTable() {
   const q = document.getElementById('companySearch').value.toLowerCase();
@@ -674,12 +689,9 @@ function openShinsei(companyId) {
   document.getElementById('shinseiCompanyName').textContent = r.name || '—';
   document.getElementById('shinseiCompanySub').textContent = `ID: ${r.id} ／ 担当: ${r.sharoushi || '未割当'}`;
   prefillFromCompany(r);
-  // AIバッジリセット
   document.querySelectorAll('.ai-badge').forEach(b => b.style.display = 'none');
   document.querySelectorAll('.ai-filled').forEach(el => el.classList.remove('ai-filled'));
-  // 書類ステータス表示
   renderDocStatus(r);
-  // 抽出結果リセット
   const res = document.getElementById('extractResult');
   res.style.display = 'none';
   res.className = 'extract-result';
@@ -708,8 +720,8 @@ function prefillFromCompany(r) {
   setVal('f_year', reiwa);
   setVal('f_month', today.getMonth() + 1);
   setVal('f_day', today.getDate());
-  setVal('f_jigyonushi_name', r.name || '');
-  setVal('f_kigyo_name', r.name || '');
+  setVal('f_jigyunushi_name', r.name || '');
+  setVal('f_kikyo_name', r.name || '');
   setVal('f_tanto_name', r.contactName || '');
   setVal('f_tanto_busho', r.contactBusho || '');
   setVal('f_tanto_tel', r.contactPhone || r.phone || '');
@@ -723,7 +735,7 @@ function setVal(id, val) {
 }
 
 // ==========================================
-// AI抽出（GAS経由）← ここが変更箇所
+// AI抽出（GAS経由）
 // ==========================================
 async function extractFromDrive() {
   if (!currentShinseiCompany) return;
@@ -767,18 +779,16 @@ function fillExtracted(data) {
   document.querySelectorAll('.ai-badge').forEach(b => b.style.display = 'none');
   document.querySelectorAll('.ai-filled').forEach(el => el.classList.remove('ai-filled'));
 
-  // GASから返ってくるキー名に合わせたマッピング
   const mapping = {
-    koyoHokenBango:  { field: 'f_koyohoken',            badge: 'badge_koyohoken' },
-    rodoHokenBango:  { field: 'f_rodo',                 badge: 'badge_rodo' },
-    jigyshoZip:      { field: 'f_jigyonushi_zip',       badge: 'badge_zip' },
-    jigyshoAddr:     { field: 'f_jigyonushi_addr',      badge: 'badge_addr' },
-    jigyshoName:     { field: 'f_jigyonushi_name',      badge: 'badge_jname' },
-    jigyshoKaihyo:   { field: 'f_jigyonushi_rep',       badge: 'badge_rep' },
-    kigyoName:       { field: 'f_kigyo_name',           badge: 'badge_kigyo_name' },
-    shihonkin:       { field: 'f_shihon',               badge: 'badge_shihon' },
-    daihyoName:      { field: 'f_jigyonushi_rep',       badge: 'badge_rep' },
-    daihyoYakushoku: { field: 'f_jigyonushi_yakushoku', badge: 'badge_rep_yakushoku' },
+    koyoHokenBango:  { field: 'f_koyohoken',          badge: 'badge_koyohoken' },
+    rodoHokenBango:  { field: 'f_rodo',                badge: 'badge_rodo' },
+    jigyshoZip:      { field: 'f_jigyonushi_zip',      badge: 'badge_zip' },
+    jigyshoAddr:     { field: 'f_jigyunushi_addr',     badge: 'badge_addr' },
+    jigyshoName:     { field: 'f_kikyo_name',          badge: 'badge_kikyo_name' },  // 雇用保険→⑤企業名
+    kigyoName:       { field: 'f_jigyunushi_name',     badge: 'badge_jname' },       // 履歴事項→事業主名称
+    shihonkin:       { field: 'f_shihon',              badge: 'badge_shihon' },
+    daihyoName:      { field: 'f_jigyunushi_rep',      badge: 'badge_rep' },
+    daihyoYakushoku: { field: 'f_jigyunushi_akusoku',  badge: 'badge_rep_akusoku' },
   };
 
   Object.entries(mapping).forEach(([key, { field, badge }]) => {
@@ -793,14 +803,14 @@ function fillExtracted(data) {
     }
   });
 
-  // 事業の種類：コード→名称変換
+  // 事業の種類：コード→変換名
   let industryName = data.shuyoJigyo || '';
   if (!industryName && data.shuyoJigyoCode) {
     const code = String(data.shuyoJigyoCode).padStart(2, '0');
     industryName = INDUSTRY_CODE_MAP[code] || `コード${code}の事業`;
   }
   if (industryName) {
-    const el = document.getElementById('f_kigyo_jigyou');
+    const el = document.getElementById('f_kikyo_jigyou');
     if (el) {
       el.value = industryName;
       el.classList.add('ai-filled');
@@ -813,7 +823,7 @@ function fillExtracted(data) {
 }
 
 // ==========================================
-// 企業規模の自動判定
+// 企業規模自動判定
 // ==========================================
 function toggleShokibo() {
   const checked = document.getElementById('course6').checked;
@@ -833,7 +843,7 @@ function clearScaleAuto() {
 }
 
 function autoJudgeScale() {
-  const jigyou = (document.getElementById('f_kigyo_jigyou').value || '').trim();
+  const jigyou = (document.getElementById('f_kikyo_jigyou').value || '').trim();
   const shihon = parseInt(document.getElementById('f_shihon').value) || 0;
   const workers = parseInt(document.getElementById('f_rodosha_num').value) || 0;
   if (!workers && !shihon) return;
@@ -852,7 +862,7 @@ function setScale(val, msg) {
 }
 
 // ==========================================
-// COMPANY MODAL
+// 会社モーダル
 // ==========================================
 function openCompanyModal(id) {
   const r = companies.find(c => c.id === id);
@@ -883,13 +893,13 @@ function buildCompanyInfoHtml(r) {
     { label:'履歴事項全部証明書', url:r.tokiUrl },
     { label:'雇用保険適用事業所設置届', url:r.koyoUrl },
     { label:'就業規則', url:r.shugyoUrl },
-    { label:'賃金規定', url:r.chinginKiteiUrl },
+    { label:'賃金規定', url:r.chinginKireiUrl },
     { label:'キャリアアップ計画書', url:r.keikakuUrl },
   ];
   const docsHtml = docItems.some(d=>d.url&&d.url.startsWith('http'))
     ? `<div class="doc-links">${docItems.map(d=>d.url&&d.url.startsWith('http')?`<a href="${esc(d.url)}" target="_blank" class="doc-link">📄 ${d.label}</a>`:'').join('')}</div>`
     : '<p class="doc-link-none">書類未アップロード</p>';
-  const sharoushiOptions = '<option value="">未割当</option>' + sharoushiList.map(n=>`<option value="${esc(n)}" ${n===sharoushi?'selected':''}>${esc(n)}</option>`).join('');
+  const sharoushiOptions = '<option value="">未選択</option>' + sharoushiList.map(n=>`<option value="${esc(n)}" ${n===sharoushi?'selected':''}>${esc(n)}</option>`).join('');
   return `
     <div class="detail-section"><h4>企業基本情報</h4>
       <div class="detail-grid">
@@ -898,8 +908,8 @@ function buildCompanyInfoHtml(r) {
         <div class="detail-item"><label>電話番号</label><p>${esc(r.phone||r.contactPhone||'—')}</p></div>
         <div class="detail-item"><label>メールアドレス</label><p>${esc(r.email||'—')}</p></div>
         <div class="detail-item"><label>担当者名</label><p>${esc(r.contactName||'—')}</p></div>
-        <div class="detail-item"><label>担当部署</label><p>${esc(r.contactBusho||'—')}</p></div>
-        <div class="detail-item"><label>常時雇用労働者数</label><p>${esc(r.rodoshaNum||'—')}${r.rodoshaNum?'人':''}</p></div>
+        <div class="detail-item"><label>所属</label><p>${esc(r.contactBusho||'—')}</p></div>
+        <div class="detail-item"><label>継続雇用労働者数</label><p>${esc(r.rodoshaNum||'—')}${r.rodoshaNum?'人':''}</p></div>
         <div class="detail-item"><label>登録日時</label><p>${formatDate(r.registeredAt)}</p></div>
       </div>
     </div>
@@ -953,10 +963,10 @@ async function loadCompanyEmployees(companyId) {
         <div class="emp-card-header"><span class="emp-card-name">👤 ${esc(e.employeeName||'—')}</span><span class="badge ${badgeClass(status)}">${status}</span></div>
         <div class="emp-card-grid">
           <div class="emp-card-item"><label>申請ID</label><p>${esc(e.applyId||'—')}</p></div>
-          <div class="emp-card-item"><label>転換前雇用区分</label><p>${esc(e.beforeType||'—')}</p></div>
+          <div class="emp-card-item"><label>移行前雇用区分</label><p>${esc(e.beforeType||'—')}</p></div>
           <div class="emp-card-item"><label>雇用開始日</label><p>${formatDate(e.koyoStartDate)}</p></div>
           <div class="emp-card-item"><label>転換予定日</label><p>${formatDate(e.tenkanDate)}</p></div>
-          <div class="emp-card-item"><label>転換後賃金</label><p>${esc(e.kyuyo||'—')}</p></div>
+          <div class="emp-card-item"><label>転換後月給</label><p>${esc(e.kyuyo||'—')}</p></div>
           <div class="emp-card-item"><label>申請日時</label><p>${formatDate(e.appliedAt)}</p></div>
         </div>
         <div class="emp-card-docs">${docsHtml}</div>
@@ -1008,13 +1018,13 @@ async function postGAS(body, onSuccess) {
 }
 
 // ==========================================
-// STATS
+// 統計
 // ==========================================
 function renderStats() { renderStatusBar('statsCompanyStatus',companies); renderStatusBar('statsEmployeeStatus',employees); renderMonthly(); }
 function renderStatusBar(elId, data) {
   const counts={};
   data.forEach(r=>{const s=r.status||'新規';counts[s]=(counts[s]||0)+1;});
-  const total=data.length||1;
+  const total = data.length || 1;
   document.getElementById(elId).innerHTML=['新規','連絡済み','対応中','申請済み','完了'].map(s=>{
     const v=counts[s]||0,pct=Math.round(v/total*100);
     return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
@@ -1029,9 +1039,9 @@ function renderStatusBar(elId, data) {
 function renderMonthly() {
   const monthly={};
   companies.forEach(r=>{if(!r.registeredAt)return;const m=String(r.registeredAt).substring(0,7);monthly[m]=(monthly[m]||0)+1;});
-  const keys=Object.keys(monthly).sort().reverse();
+  const keys = Object.keys(monthly).sort().reverse();
   if(!keys.length){document.getElementById('statsMonthly').innerHTML='<div class="empty">データがありません</div>';return;}
-  const max=Math.max(...Object.values(monthly));
+  const max = Math.max(...Object.values(monthly));
   document.getElementById('statsMonthly').innerHTML=keys.map(k=>{
     const v=monthly[k],pct=Math.round(v/max*100);
     return `<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
@@ -1045,7 +1055,7 @@ function renderMonthly() {
 }
 
 // ==========================================
-// HELPERS
+// ヘルパー
 // ==========================================
 function statusOptions(current){return['新規','連絡済み','対応中','申請済み','完了'].map(s=>`<option ${s===current?'selected':''}>${s}</option>`).join('');}
 function badgeClass(s){return{新規:'badge-new',連絡済み:'badge-contact',対応中:'badge-progress',申請済み:'badge-submitted',完了:'badge-done'}[s]||'badge-new';}
