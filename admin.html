@@ -420,7 +420,7 @@
                     <div class="checkbox-group">
                       <label><input type="radio" name="kigyo_scale" value="中小企業" id="r_chusho" onchange="clearScaleAuto()"> 中小企業</label>
                       <label><input type="radio" name="kigyo_scale" value="大企業" id="r_daiki" onchange="clearScaleAuto()"> 大企業</label>
-                      <label><input type="radio" name="kigyo_scale" value="小規模企業" id="r_shokibo" onchange="clearScaleAuto()"> 小規模企業</label>
+                      <label id="shokibo_label" style="display:none"><input type="radio" name="kigyo_scale" value="小規模企業" id="r_shokibo" onchange="clearScaleAuto()"> 小規模企業</label>
                     </div>
                     <div class="kigyo_scale_auto" id="scale_auto_msg"></div>
                     <span class="info-note">⑥⑧⑨の情報から自動判定します</span>
@@ -449,7 +449,7 @@
                   <label><input type="checkbox" id="course3"> 3. 賃金規定等改定コース</label>
                   <label><input type="checkbox" id="course4"> 4. 賃金規定等共通化コース</label>
                   <label><input type="checkbox" id="course5"> 5. 賞与・退職金制度導入コース</label>
-                  <label><input type="checkbox" id="course6"> 6. 短時間労働者労働時間延長支援コース</label>
+                  <label><input type="checkbox" id="course6" onchange="toggleShokibo()"> 6. 短時間労働者労働時間延長支援コース</label>
                 </div>
               </div>
 
@@ -815,6 +815,19 @@ function fillExtracted(data) {
 // ==========================================
 // 企業規模の自動判定
 // ==========================================
+function toggleShokibo() {
+  const checked = document.getElementById('course6').checked;
+  const label = document.getElementById('shokibo_label');
+  if (label) label.style.display = checked ? 'flex' : 'none';
+  if (!checked) {
+    const r = document.getElementById('r_shokibo');
+    if (r && r.checked) {
+      document.getElementById('r_chusho').checked = true;
+      autoJudgeScale();
+    }
+  }
+}
+
 function clearScaleAuto() {
   document.getElementById('scale_auto_msg').textContent = '';
 }
@@ -824,10 +837,7 @@ function autoJudgeScale() {
   const shihon = parseInt(document.getElementById('f_shihon').value) || 0;
   const workers = parseInt(document.getElementById('f_rodosha_num').value) || 0;
   if (!workers && !shihon) return;
-  if (workers > 0 && workers <= 30) {
-    setScale('小規模企業', '⑥⑨から自動判定：小規模企業（常時雇用30人以下）');
-    return;
-  }
+
   let limit = SCALE_TABLE.find(t => t.default);
   for (const t of SCALE_TABLE) {
     if (t.keywords && t.keywords.some(kw => jigyou.includes(kw))) { limit = t; break; }
