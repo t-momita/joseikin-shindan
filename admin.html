@@ -185,11 +185,45 @@
   .kigyo_scale_auto { font-size: 12px; color: var(--success); font-weight: 600; margin-top: 6px; }
   .info-note { font-size: 11px; color: #7c3aed; margin-top: 3px; }
 
+  /* 別添様式１－１ */
+  .betten-emp-select { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .betten-emp-select h4 { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
+  .betten-emp-checkbox { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: background 0.15s; }
+  .betten-emp-checkbox:hover { background: #eff6ff; }
+  .betten-emp-checkbox input { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+  .betten-emp-checkbox span { font-size: 13px; color: var(--text); }
+  .btn-emp-extract { padding: 10px 20px; background: #7c3aed; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+  .btn-emp-extract:hover { background: #6d28d9; }
+  .btn-emp-extract:disabled { background: #a5b4fc; cursor: not-allowed; }
+
+  .rodosha-card { border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; background: #fafbfc; }
+  .rodosha-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .rodosha-card-num { font-size: 12px; font-weight: 700; color: white; background: var(--accent); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+  .kyuyo-calc-wrap { background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 14px 16px; margin-top: 8px; }
+  .kyuyo-calc-wrap h5 { font-size: 12px; font-weight: 700; color: #065f46; margin-bottom: 10px; }
+  .kyuyo-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+  .kyuyo-row label { width: 160px; color: var(--text-sub); font-size: 12px; }
+  .kyuyo-row input { flex: 1; padding: 7px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 13px; font-family: inherit; outline: none; }
+  .kyuyo-total { font-weight: 700; color: var(--success); font-size: 14px; margin-top: 6px; }
+
+  .shikyu-calc-wrap { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 20px 24px; margin-top: 16px; }
+  .shikyu-calc-wrap h4 { font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 16px; }
+  .shikyu-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
+  .shikyu-row:last-child { border-bottom: none; }
+  .shikyu-label { width: 200px; color: var(--text-sub); }
+  .shikyu-tanka { width: 120px; font-weight: 600; color: var(--primary); }
+  .shikyu-num { width: 60px; text-align: center; }
+  .shikyu-amount { width: 120px; font-weight: 700; color: var(--success); text-align: right; }
+  .shikyu-total-row { background: #eff6ff; border-radius: 8px; padding: 12px 16px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .shikyu-total-label { font-weight: 700; font-size: 14px; color: var(--primary); }
+  .shikyu-total-amount { font-weight: 700; font-size: 20px; color: var(--accent); font-family: 'Inter', sans-serif; }
+
   @media print {
-    .sidebar, .topbar, .shinsei-header, .ai-extract-area, .btn-print, .btn-back, .ai-badge, .info-note, .kigyo_scale_auto { display: none !important; }
+    .sidebar, .topbar, .shinsei-header, .ai-extract-area, .btn-print, .btn-back, .ai-badge, .info-note, .kigyo_scale_auto, .betten-emp-select, .btn-emp-extract, .kyuyo-calc-wrap { display: none !important; }
     .content { margin-left: 0 !important; }
     .main-content { padding: 0 !important; }
-    .shinsei-form-wrap { border: none !important; border-radius: 0 !important; box-shadow: none !important; }
+    .shinsei-form-wrap { border: none !important; border-radius: 0 !important; }
     .form-group input, .form-group select { border: none !important; border-bottom: 1px solid #000 !important; border-radius: 0 !important; background: white !important; }
     body { font-size: 12px; }
   }
@@ -313,7 +347,6 @@
             </div>
             <div class="form-body">
 
-              <!-- 申請日 -->
               <div class="form-section">
                 <div class="form-section-title">申請日</div>
                 <div class="form-row four">
@@ -324,7 +357,6 @@
                 </div>
               </div>
 
-              <!-- 事業主情報 -->
               <div class="form-section">
                 <div class="form-section-title">事業主情報</div>
                 <div class="form-row full">
@@ -356,7 +388,6 @@
                 </div>
               </div>
 
-              <!-- 代理人（固定） -->
               <div class="form-section">
                 <div class="form-section-title">代理人・事務代理者（固定）</div>
                 <div class="form-row full">
@@ -371,7 +402,6 @@
                 </div>
               </div>
 
-              <!-- 番号・担当者 -->
               <div class="form-section">
                 <div class="form-section-title">番号・担当者情報</div>
                 <div class="form-row">
@@ -398,7 +428,6 @@
                 </div>
               </div>
 
-              <!-- 企業情報 -->
               <div class="form-section">
                 <div class="form-section-title">企業情報</div>
                 <div class="form-row full">
@@ -419,8 +448,8 @@
                   <div class="form-group">
                     <label>⑦ 企業規模</label>
                     <div class="checkbox-group">
-                      <label><input type="radio" name="kigyo_scale" value="中小企業" id="r_chusho" onchange="clearScaleAuto()"> 中小企業</label>
-                      <label><input type="radio" name="kigyo_scale" value="大企業" id="r_daiki" onchange="clearScaleAuto()"> 大企業</label>
+                      <label><input type="radio" name="kigyo_scale" value="中小企業" id="r_chusho" onchange="clearScaleAuto();calcShikyu()"> 中小企業</label>
+                      <label><input type="radio" name="kigyo_scale" value="大企業" id="r_daiki" onchange="clearScaleAuto();calcShikyu()"> 大企業</label>
                       <label id="shokibo_label" style="display:none"><input type="radio" name="kigyo_scale" value="小規模企業" id="r_shokibo" onchange="clearScaleAuto()"> 小規模企業</label>
                     </div>
                     <div class="kigyo_scale_auto" id="scale_auto_msg"></div>
@@ -436,12 +465,10 @@
                   <div class="form-group">
                     <label>⑨ 常時雇用する労働者数（人）</label>
                     <input type="number" id="f_rodosha_num" placeholder="0" oninput="autoJudgeScale()">
-                    <span class="info-note">企業登録時の入力値から自動入力</span>
                   </div>
                 </div>
               </div>
 
-              <!-- 申請コース -->
               <div class="form-section">
                 <div class="form-section-title">⑩ 支給申請コース</div>
                 <div class="checkbox-group" style="flex-direction:column;gap:8px">
@@ -454,7 +481,6 @@
                 </div>
               </div>
 
-              <!-- 他助成金 -->
               <div class="form-section">
                 <div class="form-section-title">⑪ 他の助成金との重複</div>
                 <p style="font-size:13px;color:var(--text-sub);margin-bottom:10px">国または地方公共団体の助成金・奨励金・補助金等の申請・受給の有無</p>
@@ -465,6 +491,124 @@
                 <div class="form-group" style="margin-top:10px">
                   <label>有の場合の助成金名</label>
                   <input type="text" id="f_joseikin_name" placeholder="助成金名">
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 別添様式１－１ -->
+          <div class="shinsei-form-wrap">
+            <div class="shinsei-form-header">
+              <h3>別添様式１－１ 正社員化コース内訳</h3>
+              <button class="btn-print" onclick="window.print()">🖨️ 印刷</button>
+            </div>
+            <div class="form-body">
+
+              <!-- ①転換制度規定 -->
+              <div class="form-section">
+                <div class="form-section-title">① 転換・直接雇用制度規定年月日・種類</div>
+                <div class="form-row four">
+                  <div class="form-group"><label>元号</label><select id="b_gengo1"><option>平成</option><option>令和</option></select></div>
+                  <div class="form-group"><label>年</label><input type="number" id="b_year1" placeholder=""></div>
+                  <div class="form-group"><label>月</label><input type="number" id="b_month1" placeholder=""></div>
+                  <div class="form-group"><label>日</label><input type="number" id="b_day1" placeholder=""></div>
+                </div>
+                <div class="form-group" style="margin-top:8px">
+                  <label>就業規則等が適用された日の種類</label>
+                  <div class="checkbox-group">
+                    <label><input type="radio" name="b_kisoku1" value="1"> 1. 労働協約</label>
+                    <label><input type="radio" name="b_kisoku1" value="2"> 2. 就業規則</label>
+                    <label><input type="radio" name="b_kisoku1" value="3"> 3. その他</label>
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top:8px">
+                  <label>周知の方法</label>
+                  <input type="text" id="b_shuchi1" placeholder="周知方法を記入">
+                </div>
+              </div>
+
+              <!-- ②賃金区分 -->
+              <div class="form-section">
+                <div class="form-section-title">② 賃金の額・計算方法が正規雇用労働者と異なる雇用区分</div>
+                <div class="form-row four">
+                  <div class="form-group"><label>元号</label><select id="b_gengo2"><option>平成</option><option>令和</option></select></div>
+                  <div class="form-group"><label>年</label><input type="number" id="b_year2" placeholder=""></div>
+                  <div class="form-group"><label>月</label><input type="number" id="b_month2" placeholder=""></div>
+                  <div class="form-group"><label>日</label><input type="number" id="b_day2" placeholder=""></div>
+                </div>
+                <div class="form-group" style="margin-top:8px">
+                  <label>異なる賃金名目（該当するものを選択）</label>
+                  <div class="checkbox-group">
+                    <label><input type="checkbox" name="b_chingin" value="1"> 1. 基本給（昇給幅含む）</label>
+                    <label><input type="checkbox" name="b_chingin" value="2"> 2. 賞与</label>
+                    <label><input type="checkbox" name="b_chingin" value="3"> 3. 退職金</label>
+                    <label><input type="checkbox" name="b_chingin" value="4"> 4. その他</label>
+                  </div>
+                  <input type="text" id="b_chingin_other" placeholder="その他の場合、詳細を記入" style="margin-top:8px">
+                </div>
+              </div>
+
+              <!-- ③多様な正社員制度 -->
+              <div class="form-section">
+                <div class="form-section-title">③ 制度の種類（多様な正社員への転換の場合のみ）</div>
+                <div class="checkbox-group">
+                  <label><input type="radio" name="b_seido" value="1"> 1. 勤務地限定正社員制度</label>
+                  <label><input type="radio" name="b_seido" value="2"> 2. 職務限定正社員制度</label>
+                  <label><input type="radio" name="b_seido" value="3"> 3. 短時間正社員制度</label>
+                  <label><input type="radio" name="b_seido" value="0"> 該当なし</label>
+                </div>
+              </div>
+
+              <!-- ④雇用区分規定 -->
+              <div class="form-section">
+                <div class="form-section-title">④ 雇用区分の規定年月日・種類（多様な正社員への転換の場合のみ）</div>
+                <div class="form-row four">
+                  <div class="form-group"><label>元号</label><select id="b_gengo4"><option>平成</option><option>令和</option></select></div>
+                  <div class="form-group"><label>年</label><input type="number" id="b_year4" placeholder=""></div>
+                  <div class="form-group"><label>月</label><input type="number" id="b_month4" placeholder=""></div>
+                  <div class="form-group"><label>日</label><input type="number" id="b_day4" placeholder=""></div>
+                </div>
+                <div class="form-group" style="margin-top:8px">
+                  <div class="checkbox-group">
+                    <label><input type="radio" name="b_kisoku4" value="1"> 1. 労働協約</label>
+                    <label><input type="radio" name="b_kisoku4" value="2"> 2. 就業規則</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ⑤対象労働者 -->
+              <div class="form-section">
+                <div class="form-section-title">⑤ 対象労働者</div>
+
+                <!-- 従業員選択 -->
+                <div class="betten-emp-select">
+                  <h4>申請する従業員を選択してください（最大5名）</h4>
+                  <div id="bettenEmpCheckboxes"><div class="empty" style="padding:20px">従業員データがありません</div></div>
+                  <div style="margin-top:12px">
+                    <button class="btn-emp-extract" id="btnEmpExtract" onclick="extractEmployeeInfo()">
+                      ✨ 選択した従業員の情報をAI抽出
+                    </button>
+                    <div class="extract-result" id="empExtractResult" style="margin-top:8px"></div>
+                  </div>
+                </div>
+
+                <!-- 対象労働者カード -->
+                <div id="rodoshaCards"></div>
+              </div>
+
+              <!-- ⑥支給申請額 -->
+              <div class="form-section">
+                <div class="form-section-title">⑥ 支給申請額</div>
+                <div class="shikyu-calc-wrap" id="shikyuCalcWrap">
+                  <h4>支給申請額の計算</h4>
+                  <div id="shikyuCalcContent">
+                    <p style="font-size:13px;color:var(--text-sub)">⑤の対象労働者を入力すると自動計算されます。</p>
+                  </div>
+                  <div class="shikyu-total-row" id="shikyuTotalRow" style="display:none">
+                    <span class="shikyu-total-label">支給申請合計額（A+B+C+D+E）</span>
+                    <span class="shikyu-total-amount" id="shikyuTotalAmount">0 円</span>
+                  </div>
                 </div>
               </div>
 
@@ -496,6 +640,8 @@ const PASSWORD = 'next1234';
 
 let companies = [], employees = [], sharoushiList = [];
 let currentShinseiCompany = null;
+let currentShinseiEmployees = []; // 現在の企業の従業員リスト
+let selectedEmpData = [];         // AI抽出済み従業員データ
 
 const INDUSTRY_CODE_MAP = {
   '01':'農業','02':'林業','03':'漁業','04':'水産養殖業',
@@ -549,6 +695,12 @@ const SCALE_TABLE = [
   { keywords:['卸売'], capital: 10000, workers: 100 },
   { default: true, capital: 30000, workers: 300 },
 ];
+
+// 支給単価テーブル
+const TANKA = {
+  '有期→正規': { '中小企業': 400000, '大企業': 300000 },
+  '無期→正規': { '中小企業': 200000, '大企業': 150000 },
+};
 
 // ==========================================
 // ログイン
@@ -683,6 +835,8 @@ function openShinsei(companyId) {
   const r = companies.find(c => c.id === companyId);
   if (!r) return;
   currentShinseiCompany = r;
+  currentShinseiEmployees = employees.filter(e => e.companyId === companyId);
+  selectedEmpData = [];
   showPage('shinsei');
   document.getElementById('shinsei-select-view').style.display = 'none';
   document.getElementById('shinsei-form-view').style.display = 'block';
@@ -692,9 +846,15 @@ function openShinsei(companyId) {
   document.querySelectorAll('.ai-badge').forEach(b => b.style.display = 'none');
   document.querySelectorAll('.ai-filled').forEach(el => el.classList.remove('ai-filled'));
   renderDocStatus(r);
+  renderBettenEmpCheckboxes();
+  document.getElementById('rodoshaCards').innerHTML = '';
+  document.getElementById('shikyuCalcContent').innerHTML = '<p style="font-size:13px;color:var(--text-sub)">⑤の対象労働者を入力すると自動計算されます。</p>';
+  document.getElementById('shikyuTotalRow').style.display = 'none';
   const res = document.getElementById('extractResult');
   res.style.display = 'none';
   res.className = 'extract-result';
+  const empRes = document.getElementById('empExtractResult');
+  empRes.style.display = 'none';
 }
 
 function renderDocStatus(r) {
@@ -708,10 +868,35 @@ function renderDocStatus(r) {
   }).join('');
 }
 
+// 従業員チェックボックス描画
+function renderBettenEmpCheckboxes() {
+  const wrap = document.getElementById('bettenEmpCheckboxes');
+  if (!currentShinseiEmployees.length) {
+    wrap.innerHTML = '<div class="empty" style="padding:20px">この企業の従業員申請がありません</div>';
+    return;
+  }
+  wrap.innerHTML = currentShinseiEmployees.map(e => `
+    <label class="betten-emp-checkbox">
+      <input type="checkbox" value="${esc(e.applyId)}" onchange="onEmpCheckChange()">
+      <span>${esc(e.employeeName||'—')} <span style="color:var(--text-sub);font-size:11px">（${esc(e.beforeType||'—')}）</span></span>
+    </label>
+  `).join('');
+}
+
+function onEmpCheckChange() {
+  const checked = document.querySelectorAll('#bettenEmpCheckboxes input[type="checkbox"]:checked');
+  if (checked.length > 5) {
+    event.target.checked = false;
+    showToast('対象労働者は最大5名までです', 'error');
+  }
+}
+
 function backToShinseiList() {
   document.getElementById('shinsei-select-view').style.display = 'block';
   document.getElementById('shinsei-form-view').style.display = 'none';
   currentShinseiCompany = null;
+  currentShinseiEmployees = [];
+  selectedEmpData = [];
 }
 
 function prefillFromCompany(r) {
@@ -735,35 +920,27 @@ function setVal(id, val) {
 }
 
 // ==========================================
-// AI抽出（GAS経由）
+// AI抽出（GAS経由）- 様式第３号用
 // ==========================================
 async function extractFromDrive() {
   if (!currentShinseiCompany) return;
-
   const btn = document.getElementById('btnExtract');
   const resultEl = document.getElementById('extractResult');
   btn.disabled = true;
   btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;margin:0"></div> AI処理中...（30秒ほどかかります）';
   resultEl.style.display = 'none';
-
   try {
     const res = await fetch(GAS_URL, {
       method: 'POST',
-      body: JSON.stringify({
-        action: 'extractFromDrive',
-        companyId: currentShinseiCompany.id
-      })
+      body: JSON.stringify({ action: 'extractFromDrive', companyId: currentShinseiCompany.id })
     });
     const json = await res.json();
-
     if (!json.success) throw new Error(json.error || 'AI抽出に失敗しました');
-
     fillExtracted(json.data);
     resultEl.className = 'extract-result';
     resultEl.textContent = '✅ AI抽出完了！紫色の項目を確認してください。';
     resultEl.style.display = 'block';
     showToast('AI抽出完了！', 'success');
-
   } catch(e) {
     resultEl.className = 'extract-result error';
     resultEl.textContent = '❌ エラー: ' + e.message;
@@ -784,8 +961,8 @@ function fillExtracted(data) {
     rodoHokenBango:  { field: 'f_rodo',                badge: 'badge_rodo' },
     jigyshoZip:      { field: 'f_jigyonushi_zip',      badge: 'badge_zip' },
     jigyshoAddr:     { field: 'f_jigyunushi_addr',     badge: 'badge_addr' },
-    jigyshoName:     { field: 'f_kikyo_name',          badge: 'badge_kikyo_name' },  // 雇用保険→⑤企業名
-    kigyoName:       { field: 'f_jigyunushi_name',     badge: 'badge_jname' },       // 履歴事項→事業主名称
+    jigyshoName:     { field: 'f_kikyo_name',          badge: 'badge_kikyo_name' },
+    kigyoName:       { field: 'f_jigyunushi_name',     badge: 'badge_jname' },
     shihonkin:       { field: 'f_shihon',              badge: 'badge_shihon' },
     daihyoName:      { field: 'f_jigyunushi_rep',      badge: 'badge_rep' },
     daihyoYakushoku: { field: 'f_jigyunushi_akusoku',  badge: 'badge_rep_akusoku' },
@@ -803,7 +980,6 @@ function fillExtracted(data) {
     }
   });
 
-  // 事業の種類：コード→変換名
   let industryName = data.shuyoJigyo || '';
   if (!industryName && data.shuyoJigyoCode) {
     const code = String(data.shuyoJigyoCode).padStart(2, '0');
@@ -811,15 +987,183 @@ function fillExtracted(data) {
   }
   if (industryName) {
     const el = document.getElementById('f_kikyo_jigyou');
-    if (el) {
-      el.value = industryName;
-      el.classList.add('ai-filled');
-      const b = document.getElementById('badge_jigyou');
-      if (b) b.style.display = 'inline-flex';
-    }
+    if (el) { el.value = industryName; el.classList.add('ai-filled'); const b = document.getElementById('badge_jigyou'); if (b) b.style.display = 'inline-flex'; }
   }
 
   autoJudgeScale();
+}
+
+// ==========================================
+// 従業員情報AI抽出 - 別添様式１－１用
+// ==========================================
+async function extractEmployeeInfo() {
+  const checked = Array.from(document.querySelectorAll('#bettenEmpCheckboxes input[type="checkbox"]:checked'));
+  if (!checked.length) { showToast('従業員を選択してください', 'error'); return; }
+
+  const applyIds = checked.map(c => c.value);
+  const btn = document.getElementById('btnEmpExtract');
+  const resultEl = document.getElementById('empExtractResult');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner" style="width:16px;height:16px;border-width:2px;margin:0"></div> AI処理中...';
+  resultEl.style.display = 'none';
+
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'extractEmployeeInfo', applyIds })
+    });
+    const json = await res.json();
+    if (!json.success) throw new Error(json.error || 'AI抽出に失敗しました');
+
+    selectedEmpData = json.employees;
+    renderRodoshaCards();
+    calcShikyu();
+
+    resultEl.className = 'extract-result';
+    resultEl.textContent = `✅ ${json.employees.length}名分の情報を抽出しました。内容を確認してください。`;
+    resultEl.style.display = 'block';
+    showToast('従業員情報AI抽出完了！', 'success');
+  } catch(e) {
+    resultEl.className = 'extract-result error';
+    resultEl.textContent = '❌ エラー: ' + e.message;
+    resultEl.style.display = 'block';
+    showToast('AI抽出に失敗しました', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '✨ 選択した従業員の情報をAI抽出';
+  }
+}
+
+// 対象労働者カード描画
+function renderRodoshaCards() {
+  const wrap = document.getElementById('rodoshaCards');
+  if (!selectedEmpData.length) { wrap.innerHTML = ''; return; }
+
+  wrap.innerHTML = selectedEmpData.map((e, i) => `
+    <div class="rodosha-card">
+      <div class="rodosha-card-header">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="rodosha-card-num">${i + 1}</div>
+          <div>
+            <div style="font-weight:700;font-size:14px;color:var(--primary)">${esc(e.shimei || e.employeeName || '—')}</div>
+            <div style="font-size:11px;color:var(--text-sub)">${esc(e.furigana || '')}</div>
+          </div>
+        </div>
+        <span class="ai-badge">✨ AI 抽出</span>
+      </div>
+      <div class="form-row three">
+        <div class="form-group">
+          <label>氏名（漢字）</label>
+          <input type="text" id="emp_shimei_${i}" value="${esc(e.shimei || e.employeeName || '')}" oninput="calcShikyu()">
+        </div>
+        <div class="form-group">
+          <label>フリガナ</label>
+          <input type="text" id="emp_furigana_${i}" value="${esc(e.furigana || '')}">
+        </div>
+        <div class="form-group">
+          <label>年齢</label>
+          <input type="number" id="emp_age_${i}" value="${esc(e.age || '')}" style="width:80px">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>転換区分</label>
+          <select id="emp_tenkan_${i}" onchange="calcShikyu()">
+            <option value="有期→正規" ${(e.beforeType||'').includes('有期') ? 'selected' : ''}>1. 有期 → 正規</option>
+            <option value="無期→正規" ${(e.beforeType||'').includes('無期') ? 'selected' : ''}>2. 無期 → 正規</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>多様な正社員区分（該当する場合）</label>
+          <select id="emp_tayou_${i}" onchange="calcShikyu()">
+            <option value="">該当なし</option>
+            <option value="勤務地限定">1. 勤務地限定</option>
+            <option value="職務限定">2. 職務限定</option>
+            <option value="短時間">3. 短時間</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row three">
+        <div class="form-group">
+          <label>3年以上の有期雇用</label>
+          <div class="checkbox-group"><label><input type="checkbox" id="emp_3nen_${i}"> ○</label></div>
+        </div>
+        <div class="form-group">
+          <label>不安定就労</label>
+          <div class="checkbox-group"><label><input type="checkbox" id="emp_fuantei_${i}"> ○</label></div>
+        </div>
+        <div class="form-group">
+          <label>支給対象期間</label>
+          <select id="emp_kikan_${i}">
+            <option value="1">1. 第１期（重点以外）</option>
+            <option value="2">2. 第１期（重点）</option>
+            <option value="3">3. 第２期（重点）</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row three">
+        <div class="form-group">
+          <label>母子・父子家庭</label>
+          <div class="checkbox-group"><label><input type="checkbox" id="emp_haha_${i}"> ○</label></div>
+        </div>
+        <div class="form-group">
+          <label>人材開発支援修了</label>
+          <div class="checkbox-group"><label><input type="checkbox" id="emp_jinzai_${i}"> ○</label></div>
+        </div>
+        <div class="form-group">
+          <label>派遣労働者</label>
+          <div class="checkbox-group"><label><input type="checkbox" id="emp_haken_${i}"> ○</label></div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ==========================================
+// 支給申請額自動計算
+// ==========================================
+function calcShikyu() {
+  if (!selectedEmpData.length) return;
+
+  const scale = document.querySelector('input[name="kigyo_scale"]:checked')?.value || '中小企業';
+  const scaleKey = scale === '大企業' ? '大企業' : '中小企業';
+
+  let yuki = 0, muki = 0;
+  selectedEmpData.forEach((_, i) => {
+    const tenkan = document.getElementById(`emp_tenkan_${i}`)?.value || '有期→正規';
+    if (tenkan === '有期→正規') yuki++;
+    else muki++;
+  });
+
+  const yukiTanka = TANKA['有期→正規'][scaleKey];
+  const mukiTanka = TANKA['無期→正規'][scaleKey];
+  const yukiTotal = yuki * yukiTanka;
+  const mukiTotal = muki * mukiTanka;
+  const grandTotal = yukiTotal + mukiTotal;
+
+  const fmt = n => n.toLocaleString('ja-JP');
+
+  let html = '';
+  if (yuki > 0) {
+    html += `<div class="shikyu-row">
+      <span class="shikyu-label">＜１．有期→正規＞</span>
+      <span class="shikyu-tanka">${fmt(yukiTanka)}円</span>
+      <span class="shikyu-num">× ${yugi}人</span>
+      <span class="shikyu-amount">= ${fmt(yukiTotal)}円</span>
+    </div>`;
+  }
+  if (muki > 0) {
+    html += `<div class="shikyu-row">
+      <span class="shikyu-label">＜２．無期→正規＞</span>
+      <span class="shikyu-tanka">${fmt(mukiTanka)}円</span>
+      <span class="shikyu-num">× ${muki}人</span>
+      <span class="shikyu-amount">= ${fmt(mukiTotal)}円</span>
+    </div>`;
+  }
+
+  document.getElementById('shikyuCalcContent').innerHTML = html || '<p style="font-size:13px;color:var(--text-sub)">対象労働者の転換区分を選択してください。</p>';
+  document.getElementById('shikyuTotalRow').style.display = grandTotal > 0 ? 'flex' : 'none';
+  document.getElementById('shikyuTotalAmount').textContent = fmt(grandTotal) + ' 円';
 }
 
 // ==========================================
@@ -831,10 +1175,7 @@ function toggleShokibo() {
   if (label) label.style.display = checked ? 'flex' : 'none';
   if (!checked) {
     const r = document.getElementById('r_shokibo');
-    if (r && r.checked) {
-      document.getElementById('r_chusho').checked = true;
-      autoJudgeScale();
-    }
+    if (r && r.checked) { document.getElementById('r_chusho').checked = true; autoJudgeScale(); }
   }
 }
 
@@ -847,13 +1188,13 @@ function autoJudgeScale() {
   const shihon = parseInt(document.getElementById('f_shihon').value) || 0;
   const workers = parseInt(document.getElementById('f_rodosha_num').value) || 0;
   if (!workers && !shihon) return;
-
   let limit = SCALE_TABLE.find(t => t.default);
   for (const t of SCALE_TABLE) {
     if (t.keywords && t.keywords.some(kw => jigyou.includes(kw))) { limit = t; break; }
   }
   const isChuSho = (shihon === 0 || shihon <= limit.capital) && (workers === 0 || workers <= limit.workers);
   setScale(isChuSho ? '中小企業' : '大企業', `⑥⑧⑨から自動判定：${isChuSho ? '中小企業' : '大企業'}`);
+  calcShikyu();
 }
 
 function setScale(val, msg) {
@@ -893,7 +1234,7 @@ function buildCompanyInfoHtml(r) {
     { label:'履歴事項全部証明書', url:r.tokiUrl },
     { label:'雇用保険適用事業所設置届', url:r.koyoUrl },
     { label:'就業規則', url:r.shugyoUrl },
-    { label:'賃金規定', url:r.chinginKireiUrl },
+    { label:'賃金規定', url:r.chinginKiteiUrl },
     { label:'キャリアアップ計画書', url:r.keikakuUrl },
   ];
   const docsHtml = docItems.some(d=>d.url&&d.url.startsWith('http'))
