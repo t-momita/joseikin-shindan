@@ -345,8 +345,12 @@
                     <input type="text" id="f_jigyonushi_name" placeholder="株式会社〇〇">
                   </div>
                   <div class="form-group">
+                    <label>代表者役職 <span id="badge_rep_yakushoku" class="ai-badge" style="display:none">✨ AI抽出</span></label>
+                    <input type="text" id="f_jigyonushi_yakushoku" placeholder="代表取締役">
+                  </div>
+                  <div class="form-group">
                     <label>代表者氏名 <span id="badge_rep" class="ai-badge" style="display:none">✨ AI抽出</span></label>
-                    <input type="text" id="f_jigyonushi_rep" placeholder="代表取締役 山田太郎">
+                    <input type="text" id="f_jigyonushi_rep" placeholder="山田太郎">
                   </div>
                 </div>
               </div>
@@ -526,7 +530,7 @@ const INDUSTRY_CODE_MAP = {
 
 const SCALE_TABLE = [
   { keywords:['小売','飲食'], capital: 5000, workers: 50 },
-  { keywords:['サービス'],    capital: 5000, workers: 100 },
+  { keywords:['サービス','社会保険','社会福祉','介護','医療','保健','教育','学習支援','宿泊','娯楽','生活関連','理容','美容','洗濯'], capital: 5000, workers: 100 },
   { keywords:['卸売'],        capital: 10000, workers: 100 },
   { default: true,            capital: 30000, workers: 300 },
 ];
@@ -765,15 +769,16 @@ function fillExtracted(data) {
 
   // GASから返ってくるキー名に合わせたマッピング
   const mapping = {
-    koyoHokenBango:  { field: 'f_koyohoken',       badge: 'badge_koyohoken' },
-    rodoHokenBango:  { field: 'f_rodo',             badge: 'badge_rodo' },
-    jigyshoZip:      { field: 'f_jigyonushi_zip',   badge: 'badge_zip' },
-    jigyshoAddr:     { field: 'f_jigyonushi_addr',  badge: 'badge_addr' },
-    jigyshoKaihyo:   { field: 'f_jigyonushi_rep',   badge: 'badge_rep' },
-    jigyshoName:     { field: 'f_jigyonushi_name',   badge: 'badge_jname' },
-    kigyoName:       { field: 'f_kigyo_name',       badge: 'badge_kigyo_name' },
-    shihonkin:       { field: 'f_shihon',           badge: 'badge_shihon' },
-    daihyoName:      { field: 'f_jigyonushi_rep',   badge: 'badge_rep' },
+    koyoHokenBango:  { field: 'f_koyohoken',            badge: 'badge_koyohoken' },
+    rodoHokenBango:  { field: 'f_rodo',                 badge: 'badge_rodo' },
+    jigyshoZip:      { field: 'f_jigyonushi_zip',       badge: 'badge_zip' },
+    jigyshoAddr:     { field: 'f_jigyonushi_addr',      badge: 'badge_addr' },
+    jigyshoName:     { field: 'f_jigyonushi_name',      badge: 'badge_jname' },
+    jigyshoKaihyo:   { field: 'f_jigyonushi_rep',       badge: 'badge_rep' },
+    kigyoName:       { field: 'f_kigyo_name',           badge: 'badge_kigyo_name' },
+    shihonkin:       { field: 'f_shihon',               badge: 'badge_shihon' },
+    daihyoName:      { field: 'f_jigyonushi_rep',       badge: 'badge_rep' },
+    daihyoYakushoku: { field: 'f_jigyonushi_yakushoku', badge: 'badge_rep_yakushoku' },
   };
 
   Object.entries(mapping).forEach(([key, { field, badge }]) => {
@@ -787,17 +792,6 @@ function fillExtracted(data) {
       }
     }
   });
-
-  // 企業名（事業所名として設定）
-  if (data.kigyoName) {
-    const el = document.getElementById('f_jigyonushi_name');
-    if (el && !el.classList.contains('fixed')) {
-      el.value = data.kigyoName;
-      el.classList.add('ai-filled');
-      const b = document.getElementById('badge_jname');
-      if (b) b.style.display = 'inline-flex';
-    }
-  }
 
   // 事業の種類：コード→名称変換
   let industryName = data.shuyoJigyo || '';
